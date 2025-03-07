@@ -1,0 +1,23 @@
+---
+logger:
+  caller: true
+  format: json
+  level: trace
+  timeFormat: 2006-01-02T15:04:05.999999999Z07:00
+  collector:
+    protocol: grpc
+    connection: foo:4242
+
+tracer:
+  enable: true
+  collector:
+    protocol: grpc
+    connection: foo:4242
+
+metric:
+  enable: true
+  prometheus: true
+  interval: 42s
+  collector:
+    protocol: grpc
+    connection: foo:4242

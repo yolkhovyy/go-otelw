@@ -1,0 +1,13 @@
+# VSCode
+.vscode/
+
+# Golang
+**/__debug_bin
+
+# Generated folders
+coverage/
+test_results/
+
+# Keep secrets private
+.env
+.env.api-keys

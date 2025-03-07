@@ -1,0 +1,45 @@
+---
+http:
+  port: 8080
+  shutdownTimeout: 5s
+  readHeaderTimeout: 1s
+
+Logger:
+  Enable: true
+  # trace, debug, info (default), warn, error, fatal, panic, disabled
+  Level: info
+  # json (default), console
+  Format: json
+  # default 2006-01-02T15:04:05.999999999Z07:00
+  TimeFormat: 2006-01-02T15:04:05.999999999Z07:00
+  # false (default), true
+  Caller: false
+  Collector:
+    # http, grpc (default)
+    Protocol: grpc
+    # default localhost:4318
+    Connection: localhost:4318
+    Insecure: true
+Tracer:
+  Enable: true
+  Collector:
+    # http, grpc (default)
+    Protocol: grpc
+    # default localhost:4318
+    Connection: localhost:4318
+    Insecure: true
+Metric:
+  # false (default), true
+  Enable: true
+  # Enable Prometheus collectors
+  # false (default), true
+  Prometheus: true
+  # Metric interval
+  # default 10s
+  Interval: 10s
+  Collector:
+    # http, grpc (default)
+    Protocol: grpc
+    # default localhost:4318
+    Connection: localhost:4318
+    Insecure: true
