@@ -1,0 +1,11 @@
+---
+pg:
+  addr: postgres:5432
+  user: postgres
+  password: password
+  database: uptrace
+
+ch:
+  addr: clickhouse:9000
+  user: uptrace
+  password: password

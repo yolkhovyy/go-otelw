@@ -1,0 +1,26 @@
+<yandex>
+    <users>
+        <default>
+            <password></password>
+            <profile>default</profile>
+            <quota>default</quota>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+        </default>
+        <uptrace>
+            <password>password</password>
+            <profile>default</profile>
+            <quota>default</quota>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+        </uptrace>
+    </users>
+    <profiles>
+        <default />
+    </profiles>
+    <quotas>
+        <default />
+    </quotas>
+</yandex>
