@@ -10,12 +10,10 @@ receivers:
 exporters:
   debug:
     verbosity: detailed
-  otlp:
-    endpoint: jaeger:4317
-    tls:
-      insecure: true
-  prometheus:
-    endpoint: "0.0.0.0:9464"
+  otlphttp:
+    endpoint: "https://otlp.eu01.nr-data.net:4317"
+    headers:
+      api-key: "${API_KEY_NEWRELIC_INGEST_LICENSE}"
 
 processors:
   batch:
@@ -26,15 +24,15 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp, debug]
+      exporters: [otlphttp, debug]
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug]
+      exporters: [otlphttp, debug]
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [prometheus, debug]
+      exporters: [otlphttp, debug]
   telemetry:
     logs:
       level: debug

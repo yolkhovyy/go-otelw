@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -80,7 +81,7 @@ func worker(
 ) {
 	var err error
 
-	ctx, span := tracew.Start(ctx, "echo", "worker")
+	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
 	defer func() { span.End(err) }()
 
 	logger := slogw.NewLogger()
@@ -93,14 +94,14 @@ func worker(
 	if sequence > workThreshold {
 		err = fmt.Errorf("worker: %w", ErrTimeout)
 		span.AddEvent(fmt.Errorf("sequence: %d input: %s error:%w", sequence, input, err).Error())
-		logger.InfoContext(ctx, "echo worker",
+		logger.ErrorContext(ctx, "echo worker "+strconv.Itoa(sequence),
 			slog.Int("sequence", sequence),
 			slog.String("input", input),
 		)
 		errChan <- err
 	} else {
 		span.AddEvent(fmt.Sprintf("sequence: %d input: %s", sequence, input))
-		logger.InfoContext(ctx, "echo worker",
+		logger.InfoContext(ctx, "echo worker "+strconv.Itoa(sequence),
 			slog.Int("sequence", sequence),
 			slog.String("input", input),
 		)
