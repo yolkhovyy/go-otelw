@@ -1,0 +1,50 @@
+---
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317"
+      http:
+        endpoint: "0.0.0.0:4318"
+
+exporters:
+  debug:
+    verbosity: detailed
+  # otlp:
+  #   endpoint: jaeger:4317
+  #   tls:
+  #     insecure: true
+  # prometheus:
+  #   endpoint: "0.0.0.0:9464"
+  otlp/uptrace:
+    endpoint: "uptrace:14317"
+    tls:
+      insecure: true
+
+processors:
+  batch:
+
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/uptrace, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/uptrace, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/uptrace, debug]
+  telemetry:
+    logs:
+      level: debug
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
