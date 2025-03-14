@@ -102,7 +102,7 @@ func (m *Metric) Shutdown(ctx context.Context) error {
 	return errs
 }
 
-//nolint:ireturn,cyclop
+//nolint:ireturn,cyclop,funlen
 func exporter(
 	ctx context.Context,
 	config otelw.Metric,
@@ -128,7 +128,16 @@ func exporter(
 			options = append(options, otlpmetricgrpc.WithEndpoint(config.Collector.Connection))
 		}
 
-		options = append(options, otlpmetricgrpc.WithInsecure())
+		if config.Collector.Insecure {
+			options = append(options, otlpmetricgrpc.WithInsecure())
+		} else {
+			tlsConfig, err := otelw.TLSCredentials(config.Collector)
+			if err != nil {
+				return nil, fmt.Errorf("metricw otlp tls config: %w", err)
+			}
+
+			options = append(options, otlpmetricgrpc.WithTLSCredentials(tlsConfig))
+		}
 
 		exporter, err = otlpmetricgrpc.New(ctx, options...)
 	case config.Collector.Protocol == otelw.HTTP:
@@ -137,7 +146,16 @@ func exporter(
 			options = append(options, otlpmetrichttp.WithEndpoint(config.Collector.Connection))
 		}
 
-		options = append(options, otlpmetrichttp.WithInsecure())
+		if config.Collector.Insecure {
+			options = append(options, otlpmetrichttp.WithInsecure())
+		} else {
+			tlsConfig, err := otelw.TLSConfig(config.Collector)
+			if err != nil {
+				return nil, fmt.Errorf("metricw otlp tls config: %w", err)
+			}
+
+			options = append(options, otlpmetrichttp.WithTLSClientConfig(tlsConfig))
+		}
 
 		exporter, err = otlpmetrichttp.New(ctx, options...)
 	default:
