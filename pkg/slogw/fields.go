@@ -1,4 +1,4 @@
-package otelw
+package slogw
 
 import (
 	"errors"

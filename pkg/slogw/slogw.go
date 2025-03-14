@@ -7,7 +7,7 @@ import (
 	"io"
 	"log/slog"
 
-	"github.com/yolkhovyy/go-otelw/pkg/otelw"
+	"github.com/yolkhovyy/go-otelw/pkg/collector"
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
@@ -27,7 +27,7 @@ type Logger struct {
 //nolint:cyclop,funlen
 func Configure(
 	ctx context.Context,
-	config otelw.Logger,
+	config Config,
 	attrs []attribute.KeyValue,
 	writers ...io.Writer,
 ) (*Logger, error) {
@@ -46,9 +46,16 @@ func Configure(
 		log.WithProcessor(log.NewBatchProcessor(&WithSeverityText{exporter})),
 	)
 
+	serviceName := "undefined"
+
+	attrSet := attribute.NewSet(attrs...)
+	if value, exists := attrSet.Value(semconv.ServiceNameKey); exists {
+		serviceName = value.AsString()
+	}
+
 	// TODO: check other options.
 	slog.SetDefault(otelslog.NewLogger(
-		otelw.FindAttribute(attrs, semconv.ServiceNameKey),
+		serviceName,
 		otelslog.WithLoggerProvider(provider),
 		otelslog.WithSource(config.Caller),
 	))
@@ -91,7 +98,7 @@ func NewLogger() *slog.Logger {
 //nolint:ireturn,cyclop,funlen
 func exporter(
 	ctx context.Context,
-	config otelw.Logger,
+	config Config,
 	writers ...io.Writer,
 ) (log.Exporter, error) {
 	var err error
@@ -108,7 +115,7 @@ func exporter(
 		}
 
 		exporter, err = stdoutlog.New(options...)
-	case config.Collector.Protocol == otelw.GRPC:
+	case config.Collector.Protocol == collector.GRPC:
 		options := []otlploggrpc.Option{}
 		if config.Collector.Connection != "" {
 			options = append(options, otlploggrpc.WithEndpoint(config.Collector.Connection))
@@ -117,7 +124,7 @@ func exporter(
 		if config.Collector.Insecure {
 			options = append(options, otlploggrpc.WithInsecure())
 		} else {
-			tslCreds, err := otelw.TLSCredentials(config.Collector)
+			tslCreds, err := collector.TLSCredentials(config.Collector)
 			if err != nil {
 				return nil, fmt.Errorf("slogw otlp tls credentials: %w", err)
 			}
@@ -126,7 +133,7 @@ func exporter(
 		}
 
 		exporter, err = otlploggrpc.New(ctx, options...)
-	case config.Collector.Protocol == otelw.HTTP:
+	case config.Collector.Protocol == collector.HTTP:
 		options := []otlploghttp.Option{}
 		if config.Collector.Connection != "" {
 			options = append(options, otlploghttp.WithEndpoint(config.Collector.Connection))
@@ -135,7 +142,7 @@ func exporter(
 		if config.Collector.Insecure {
 			options = append(options, otlploghttp.WithInsecure())
 		} else {
-			tlsConfig, err := otelw.TLSConfig(config.Collector)
+			tlsConfig, err := collector.TLSConfig(config.Collector)
 			if err != nil {
 				return nil, fmt.Errorf("slogw otlp tls config: %w", err)
 			}

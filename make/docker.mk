@@ -40,10 +40,4 @@ dc-stop: ## Stop running Docker containers
 dc-down: ## Stop and remove Docker containers and associated network
 	@echo "🗑 Stopping and removing Docker containers and associated network"
 	@${DC} down
-ifneq ($(RMV),)
-	@if docker volume inspect $(PROJECT_NAME)_user-data >/dev/null 2>&1; then \
-		echo "🗑 Removing Docker volume $(PROJECT_NAME)_user-data"; \
-		docker volume rm $(PROJECT_NAME)_user-data; \
-	fi
-endif
 

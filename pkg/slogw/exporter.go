@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"strconv"
 
-	otellog "go.opentelemetry.io/otel/log"
-	"go.opentelemetry.io/otel/sdk/log"
+	"go.opentelemetry.io/otel/log"
+	sdklog "go.opentelemetry.io/otel/sdk/log"
 )
 
 type WithSeverityText struct {
-	log.Exporter
+	sdklog.Exporter
 }
 
-func (e *WithSeverityText) Export(ctx context.Context, records []log.Record) error {
+func (e *WithSeverityText) Export(ctx context.Context, records []sdklog.Record) error {
 	for i := range records {
 		mapSeverityText(&records[i])
 	}
@@ -26,40 +26,40 @@ func (e *WithSeverityText) Export(ctx context.Context, records []log.Record) err
 }
 
 //nolint:cyclop
-func mapSeverityText(record *log.Record) {
+func mapSeverityText(record *sdklog.Record) {
 	severity := record.Severity()
 	switch severity {
-	case otellog.SeverityUndefined:
+	case log.SeverityUndefined:
 		record.SetSeverityText("UNDEFINED")
 
-	case otellog.SeverityTrace1:
+	case log.SeverityTrace1:
 		record.SetSeverityText("TRACE")
-	case otellog.SeverityTrace2, otellog.SeverityTrace3, otellog.SeverityTrace4:
+	case log.SeverityTrace2, log.SeverityTrace3, log.SeverityTrace4:
 		record.SetSeverityText("TRACE" + strconv.Itoa(int(severity)))
 
-	case otellog.SeverityDebug1:
+	case log.SeverityDebug1:
 		record.SetSeverityText("DEBUG")
-	case otellog.SeverityDebug2, otellog.SeverityDebug3, otellog.SeverityDebug4:
+	case log.SeverityDebug2, log.SeverityDebug3, log.SeverityDebug4:
 		record.SetSeverityText("DEBUG" + strconv.Itoa(int(severity)))
 
-	case otellog.SeverityInfo1:
+	case log.SeverityInfo1:
 		record.SetSeverityText("INFO")
-	case otellog.SeverityInfo2, otellog.SeverityInfo3, otellog.SeverityInfo4:
+	case log.SeverityInfo2, log.SeverityInfo3, log.SeverityInfo4:
 		record.SetSeverityText("INFO" + strconv.Itoa(int(severity)))
 
-	case otellog.SeverityWarn1:
+	case log.SeverityWarn1:
 		record.SetSeverityText("WARN")
-	case otellog.SeverityWarn2, otellog.SeverityWarn3, otellog.SeverityWarn4:
+	case log.SeverityWarn2, log.SeverityWarn3, log.SeverityWarn4:
 		record.SetSeverityText("WARN" + strconv.Itoa(int(severity)))
 
-	case otellog.SeverityError1:
+	case log.SeverityError1:
 		record.SetSeverityText("ERROR")
-	case otellog.SeverityError2, otellog.SeverityError3, otellog.SeverityError4:
+	case log.SeverityError2, log.SeverityError3, log.SeverityError4:
 		record.SetSeverityText("ERROR" + strconv.Itoa(int(severity)))
 
-	case otellog.SeverityFatal1:
+	case log.SeverityFatal1:
 		record.SetSeverityText("FATAL")
-	case otellog.SeverityFatal2, otellog.SeverityFatal3, otellog.SeverityFatal4:
+	case log.SeverityFatal2, log.SeverityFatal3, log.SeverityFatal4:
 		record.SetSeverityText("FATAL" + strconv.Itoa(int(severity)))
 
 	default:
