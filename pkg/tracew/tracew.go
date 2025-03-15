@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yolkhovyy/go-otelw/pkg/otelw"
+	"github.com/yolkhovyy/go-otelw/pkg/collector"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
@@ -24,7 +24,7 @@ type Tracer struct {
 
 func Configure(
 	ctx context.Context,
-	config otelw.Tracer,
+	config Config,
 	attrs []attribute.KeyValue,
 	writers ...io.Writer,
 ) (*Tracer, error) {
@@ -76,7 +76,7 @@ func (t *Tracer) Shutdown(ctx context.Context) error {
 //nolint:ireturn,cyclop
 func exporter(
 	ctx context.Context,
-	config otelw.Tracer,
+	config Config,
 	writers ...io.Writer,
 ) (sdktrace.SpanExporter, error) {
 	var err error
@@ -93,7 +93,7 @@ func exporter(
 		}
 
 		exporter, err = stdouttrace.New(options...)
-	case config.Collector.Protocol == otelw.GRPC:
+	case config.Collector.Protocol == collector.GRPC:
 		options := []otlptracegrpc.Option{}
 		if config.Collector.Connection != "" {
 			options = append(options, otlptracegrpc.WithEndpoint(config.Collector.Connection))
@@ -102,7 +102,7 @@ func exporter(
 		if config.Collector.Insecure {
 			options = append(options, otlptracegrpc.WithInsecure())
 		} else {
-			tslCreds, err := otelw.TLSCredentials(config.Collector)
+			tslCreds, err := collector.TLSCredentials(config.Collector)
 			if err != nil {
 				return nil, fmt.Errorf("tracew otlp grpc tls credentials: %w", err)
 			}
@@ -111,7 +111,7 @@ func exporter(
 		}
 
 		exporter, err = otlptracegrpc.New(ctx, options...)
-	case config.Collector.Protocol == otelw.HTTP:
+	case config.Collector.Protocol == collector.HTTP:
 		options := []otlptracehttp.Option{}
 		if config.Collector.Connection != "" {
 			options = append(options, otlptracehttp.WithEndpoint(config.Collector.Connection))
@@ -120,7 +120,7 @@ func exporter(
 		if config.Collector.Insecure {
 			options = append(options, otlptracehttp.WithInsecure())
 		} else {
-			tlsConfig, err := otelw.TLSConfig(config.Collector)
+			tlsConfig, err := collector.TLSConfig(config.Collector)
 			if err != nil {
 				return nil, fmt.Errorf("tracew otlp http tls config: %w", err)
 			}

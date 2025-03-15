@@ -9,7 +9,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yolkhovyy/go-otelw/pkg/otelw"
 	"github.com/yolkhovyy/go-otelw/test"
 	"go.opentelemetry.io/otel/attribute"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
@@ -21,7 +20,7 @@ func TestSlog(t *testing.T) {
 	t.Parallel()
 
 	type args struct {
-		config     otelw.Logger
+		config     Config
 		attributes []attribute.KeyValue
 		writers    []io.Writer
 		message    string
@@ -42,7 +41,7 @@ func TestSlog(t *testing.T) {
 		{
 			name: "slogw",
 			args: args{
-				config: otelw.Logger{
+				config: Config{
 					Enable: true,
 					Level:  "trace",
 				},
@@ -95,7 +94,7 @@ func TestSlog(t *testing.T) {
 			require.NoError(t, err)
 
 			output := builder.String()
-			if test.args.config.Format == otelw.FormatConsole {
+			if test.args.config.Format == FormatConsole {
 				output = removeColorFormatting(output)
 			}
 
@@ -108,7 +107,7 @@ func TestSlog(t *testing.T) {
 			require.NoError(t, err)
 
 			output = builder.String()
-			if test.args.config.Format == otelw.FormatConsole {
+			if test.args.config.Format == FormatConsole {
 				output = removeColorFormatting(output)
 			}
 

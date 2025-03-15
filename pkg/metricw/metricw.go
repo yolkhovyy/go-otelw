@@ -8,7 +8,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
-	"github.com/yolkhovyy/go-otelw/pkg/otelw"
+	"github.com/yolkhovyy/go-otelw/pkg/collector"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
@@ -36,7 +36,7 @@ type Metric struct {
 //nolint:cyclop,funlen
 func Configure(
 	ctx context.Context,
-	config otelw.Metric,
+	config Config,
 	attrs []attribute.KeyValue,
 	writers ...io.Writer,
 ) (*Metric, error) {
@@ -59,6 +59,13 @@ func Configure(
 
 	otel.SetMeterProvider(provider)
 
+	serviceName := "undefined"
+
+	attrSet := attribute.NewSet(attrs...)
+	if value, exists := attrSet.Value(semconv.ServiceNameKey); exists {
+		serviceName = value.AsString()
+	}
+
 	met := Metric{
 		provider:      provider,
 		exporter:      exporter,
@@ -66,7 +73,7 @@ func Configure(
 		gauges:        make(map[string]metric.Float64ObservableGauge),
 		histograms:    make(map[string]metric.Float64Histogram),
 		counters:      make(map[string]metric.Float64ObservableCounter),
-		meter:         provider.Meter(otelw.FindAttribute(attrs, semconv.ServiceNameKey)),
+		meter:         provider.Meter(serviceName),
 	}
 
 	if config.Prometheus {
@@ -105,7 +112,7 @@ func (m *Metric) Shutdown(ctx context.Context) error {
 //nolint:ireturn,cyclop,funlen
 func exporter(
 	ctx context.Context,
-	config otelw.Metric,
+	config Config,
 	writers ...io.Writer,
 ) (sdkmetric.Exporter, error) {
 	var err error
@@ -122,7 +129,7 @@ func exporter(
 		}
 
 		exporter, err = stdoutmetric.New(options...)
-	case config.Collector.Protocol == otelw.GRPC:
+	case config.Collector.Protocol == collector.GRPC:
 		options := []otlpmetricgrpc.Option{}
 		if config.Collector.Connection != "" {
 			options = append(options, otlpmetricgrpc.WithEndpoint(config.Collector.Connection))
@@ -131,7 +138,7 @@ func exporter(
 		if config.Collector.Insecure {
 			options = append(options, otlpmetricgrpc.WithInsecure())
 		} else {
-			tlsConfig, err := otelw.TLSCredentials(config.Collector)
+			tlsConfig, err := collector.TLSCredentials(config.Collector)
 			if err != nil {
 				return nil, fmt.Errorf("metricw otlp tls config: %w", err)
 			}
@@ -140,7 +147,7 @@ func exporter(
 		}
 
 		exporter, err = otlpmetricgrpc.New(ctx, options...)
-	case config.Collector.Protocol == otelw.HTTP:
+	case config.Collector.Protocol == collector.HTTP:
 		options := []otlpmetrichttp.Option{}
 		if config.Collector.Connection != "" {
 			options = append(options, otlpmetrichttp.WithEndpoint(config.Collector.Connection))
@@ -149,7 +156,7 @@ func exporter(
 		if config.Collector.Insecure {
 			options = append(options, otlpmetrichttp.WithInsecure())
 		} else {
-			tlsConfig, err := otelw.TLSConfig(config.Collector)
+			tlsConfig, err := collector.TLSConfig(config.Collector)
 			if err != nil {
 				return nil, fmt.Errorf("metricw otlp tls config: %w", err)
 			}

@@ -6,6 +6,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/yolkhovyy/go-otelw/pkg/collector"
+	"github.com/yolkhovyy/go-otelw/pkg/metricw"
+	"github.com/yolkhovyy/go-otelw/pkg/slogw"
+	"github.com/yolkhovyy/go-otelw/pkg/tracew"
 	"github.com/yolkhovyy/go-utilities/viperx"
 )
 
@@ -35,90 +39,90 @@ func TestBaseLoad(t *testing.T) {
 			want: want{
 				err: false,
 				config: Config{
-					Logger: Logger{
+					Logger: slogw.Config{
 						Caller:     true,
-						Format:     FormatJSON,
+						Format:     slogw.FormatJSON,
 						Level:      "trace",
 						TimeFormat: time.RFC3339Nano,
-						Collector: Collector{
-							Protocol:   GRPC,
+						Collector: collector.Config{
+							Protocol:   collector.GRPC,
 							Connection: "foo:4242",
 						},
 					},
-					Tracer: Tracer{
+					Tracer: tracew.Config{
 						Enable: true,
-						Collector: Collector{
-							Protocol:   GRPC,
+						Collector: collector.Config{
+							Protocol:   collector.GRPC,
 							Connection: "foo:4242",
 						},
 					},
-					Metric: Metric{
+					Metric: metricw.Config{
 						Enable:     true,
 						Prometheus: true,
 						Interval:   42 * time.Second,
-						Collector: Collector{
-							Protocol:   GRPC,
+						Collector: collector.Config{
+							Protocol:   collector.GRPC,
 							Connection: "foo:4242",
 						},
 					},
 				},
 			},
 		},
-		// {
-		// 	name: "default",
-		// 	args: args{
-		// 		configFile: "test_data/default_config.yml",
-		// 	},
-		// 	want: want{
-		// 		err: false,
-		// 		config: Config{
-		// 			Logger: Logger{
-		// 				Caller:     DefaultLoggerCaller,
-		// 				Format:     DefaultLoggerFormat,
-		// 				Level:      DefaultLoggerLevel,
-		// 				TimeFormat: DefaultLoggerTimeFormat,
-		// 				Collector: Collector{
-		// 					Protocol:   DefaultLoggerCollectorProtocol,
-		// 					Connection: DefaultLoggerCollectorConnection,
-		// 				},
-		// 			},
-		// 			Tracer: Tracer{
-		// 				Enable: DefaultTracerEnable,
-		// 				Collector: Collector{
-		// 					Protocol:   DefaultTracerCollectorProtocol,
-		// 					Connection: DefaultTracerCollectorConnection,
-		// 				},
-		// 			},
-		// 			Metric: Metric{
-		// 				Enable:     DefaultMetricEnable,
-		// 				Prometheus: DefaultMetricPrometheus,
-		// 				Interval:   DefaultMetricInterval,
-		// 				Collector: Collector{
-		// 					Protocol:   DefaultMetricCollectorProtocol,
-		// 					Connection: DefaultMetricCollectorConnection,
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// },
-		// {
-		// 	name: "invalid",
-		// 	args: args{
-		// 		configFile: "test_data/invalid_config.yml",
-		// 	},
-		// 	want: want{
-		// 		err: true,
-		// 	},
-		// },
-		// {
-		// 	name: "non-existing",
-		// 	args: args{
-		// 		configFile: "test_data/non-existing_config.yml",
-		// 	},
-		// 	want: want{
-		// 		err: true,
-		// 	},
-		// },
+		{
+			name: "default",
+			args: args{
+				configFile: "test_data/default_config.yml",
+			},
+			want: want{
+				err: false,
+				config: Config{
+					Logger: slogw.Config{
+						Caller:     slogw.DefaultCaller,
+						Format:     slogw.DefaultFormat,
+						Level:      slogw.DefaultLevel,
+						TimeFormat: slogw.DefaultTimeFormat,
+						Collector: collector.Config{
+							Protocol:   collector.DefaultProtocol,
+							Connection: collector.DefaultConnection,
+						},
+					},
+					Tracer: tracew.Config{
+						Enable: tracew.DefaultEnable,
+						Collector: collector.Config{
+							Protocol:   collector.DefaultProtocol,
+							Connection: collector.DefaultConnection,
+						},
+					},
+					Metric: metricw.Config{
+						Enable:     metricw.DefaultEnable,
+						Prometheus: metricw.DefaultPrometheus,
+						Interval:   metricw.DefaultInterval,
+						Collector: collector.Config{
+							Protocol:   collector.DefaultProtocol,
+							Connection: collector.DefaultConnection,
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "invalid",
+			args: args{
+				configFile: "test_data/invalid_config.yml",
+			},
+			want: want{
+				err: true,
+			},
+		},
+		{
+			name: "non-existing",
+			args: args{
+				configFile: "test_data/non-existing_config.yml",
+			},
+			want: want{
+				err: true,
+			},
+		},
 	}
 
 	for _, test := range tests {
