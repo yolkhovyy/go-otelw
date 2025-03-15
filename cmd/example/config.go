@@ -17,6 +17,7 @@ func (c *Config) Load(configFile string, prefix string) error {
 	vprx := viperx.New(configFile, prefix, nil)
 
 	vprx.SetDefaults(otelw.Defaults())
+	vprx.SetDefaults(httpserver.Defaults())
 
 	if err := vprx.Load(c); err != nil {
 		return fmt.Errorf("load config: %w", err)

@@ -12,6 +12,5 @@ Pronounced as /ˈɡuːtldʌb/
 * [Configuration](./config/) files for 3rd-party dependencies
 
 ## TODO
-* Refactor exporter() functions in slogw, tracew, metricw
 * Make HTTP server defaults in cmd/example
 * Rethink otelw.Configure() return - is it possible to do Shutdown() using only globals?
