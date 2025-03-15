@@ -95,7 +95,7 @@ func NewLogger() *slog.Logger {
 	return slog.New(slog.Default().Handler())
 }
 
-//nolint:ireturn,cyclop,funlen
+//nolint:ireturn
 func exporter(
 	ctx context.Context,
 	config Config,
@@ -109,54 +109,84 @@ func exporter(
 	case !config.Enable:
 		exporter, err = stdoutlog.New(stdoutlog.WithWriter(io.Discard))
 	case len(writers) > 0:
-		options := make([]stdoutlog.Option, 0, len(writers))
-		for _, w := range writers {
-			options = append(options, stdoutlog.WithWriter(w))
-		}
-
-		exporter, err = stdoutlog.New(options...)
+		exporter, err = stdoutExporter(writers...)
 	case config.Collector.Protocol == collector.GRPC:
-		options := []otlploggrpc.Option{}
-		if config.Collector.Connection != "" {
-			options = append(options, otlploggrpc.WithEndpoint(config.Collector.Connection))
-		}
-
-		if config.Collector.Insecure {
-			options = append(options, otlploggrpc.WithInsecure())
-		} else {
-			tslCreds, err := collector.TLSCredentials(config.Collector)
-			if err != nil {
-				return nil, fmt.Errorf("slogw otlp tls credentials: %w", err)
-			}
-
-			options = append(options, otlploggrpc.WithTLSCredentials(tslCreds))
-		}
-
-		exporter, err = otlploggrpc.New(ctx, options...)
+		exporter, err = grpcExporter(ctx, config)
 	case config.Collector.Protocol == collector.HTTP:
-		options := []otlploghttp.Option{}
-		if config.Collector.Connection != "" {
-			options = append(options, otlploghttp.WithEndpoint(config.Collector.Connection))
-		}
-
-		if config.Collector.Insecure {
-			options = append(options, otlploghttp.WithInsecure())
-		} else {
-			tlsConfig, err := collector.TLSConfig(config.Collector)
-			if err != nil {
-				return nil, fmt.Errorf("slogw otlp tls config: %w", err)
-			}
-
-			options = append(options, otlploghttp.WithTLSClientConfig(tlsConfig))
-		}
-
-		exporter, err = otlploghttp.New(ctx, options...)
+		exporter, err = httpExporter(ctx, config)
 	default:
 		err = fmt.Errorf("slogw exporter: %w %s", ErrInvalidProtocol, config.Collector.Protocol)
 	}
 
 	if err != nil {
 		return nil, fmt.Errorf("slogw exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func stdoutExporter(writers ...io.Writer) (log.Exporter, error) {
+	options := make([]stdoutlog.Option, 0, len(writers))
+	for _, w := range writers {
+		options = append(options, stdoutlog.WithWriter(w))
+	}
+
+	exporter, err := stdoutlog.New(options...)
+	if err != nil {
+		return nil, fmt.Errorf("slogw stdout exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func grpcExporter(ctx context.Context, config Config) (log.Exporter, error) {
+	options := []otlploggrpc.Option{}
+	if config.Collector.Connection != "" {
+		options = append(options, otlploggrpc.WithEndpoint(config.Collector.Connection))
+	}
+
+	if config.Collector.Insecure {
+		options = append(options, otlploggrpc.WithInsecure())
+	} else {
+		tslCreds, err := collector.TLSCredentials(config.Collector)
+		if err != nil {
+			return nil, fmt.Errorf("slogw otlp tls credentials: %w", err)
+		}
+
+		options = append(options, otlploggrpc.WithTLSCredentials(tslCreds))
+	}
+
+	exporter, err := otlploggrpc.New(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("slogw new exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func httpExporter(ctx context.Context, config Config) (log.Exporter, error) {
+	options := []otlploghttp.Option{}
+	if config.Collector.Connection != "" {
+		options = append(options, otlploghttp.WithEndpoint(config.Collector.Connection))
+	}
+
+	if config.Collector.Insecure {
+		options = append(options, otlploghttp.WithInsecure())
+	} else {
+		tlsConfig, err := collector.TLSConfig(config.Collector)
+		if err != nil {
+			return nil, fmt.Errorf("slogw otlp tls config: %w", err)
+		}
+
+		options = append(options, otlploghttp.WithTLSClientConfig(tlsConfig))
+	}
+
+	exporter, err := otlploghttp.New(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("slogw new exporter: %w", err)
 	}
 
 	return exporter, nil

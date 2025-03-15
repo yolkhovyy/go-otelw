@@ -1,11 +1,17 @@
 # Go OpenTelemetry Wrapper
 
-Pronounced as /ˈɡuːtldʌb/
-
 This is a Go OpenTelemetry playground project. It provides a wrapper for OpenTelemetry with the goal of simplifying its integration and usage.
 
-Includes:
+Pronounced as /ˈɡuːtldʌb/
+
+
+## Content
 * The [wraper](./pkg/) itself
-* An [example](./cmd/example/) app - an HTTP echo service
-* Docker [Compose](./docker-compose.yml)
+* Usage [example](./cmd/example/) - HTTP Echo Service
+* Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
 * [Configuration](./config/) files for 3rd-party dependencies
+
+## TODO
+* Refactor exporter() functions in slogw, tracew, metricw
+* Make HTTP server defaults in cmd/example
+* Rethink otelw.Configure() return - is it possible to do Shutdown() using only globals?

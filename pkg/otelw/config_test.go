@@ -136,7 +136,7 @@ func TestBaseLoad(t *testing.T) {
 			err := vprx.Load(&config)
 
 			if test.want.err {
-				assert.Error(t, err)
+				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
 				assert.Equal(t, test.want.config, config)

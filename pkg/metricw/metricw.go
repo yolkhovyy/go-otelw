@@ -109,7 +109,7 @@ func (m *Metric) Shutdown(ctx context.Context) error {
 	return errs
 }
 
-//nolint:ireturn,cyclop,funlen
+//nolint:ireturn
 func exporter(
 	ctx context.Context,
 	config Config,
@@ -123,48 +123,11 @@ func exporter(
 	case !config.Enable:
 		exporter, err = stdoutmetric.New(stdoutmetric.WithWriter(io.Discard))
 	case len(writers) > 0:
-		options := make([]stdoutmetric.Option, 0, len(writers))
-		for _, w := range writers {
-			options = append(options, stdoutmetric.WithWriter(w))
-		}
-
-		exporter, err = stdoutmetric.New(options...)
+		exporter, err = stdoutExporter(writers...)
 	case config.Collector.Protocol == collector.GRPC:
-		options := []otlpmetricgrpc.Option{}
-		if config.Collector.Connection != "" {
-			options = append(options, otlpmetricgrpc.WithEndpoint(config.Collector.Connection))
-		}
-
-		if config.Collector.Insecure {
-			options = append(options, otlpmetricgrpc.WithInsecure())
-		} else {
-			tlsConfig, err := collector.TLSCredentials(config.Collector)
-			if err != nil {
-				return nil, fmt.Errorf("metricw otlp tls config: %w", err)
-			}
-
-			options = append(options, otlpmetricgrpc.WithTLSCredentials(tlsConfig))
-		}
-
-		exporter, err = otlpmetricgrpc.New(ctx, options...)
+		exporter, err = grpcExporter(ctx, config)
 	case config.Collector.Protocol == collector.HTTP:
-		options := []otlpmetrichttp.Option{}
-		if config.Collector.Connection != "" {
-			options = append(options, otlpmetrichttp.WithEndpoint(config.Collector.Connection))
-		}
-
-		if config.Collector.Insecure {
-			options = append(options, otlpmetrichttp.WithInsecure())
-		} else {
-			tlsConfig, err := collector.TLSConfig(config.Collector)
-			if err != nil {
-				return nil, fmt.Errorf("metricw otlp tls config: %w", err)
-			}
-
-			options = append(options, otlpmetrichttp.WithTLSClientConfig(tlsConfig))
-		}
-
-		exporter, err = otlpmetrichttp.New(ctx, options...)
+		exporter, err = httpExporter(ctx, config)
 	default:
 		err = fmt.Errorf("metricw exporter: %w %s", ErrInvalidProtocol, config.Collector.Protocol)
 	}
@@ -174,4 +137,71 @@ func exporter(
 	}
 
 	return exporter, err
+}
+
+//nolint:ireturn
+func stdoutExporter(writers ...io.Writer) (sdkmetric.Exporter, error) {
+	options := make([]stdoutmetric.Option, 0, len(writers))
+	for _, w := range writers {
+		options = append(options, stdoutmetric.WithWriter(w))
+	}
+
+	exporter, err := stdoutmetric.New(options...)
+	if err != nil {
+		return nil, fmt.Errorf("metricw stfout exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func grpcExporter(ctx context.Context, config Config) (sdkmetric.Exporter, error) {
+	options := []otlpmetricgrpc.Option{}
+	if config.Collector.Connection != "" {
+		options = append(options, otlpmetricgrpc.WithEndpoint(config.Collector.Connection))
+	}
+
+	if config.Collector.Insecure {
+		options = append(options, otlpmetricgrpc.WithInsecure())
+	} else {
+		tlsConfig, err := collector.TLSCredentials(config.Collector)
+		if err != nil {
+			return nil, fmt.Errorf("metricw otlp tls config: %w", err)
+		}
+
+		options = append(options, otlpmetricgrpc.WithTLSCredentials(tlsConfig))
+	}
+
+	exporter, err := otlpmetricgrpc.New(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("metricw new exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func httpExporter(ctx context.Context, config Config) (sdkmetric.Exporter, error) {
+	options := []otlpmetrichttp.Option{}
+	if config.Collector.Connection != "" {
+		options = append(options, otlpmetrichttp.WithEndpoint(config.Collector.Connection))
+	}
+
+	if config.Collector.Insecure {
+		options = append(options, otlpmetrichttp.WithInsecure())
+	} else {
+		tlsConfig, err := collector.TLSConfig(config.Collector)
+		if err != nil {
+			return nil, fmt.Errorf("metricw otlp tls config: %w", err)
+		}
+
+		options = append(options, otlpmetrichttp.WithTLSClientConfig(tlsConfig))
+	}
+
+	exporter, err := otlpmetrichttp.New(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("metricw new exporter: %w", err)
+	}
+
+	return exporter, nil
 }

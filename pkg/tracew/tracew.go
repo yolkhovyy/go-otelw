@@ -87,51 +87,81 @@ func exporter(
 	case !config.Enable:
 		exporter, err = stdouttrace.New(stdouttrace.WithWriter(io.Discard))
 	case len(writers) > 0:
-		options := make([]stdouttrace.Option, 0, len(writers))
-		for _, w := range writers {
-			options = append(options, stdouttrace.WithWriter(w))
-		}
-
-		exporter, err = stdouttrace.New(options...)
+		exporter, err = stdoutExporter(writers...)
 	case config.Collector.Protocol == collector.GRPC:
-		options := []otlptracegrpc.Option{}
-		if config.Collector.Connection != "" {
-			options = append(options, otlptracegrpc.WithEndpoint(config.Collector.Connection))
-		}
-
-		if config.Collector.Insecure {
-			options = append(options, otlptracegrpc.WithInsecure())
-		} else {
-			tslCreds, err := collector.TLSCredentials(config.Collector)
-			if err != nil {
-				return nil, fmt.Errorf("tracew otlp grpc tls credentials: %w", err)
-			}
-
-			options = append(options, otlptracegrpc.WithTLSCredentials(tslCreds))
-		}
-
-		exporter, err = otlptracegrpc.New(ctx, options...)
+		exporter, err = grpcExporter(ctx, config)
 	case config.Collector.Protocol == collector.HTTP:
-		options := []otlptracehttp.Option{}
-		if config.Collector.Connection != "" {
-			options = append(options, otlptracehttp.WithEndpoint(config.Collector.Connection))
-		}
-
-		if config.Collector.Insecure {
-			options = append(options, otlptracehttp.WithInsecure())
-		} else {
-			tlsConfig, err := collector.TLSConfig(config.Collector)
-			if err != nil {
-				return nil, fmt.Errorf("tracew otlp http tls config: %w", err)
-			}
-
-			options = append(options, otlptracehttp.WithTLSClientConfig(tlsConfig))
-		}
-
-		exporter, err = otlptracehttp.New(ctx, options...)
+		exporter, err = httpExporter(ctx, config)
 	default:
 		err = fmt.Errorf("tracew exporter: %w %s", ErrInvalidProtocol, config.Collector.Protocol)
 	}
 
 	return exporter, err
+}
+
+//nolint:ireturn
+func stdoutExporter(writers ...io.Writer) (sdktrace.SpanExporter, error) {
+	options := make([]stdouttrace.Option, 0, len(writers))
+	for _, w := range writers {
+		options = append(options, stdouttrace.WithWriter(w))
+	}
+
+	exporter, err := stdouttrace.New(options...)
+	if err != nil {
+		return nil, fmt.Errorf("tracew stdout exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func grpcExporter(ctx context.Context, config Config) (sdktrace.SpanExporter, error) {
+	options := []otlptracegrpc.Option{}
+	if config.Collector.Connection != "" {
+		options = append(options, otlptracegrpc.WithEndpoint(config.Collector.Connection))
+	}
+
+	if config.Collector.Insecure {
+		options = append(options, otlptracegrpc.WithInsecure())
+	} else {
+		tslCreds, err := collector.TLSCredentials(config.Collector)
+		if err != nil {
+			return nil, fmt.Errorf("tracew otlp grpc tls credentials: %w", err)
+		}
+
+		options = append(options, otlptracegrpc.WithTLSCredentials(tslCreds))
+	}
+
+	exporter, err := otlptracegrpc.New(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("tracew new exporter: %w", err)
+	}
+
+	return exporter, nil
+}
+
+//nolint:ireturn
+func httpExporter(ctx context.Context, config Config) (sdktrace.SpanExporter, error) {
+	options := []otlptracehttp.Option{}
+	if config.Collector.Connection != "" {
+		options = append(options, otlptracehttp.WithEndpoint(config.Collector.Connection))
+	}
+
+	if config.Collector.Insecure {
+		options = append(options, otlptracehttp.WithInsecure())
+	} else {
+		tlsConfig, err := collector.TLSConfig(config.Collector)
+		if err != nil {
+			return nil, fmt.Errorf("tracew otlp http tls config: %w", err)
+		}
+
+		options = append(options, otlptracehttp.WithTLSClientConfig(tlsConfig))
+	}
+
+	exporter, err := otlptracehttp.New(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("tracew new exporter: %w", err)
+	}
+
+	return exporter, nil
 }
