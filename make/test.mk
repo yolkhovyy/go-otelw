@@ -4,8 +4,8 @@
 unit-test: ## run unit tests
 	@echo "⚙ Running unit tests"
 	@mkdir -p test_results coverage
-	@go test -count=1 -v -coverpkg=./... -coverprofile=coverage/unit-test.cov ./... | tee test_results/unit-test.0
-	@go-junit-report -set-exit-code < test_results/unit-test.0 > test_results/unit-test.xml
+	@go test -count=1 -v -coverpkg=./... -coverprofile=coverage/unit-test.cov ./... | tee test_results/unit-test.out
+	@go-junit-report -set-exit-code < test_results/unit-test.out > test_results/unit-test.xml
 
 .PHONY: remove-generated
 remove-generated: ## Remove generated folders and files
