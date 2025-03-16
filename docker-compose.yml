@@ -28,5 +28,13 @@ services:
       - EXAMPLE_METRIC_COLLECTOR_PROTOCOL
       - EXAMPLE_METRIC_COLLECTOR_CONNECTION
 
-include:
-  - ./docker-compose.tm.yml
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    restart: unless-stopped
+    volumes:
+      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-config-jp.yml}:/etc/otel-collector-config.yml
+    environment:
+      - NEWRELIC_ENDPOINT
+      - NEWRELIC_API_KEY

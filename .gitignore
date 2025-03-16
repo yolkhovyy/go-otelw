@@ -10,4 +10,4 @@ test_results/
 
 # Keep secrets private
 .env
-.env.api-keys
+.env.newrelic

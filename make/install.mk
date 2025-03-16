@@ -23,3 +23,6 @@ install-git-hooks: ## install git hooks
 install-env:
 	@echo "🛠️  Installing .env"
 	@cp .env.local .env
+	@if [ -f .env.newrelic ]; then \
+		cat .env.newrelic >> .env; \
+	fi

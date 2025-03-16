@@ -1,15 +1,23 @@
 PROJECT_NAME ?= $(notdir $(shell pwd))
 
-DOCO = docker compose
-
 export COMPOSE_DOCKER_CLI_BUILD = 1
 export DOCKER_BUILDKIT = 1
 export COMPOSE_BAKE = true
 
-export DEPENDENCIES = otel-collector jaeger prometheus
+DOCO = docker compose -f docker-compose.yml
+export DEPENDENCIES = otel-collector
+
+ifdef NR
+	export OTEL_COLLECTOR_CONFIG = config-nr.yml
+else
+	DOCO := $(DOCO) -f docker-compose.jp.yml
+	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus
+	export OTEL_COLLECTOR_CONFIG = config-jp.yml
+endif
+
 export SERVICES = $(filter-out ${DEPENDENCIES}, $(shell ${DOCO} config --services))
 
-## Docker compose:
+## Docker compose:	
 
 .PHONY: doco-up-dependencies
 doco-up-dependencies: ## Start project dependency containers
