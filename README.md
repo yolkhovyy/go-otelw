@@ -5,14 +5,23 @@ This is a Go OpenTelemetry playground project. It provides a wrapper for OpenTel
 Pronounced as /ˈɡuːtldʌb/
 
 ## Content
-* The [wraper](./pkg/) itself
+* [Package Content](#package-content)
+* [How to Integrate OpenTelemetry with go-otelw](#how-to-integrate-opentelemetry-with-go-otelw)
+  * [Configuration and Shutdown](#configuration-and-shutdown)
+  * [Logger and Tracer Example](#logger-and-tracer-example)
+* [Build and Run the Example](#build-and-run-the-example)
+  * [Jaeger and Prometheus Integration](#jaeger-and-prometheus-integration)
+  * [Newrelic Integration](#newrelic-integration)
+
+## Package Content
+* The [wrapper](./pkg/) itself
 * Usage [example](./cmd/example/) - HTTP Echo Service
 * Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
 * [Configuration](./config/) files for 3rd-party dependencies
 
-## How to use
+## How to Integrate OpenTelemetry with go-otelw
 
-### Configuration and shutdown
+### Configuration and Shutdown
 
 See [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/main.go#L60-L75)
 
@@ -82,24 +91,24 @@ func worker(
 
 ## Build and Run the Example
 
-### Jaeger and Prometheus
+### Jaeger and Prometheus Integration
 
 **Build and run the Example:**
 ```bash
 make doco-build-up
 ```
 
-This will start the `example` echo service, and the telemetry services - `otel-collector`, `jaeger`, and `prometheus`.
+This will start the `Example` Echo Service, and the telemetry services - `OTEL collector`, `Jaeger`, and `Prometheus`.
 
-**Make a few HTTP requests, Example is an HTTP Echo Service:**
+**Make a few HTTP requests to the Example Echo Service:**
 ```bash
 ./test/scripts/echo.sh
 ./test/scripts/echo.sh hey 10
 ```
 
-**Observe logs, traces in OTEL Collector's logs:**
+**Observe logs, traces and metrics in OTEL Collector's logs:**
 ```bash
-docker compose logs otel-collector
+docker compose logs -f otel-collector
 ```
 
 **Observe traces and metrics in Jaeger and Prometheus:**
@@ -111,7 +120,7 @@ docker compose logs otel-collector
 make doco-down
 ```
 
-### Newrelic
+### Newrelic Integration
 
 **Create:**
 * Newrelic account
