@@ -8,7 +8,7 @@ DOCO = docker compose -f docker-compose.yml
 export DEPENDENCIES = otel-collector
 
 ifdef NR
-	export OTEL_COLLECTOR_CONFIG = 
+	export OTEL_COLLECTOR_CONFIG = config-newrelic.yml
 else
 	DOCO := $(DOCO) -f docker-compose.jpl.yml
 	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus

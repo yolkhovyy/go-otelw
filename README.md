@@ -49,44 +49,10 @@ See [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/ex
 See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/internal/domain/domain.go#L75-L110)
 
 ```golang
-func worker(
-	ctx context.Context,
-	sequence int,
-	input string,
-	outChan chan<- string,
-	errChan chan<- error,
-) {
-	var err error
-
 	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
 	defer func() { span.End(err) }()
 
 	logger := slogw.NewLogger()
-
-	const workThreshold = 10
-
-	// Do worker's work.
-	{
-		time.Sleep(time.Duration(sequence+1) * time.Millisecond)
-	}
-
-	if sequence > workThreshold {
-		err = fmt.Errorf("worker: %w", ErrTimeout)
-		span.AddEvent(fmt.Errorf("sequence: %d input: %s error:%w", sequence, input, err).Error())
-		logger.ErrorContext(ctx, "echo worker "+strconv.Itoa(sequence),
-			slog.Int("sequence", sequence),
-			slog.String("input", input),
-		)
-		errChan <- err
-	} else {
-		span.AddEvent(fmt.Sprintf("sequence: %d input: %s", sequence, input))
-		logger.InfoContext(ctx, "echo worker "+strconv.Itoa(sequence),
-			slog.Int("sequence", sequence),
-			slog.String("input", input),
-		)
-		outChan <- input
-	}
-}
 ```
 
 ## Build and Run the Example
