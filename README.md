@@ -4,12 +4,145 @@ This is a Go OpenTelemetry playground project. It provides a wrapper for OpenTel
 
 Pronounced as /ˈɡuːtldʌb/
 
-
 ## Content
 * The [wraper](./pkg/) itself
 * Usage [example](./cmd/example/) - HTTP Echo Service
 * Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
 * [Configuration](./config/) files for 3rd-party dependencies
 
-## TODO
-* Rethink otelw.Configure() return - is it possible to do Shutdown() using only globals?
+## How to use
+
+### Configuration and shutdown
+
+See [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/main.go#L60-L75)
+
+```golang
+	logger, tracer, metric, err := otelw.Configure(ctx, config.Config, serviceAttributes)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "otelw configure: %v", err)
+
+		return osx.ExitFailure
+	}
+
+	defer func() {
+		err := errors.Join(err,
+			metric.Shutdown(ctx),
+			tracer.Shutdown(ctx),
+			logger.Shutdown(ctx))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "otelw shutdown: %v", err)
+		}
+	}()
+```
+
+### Logger and Tracer Example
+
+See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/internal/domain/domain.go#L75-L110)
+
+```golang
+func worker(
+	ctx context.Context,
+	sequence int,
+	input string,
+	outChan chan<- string,
+	errChan chan<- error,
+) {
+	var err error
+
+	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
+	defer func() { span.End(err) }()
+
+	logger := slogw.NewLogger()
+
+	const workThreshold = 10
+
+	// Do worker's work.
+	{
+		time.Sleep(time.Duration(sequence+1) * time.Millisecond)
+	}
+
+	if sequence > workThreshold {
+		err = fmt.Errorf("worker: %w", ErrTimeout)
+		span.AddEvent(fmt.Errorf("sequence: %d input: %s error:%w", sequence, input, err).Error())
+		logger.ErrorContext(ctx, "echo worker "+strconv.Itoa(sequence),
+			slog.Int("sequence", sequence),
+			slog.String("input", input),
+		)
+		errChan <- err
+	} else {
+		span.AddEvent(fmt.Sprintf("sequence: %d input: %s", sequence, input))
+		logger.InfoContext(ctx, "echo worker "+strconv.Itoa(sequence),
+			slog.Int("sequence", sequence),
+			slog.String("input", input),
+		)
+		outChan <- input
+	}
+}
+```
+
+## Build and Run the Example
+
+### Jaeger and Prometheus
+
+**Build and run the Example:**
+```bash
+make doco-build-up
+```
+
+This will start the `example` echo service, and the telemetry services - `otel-collector`, `jaeger`, and `prometheus`.
+
+**Make a few HTTP requests, Example is an HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces in OTEL Collector's logs:**
+```bash
+docker compose logs otel-collector
+```
+
+**Observe traces and metrics in Jaeger and Prometheus:**
+* Open `http://localhost:16686`
+* Open `http://localhost:9090`
+
+**Stop the services:**
+```bash
+make doco-down
+```
+
+### Newrelic
+
+**Create:**
+* Newrelic account
+* Newrelic ingest license API key
+
+**Make the .env.newrelic file with your newrelic endpoint and license API key:**
+```bash
+NEWRELIC_ENDPOINT=https://otlp.eu01.nr-data.net:4317
+NEWRELIC_API_KEY=eu01xx...
+```
+
+**Install the env vars:**
+```bash
+make install-env
+```
+
+**Build and run the Example, with the Newrelic NR flag:**
+```bash
+make doco-build-up NR=1
+```
+
+**Make a few HTTP requests, Example is an HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Newrelic:**
+* Open your dashboard, e.g. `https://one.eu.newrelic.com/`
+
+**Stop the services:**
+```bash
+make doco-down NR=1
+```

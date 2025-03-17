@@ -20,6 +20,7 @@ Logger:
     # default localhost:4318
     Connection: localhost:4318
     Insecure: true
+
 Tracer:
   Enable: true
   Collector:
@@ -28,6 +29,7 @@ Tracer:
     # default localhost:4318
     Connection: localhost:4318
     Insecure: true
+
 Metric:
   # false (default), true
   Enable: true

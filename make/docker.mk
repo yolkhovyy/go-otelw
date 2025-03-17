@@ -8,11 +8,11 @@ DOCO = docker compose -f docker-compose.yml
 export DEPENDENCIES = otel-collector
 
 ifdef NR
-	export OTEL_COLLECTOR_CONFIG = config-nr.yml
+	export OTEL_COLLECTOR_CONFIG = 
 else
-	DOCO := $(DOCO) -f docker-compose.jp.yml
+	DOCO := $(DOCO) -f docker-compose.jpl.yml
 	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus
-	export OTEL_COLLECTOR_CONFIG = config-jp.yml
+	export OTEL_COLLECTOR_CONFIG = config-jpl.yml
 endif
 
 export SERVICES = $(filter-out ${DEPENDENCIES}, $(shell ${DOCO} config --services))

@@ -86,10 +86,12 @@ func worker(
 
 	logger := slogw.NewLogger()
 
-	// Do work.
 	const workThreshold = 10
 
-	time.Sleep(time.Duration(sequence+1) * time.Millisecond)
+	// Do worker's work.
+	{
+		time.Sleep(time.Duration(sequence+1) * time.Millisecond)
+	}
 
 	if sequence > workThreshold {
 		err = fmt.Errorf("worker: %w", ErrTimeout)
