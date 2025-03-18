@@ -13,7 +13,7 @@ func Logger() gin.HandlerFunc {
 	return func(gctx *gin.Context) {
 		start := time.Now()
 
-		logger := slogw.NewLogger()
+		logger := slogw.DefaultLogger()
 
 		logger.InfoContext(
 			gctx.Request.Context(),

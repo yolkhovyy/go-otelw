@@ -95,6 +95,10 @@ func NewLogger() *slog.Logger {
 	return slog.New(slog.Default().Handler())
 }
 
+func DefaultLogger() *slog.Logger {
+	return slog.Default()
+}
+
 //nolint:ireturn
 func exporter(
 	ctx context.Context,

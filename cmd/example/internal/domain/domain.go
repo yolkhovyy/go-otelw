@@ -84,7 +84,7 @@ func worker(
 	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
 	defer func() { span.End(err) }()
 
-	logger := slogw.NewLogger()
+	logger := slogw.DefaultLogger()
 
 	const workThreshold = 10
 

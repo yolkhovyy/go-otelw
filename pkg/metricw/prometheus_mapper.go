@@ -54,7 +54,7 @@ func (m *Metric) gather(ctx context.Context, observer metric.Observer) error {
 		return fmt.Errorf("gather metrics: %w", err)
 	}
 
-	logger := slogw.NewLogger()
+	logger := slogw.DefaultLogger()
 
 	for _, mFamily := range metrics {
 		mfName := mFamily.GetName()

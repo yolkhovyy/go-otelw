@@ -30,7 +30,7 @@ func New(config Config, handler http.Handler) *Server {
 }
 
 func (s *Server) Run(ctx context.Context) error {
-	logger := slogw.NewLogger()
+	logger := slogw.DefaultLogger()
 
 	errChan := make(chan error)
 

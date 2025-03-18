@@ -52,7 +52,7 @@ See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otel
 	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
 	defer func() { span.End(err) }()
 
-	logger := slogw.NewLogger()
+	logger := slogw.DefaultLogger()
 ```
 
 ## Build and Run the Example
