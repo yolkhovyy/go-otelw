@@ -11,6 +11,7 @@ Pronounced as /ˈɡuːtldʌb/
   * [Logger and Tracer Example](#logger-and-tracer-example)
 * [Build and Run the Example](#build-and-run-the-example)
   * [Jaeger and Prometheus Integration](#jaeger-and-prometheus-integration)
+  * [Uptrace Integration](#uptrace-integration)
   * [Newrelic Integration](#newrelic-integration)
 
 ## Package Content
@@ -86,13 +87,39 @@ docker compose logs -f otel-collector
 make doco-down
 ```
 
+### Uptrace Integration
+
+**Make `.env.secrets` file with your uptrace endpoint:**
+```bash
+UPTRACE_DSN=http://project1_secret_token@localhost:14318?grpc=14317
+```
+
+**Install the env vars:**
+```bash
+make install-env
+```
+
+**Build and run the Example, with the Uptrace UPT flag:**
+```bash
+make doco-build-up UPT=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Uptrace:**
+* Open your dashboard, e.g. `http://localhost:14317/`
+
 ### Newrelic Integration
 
 **Create:**
 * Newrelic account
 * Newrelic ingest license API key
 
-**Make the .env.newrelic file with your newrelic endpoint and license API key:**
+**Make `.env.secrets` file with your newrelic endpoint and license API key:**
 ```bash
 NEWRELIC_ENDPOINT=https://otlp.eu01.nr-data.net:4317
 NEWRELIC_API_KEY=eu01xx...
@@ -108,7 +135,7 @@ make install-env
 make doco-build-up NR=1
 ```
 
-**Make a few HTTP requests, Example is an HTTP Echo Service:**
+**Make a few HTTP requests to the Example HTTP Echo Service:**
 ```bash
 ./test/scripts/echo.sh
 ./test/scripts/echo.sh hey 10
@@ -121,3 +148,8 @@ make doco-build-up NR=1
 ```bash
 make doco-down NR=1
 ```
+
+## Miscellaneous
+
+**Uptrace**
+* [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)

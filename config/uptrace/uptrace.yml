@@ -1,11 +1,19 @@
 ---
 pg:
   addr: postgres:5432
-  user: postgres
-  password: password
+  user: uptrace
+  password: uptrace
   database: uptrace
 
 ch:
   addr: clickhouse:9000
-  user: uptrace
-  password: password
+  user: default
+  password: uptrace
+  database: uptrace
+
+auth:
+  users:
+    - name: John Doe
+      email: uptrace@localhost
+      password: uptrace
+      notify_by_email: false

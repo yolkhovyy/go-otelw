@@ -3,21 +3,17 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: "0.0.0.0:4317"
+        endpoint: 0.0.0.0:4317
       http:
-        endpoint: "0.0.0.0:4318"
+        endpoint: 0.0.0.0:4318
 
 exporters:
   debug:
     verbosity: detailed
-  # otlp:
-  #   endpoint: jaeger:4317
-  #   tls:
-  #     insecure: true
-  # prometheus:
-  #   endpoint: "0.0.0.0:9464"
   otlp/uptrace:
-    endpoint: "uptrace:14317"
+    endpoint: http://uptrace:14317
+    headers:
+      uptrace-dsn: ${UPTRACE_DSN}
     tls:
       insecure: true
 

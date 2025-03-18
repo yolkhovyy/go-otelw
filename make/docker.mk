@@ -9,6 +9,10 @@ export DEPENDENCIES = otel-collector
 
 ifdef NR
 	export OTEL_COLLECTOR_CONFIG = config-newrelic.yml
+else ifdef UPT
+	DOCO := $(DOCO) -f docker-compose.uptrace.yml
+	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace
+	export OTEL_COLLECTOR_CONFIG = config-uptrace.yml
 else
 	DOCO := $(DOCO) -f docker-compose.jpl.yml
 	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus
@@ -48,4 +52,3 @@ doco-stop: ## Stop running Docker containers
 doco-down: ## Stop and remove Docker containers and associated network
 	@echo "🗑 Stopping and removing Docker containers and associated network"
 	@${DOCO} down
-

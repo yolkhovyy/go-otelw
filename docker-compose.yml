@@ -38,3 +38,4 @@ services:
     environment:
       - NEWRELIC_ENDPOINT
       - NEWRELIC_API_KEY
+      - UPTRACE_DSN

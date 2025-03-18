@@ -10,4 +10,4 @@ test_results/
 
 # Keep secrets private
 .env
-.env.newrelic
+.env.secrets
