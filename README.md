@@ -58,7 +58,7 @@ See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otel
 
 ## Build and Run the Example
 
-### Jaeger and Prometheus Integration
+### Grafana/Loki, Jaeger, Prometheus Integration
 
 **Build and run the Example:**
 ```bash
@@ -78,9 +78,20 @@ This will start the `Example` Echo Service, and the telemetry services - `OTEL c
 docker compose logs -f otel-collector
 ```
 
-**Observe traces and metrics in Jaeger and Prometheus:**
-* Open `http://localhost:16686`
-* Open `http://localhost:9090`
+**Explore logs, traces and metrics:**
+* Logs
+  * Garfana: http://localhost:3000
+  	* Explore - Select data source `Loki` - Select label `service_name` - Select value `example` - Click `Run query`
+  * Ready to import dashboards:
+    * Logs/App, ID: 13639
+* Traces
+  * Jaeger: http://localhost:16686
+  * Garfana: http://localhost:3000
+  	* Explore - Select data source `Jaeger` - Click Query type `Search` - Select service name `example` - Click `Run query` 
+* Metrics
+  * Prometheus: http://localhost:9090
+  * Garfana: http://localhost:3000
+  	* Explore - Select Prometheus data source - Select a metric - Click `Run query`
 
 **Stop the services:**
 ```bash
@@ -150,6 +161,9 @@ make doco-down NR=1
 ```
 
 ## Miscellaneous
+
+**Grafana**
+* [Jaeger provisioning](https://grafana.com/docs/grafana/latest/datasources/jaeger/#provision-the-data-source)
 
 **Uptrace**
 * [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)

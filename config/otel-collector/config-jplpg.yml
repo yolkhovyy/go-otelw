@@ -1,4 +1,3 @@
----
 receivers:
   otlp:
     protocols:
@@ -16,6 +15,10 @@ exporters:
       insecure: true
   prometheus:
     endpoint: 0.0.0.0:9464
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    # labels:
+    # job: "otel-collector"
 
 processors:
   batch:
@@ -30,14 +33,16 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch]
-      exporters: [debug]
+      exporters: [loki, debug]
     metrics:
       receivers: [otlp]
       processors: [batch]
       exporters: [prometheus, debug]
+
   telemetry:
     logs:
       level: debug
+
 extensions:
   health_check:
   pprof:

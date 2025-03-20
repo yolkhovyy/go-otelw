@@ -7,16 +7,16 @@ export COMPOSE_BAKE = true
 DOCO = docker compose -f docker-compose.yml
 export DEPENDENCIES = otel-collector
 
-ifdef NR
+ifdef NR		#----- newrelic
 	export OTEL_COLLECTOR_CONFIG = config-newrelic.yml
-else ifdef UPT
+else ifdef UPT	#----- uptrace
 	DOCO := $(DOCO) -f docker-compose.uptrace.yml
 	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace
 	export OTEL_COLLECTOR_CONFIG = config-uptrace.yml
-else
-	DOCO := $(DOCO) -f docker-compose.jpl.yml
-	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus
-	export OTEL_COLLECTOR_CONFIG = config-jpl.yml
+else			#----- jaeger, prometheus, grafana loki
+	DOCO := $(DOCO) -f docker-compose.jplpg.yml
+	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus loki promtail grafana
+	export OTEL_COLLECTOR_CONFIG = config-jplpg.yml
 endif
 
 export SERVICES = $(filter-out ${DEPENDENCIES}, $(shell ${DOCO} config --services))
@@ -52,3 +52,7 @@ doco-stop: ## Stop running Docker containers
 doco-down: ## Stop and remove Docker containers and associated network
 	@echo "🗑 Stopping and removing Docker containers and associated network"
 	@${DOCO} down
+
+.PHONY: doco-watch
+doco-watch: ## Watch running docker containers
+	@watch ${DOCO} ps
