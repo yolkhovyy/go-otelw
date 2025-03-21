@@ -11,7 +11,7 @@ Pronounced as /ˈɡuːtldʌb/
   * [Logger and Tracer Example](#logger-and-tracer-example)
 * [Build and Run the Example](#build-and-run-the-example)
   * [Grafana/Loki, Jaeger, Prometheus Integration](#grafanaloki-jaeger-prometheus-integration)
-  * [Grafana/Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration))
+  * [Grafana/Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration)
   * [Uptrace Integration](#uptrace-integration)
   * [Newrelic Integration](#newrelic-integration)
 
@@ -19,7 +19,14 @@ Pronounced as /ˈɡuːtldʌb/
 * The [wrapper](./pkg/) itself
 * Usage [example](./cmd/example/) - HTTP Echo Service
 * Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
-* [Configuration](./config/) files for 3rd-party dependencies
+* [Config](./config/) files for 3rd-party dependencies
+	* [Grafana](./config/grafana/)
+	* [Jaeger](./config/jaeger/)
+	* [Loki](./config/loki/)
+	* [Prometheus](./config/prometheus/)
+	* [Promtail](./config/promtail/)
+	* [Tempo](./config/tempo/)
+	* [Uptrace](./config/uptrace/)
 
 ## How to Integrate OpenTelemetry with go-otelw
 
@@ -83,8 +90,6 @@ docker compose logs -f otel-collector
 * Logs
   * Garfana: http://localhost:3000
   	* Explore - Select data source `Loki` - Select label `service_name` - Select value `example` - Click `Run query`
-  * Ready to import dashboards:
-    * Logs/App, ID: 13639
 * Traces
   * Jaeger: http://localhost:16686
   * Garfana: http://localhost:3000
@@ -123,8 +128,6 @@ docker compose logs -f otel-collector
 * Logs
   * Garfana: http://localhost:3000
   	* Explore - Select data source `Loki` - Select label `service_name` - Select value `example` - Click `Run query`
-  * Ready to import dashboards:
-    * Logs/App, ID: 13639
 * Traces
   * Garfana: http://localhost:3000
   	* Explore - Select data source `Tempo` - Click Query type `Search` - Select service name `example` - Click `Run query` 
@@ -135,7 +138,7 @@ docker compose logs -f otel-collector
 
 **Stop the services:**
 ```bash
-make doco-down
+make doco-down TPL=1
 ```
 
 ### Uptrace Integration
@@ -163,6 +166,11 @@ make doco-build-up UPT=1
 
 **Observe logs, traces and metrics in Uptrace:**
 * Open your dashboard, e.g. `http://localhost:14317/`
+
+**Stop the services:**
+```bash
+make doco-down UPT=1
+```
 
 ### Newrelic Integration
 
@@ -205,6 +213,8 @@ make doco-down NR=1
 **Grafana**
 * [Jaeger provisioning](https://grafana.com/docs/grafana/latest/datasources/jaeger/#provision-the-data-source)
 * [Tempo provisioning](https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#example-file)
+  * Useful dashboards:
+    * Logs/App, ID: 13639
 
 **Uptrace**
 * [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)
