@@ -12,6 +12,7 @@ Pronounced as /ˈɡuːtldʌb/
 * [Build and Run the Example](#build-and-run-the-example)
   * [Grafana/Loki, Jaeger, Prometheus Integration](#grafanaloki-jaeger-prometheus-integration)
   * [Grafana/Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration)
+  * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
   * [Uptrace Integration](#uptrace-integration)
   * [Newrelic Integration](#newrelic-integration)
 
