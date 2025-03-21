@@ -1,16 +1,16 @@
 ---
 services:
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
     volumes:
-      - ./config/jaeger/ui-config.json:/etc/jaeger/jaeger-ui.json
-    command: --query.ui-config /etc/jaeger/jaeger-ui.json
+      - ./config/tempo/config.yml:/etc/tempo/tempo.yml
+      - tempo_data:/tmp/tempo
+    command: ["-config.file=/etc/tempo/tempo.yml"]
     ports:
-      - 16686:16686    # Jaeger UI
+      - 3200:3200   # Tempo API
+      - 4317:4317
     restart: unless-stopped
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
 
   prometheus:
     image: prom/prometheus:latest
@@ -22,8 +22,7 @@ services:
       - 9090:9090   # Prometheus UI
     restart: unless-stopped
     depends_on:
-      otel-collector:
-        condition: service_started
+      - tempo
 
   loki:
     image: grafana/loki:latest
@@ -52,16 +51,17 @@ services:
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./config/grafana/provisioning1/:/etc/grafana/provisioning/
+      - ./config/grafana/provisioning2/:/etc/grafana/provisioning/
     ports:
       - 3000:3000   # Grafana UI
     restart: unless-stopped
     depends_on:
       - prometheus
       - loki
-      - jaeger
+      - tempo
 
 volumes:
   prometheus_data:
   loki_data:
+  tempo_data:
   grafana_data:

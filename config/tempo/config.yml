@@ -1,0 +1,40 @@
+---
+server:
+  http_listen_port: 3200
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /var/tempo/traces
+
+compactor:
+  compaction:
+    compacted_block_retention: 24h
+
+querier:
+  frontend_worker:
+    frontend_address: tempo:9095
+
+query_frontend:
+  search:
+    max_duration: 24h
+
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+
+overrides:
+  ingestion_rate_limit_bytes: 20000000
+  ingestion_burst_size_bytes: 20000000
+  max_search_duration: 24h

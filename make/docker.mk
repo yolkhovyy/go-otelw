@@ -13,7 +13,11 @@ else ifdef UPT	#----- uptrace
 	DOCO := $(DOCO) -f docker-compose.uptrace.yml
 	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace
 	export OTEL_COLLECTOR_CONFIG = config-uptrace.yml
-else			#----- jaeger, prometheus, grafana loki
+else ifdef TPL	#----- tempo, prometheus, loki, promtail, grafana
+	DOCO := $(DOCO) -f docker-compose.tplpg.yml
+	DEPENDENCIES := $(DEPENDENCIES) tempo prometheus loki promtail grafana
+	export OTEL_COLLECTOR_CONFIG = config-tplpg.yml
+else			#----- jaeger, prometheus, loki, promtail, grafana
 	DOCO := $(DOCO) -f docker-compose.jplpg.yml
 	DEPENDENCIES := $(DEPENDENCIES) jaeger prometheus loki promtail grafana
 	export OTEL_COLLECTOR_CONFIG = config-jplpg.yml
