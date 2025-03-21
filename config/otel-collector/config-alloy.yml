@@ -1,0 +1,45 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+  otlp:
+    endpoint: alloy:4317
+    tls:
+      insecure: true
+
+processors:
+  batch:
+
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp, debug]
+
+  telemetry:
+    logs:
+      level: debug
+
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
