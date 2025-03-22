@@ -34,7 +34,7 @@ services:
     command: ["--config=/etc/otel-collector-config.yml"]
     restart: unless-stopped
     volumes:
-      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-config-jplpg.yml}:/etc/otel-collector-config.yml
+      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-config-grafana-ljp.yml}:/etc/otel-collector-config.yml
     environment:
       - NEWRELIC_ENDPOINT
       - NEWRELIC_API_KEY

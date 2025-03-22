@@ -12,8 +12,8 @@ Pronounced as /ˈɡuːtldʌb/
 * [Build and Run the Example](#build-and-run-the-example)
   * [Grafana Cloud Integration](#grafana-cloud-integration)
   * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
-  * [Grafana/Loki, Jaeger, Prometheus Integration](#grafanaloki-jaeger-prometheus-integration)
-  * [Grafana/Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration)
+  * [Grafana Loki, Jaeger, Prometheus Integration](#grafanaloki-jaeger-prometheus-integration)
+  * [Grafana Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration)
   * [Uptrace Integration](#uptrace-integration)
   * [Newrelic Integration](#newrelic-integration)
 
@@ -184,7 +184,7 @@ make doco-down
 
 **Build and run the Example:**
 ```bash
-make doco-build-up TPL=1
+make doco-build-up GLT=1
 ```
 
 This will start the `Example` Echo Service, and the telemetry services - `OTEL collector`, `Grafana/Loki`, `Tempo`, and `Prometheus`.
@@ -214,7 +214,7 @@ docker compose logs -f otel-collector
 
 **Stop the services:**
 ```bash
-make doco-down TPL=1
+make doco-down GLT=1
 ```
 
 ### Uptrace Integration
