@@ -9,5 +9,5 @@ services:
     command: 'run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy'
     environment:
       - GCLOUD_API_KEY
-      - GCLOUD_ALLOY_ENDPOINT
-      - GCLOUD_ALLOY_USERNAME
+      - GCLOUD_ENDPOINT
+      - GCLOUD_USERNAME

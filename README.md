@@ -10,9 +10,10 @@ Pronounced as /ˈɡuːtldʌb/
   * [Configuration and Shutdown](#configuration-and-shutdown)
   * [Logger and Tracer Example](#logger-and-tracer-example)
 * [Build and Run the Example](#build-and-run-the-example)
+  * [Grafana Cloud Integration](#grafana-cloud-integration)
+  * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
   * [Grafana/Loki, Jaeger, Prometheus Integration](#grafanaloki-jaeger-prometheus-integration)
   * [Grafana/Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration)
-  * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
   * [Uptrace Integration](#uptrace-integration)
   * [Newrelic Integration](#newrelic-integration)
 
@@ -66,6 +67,80 @@ See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otel
 ```
 
 ## Build and Run the Example
+
+### Grafana Cloud Integration
+
+**Create:**
+* Grafana Cloud account
+* Grafana Cloud API key
+
+**Make `.env.secrets` file with your newrelic endpoint and license API key:**
+```bash
+GCLOUD_API_KEY="glc_..."
+GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
+GCLOUD_USERNAME=12345678
+```
+
+**Install the env vars:**
+```bash
+make install-env
+```
+
+**Build and run the Example, with the Newrelic NR flag:**
+```bash
+make doco-build-up GCL=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Grafana Cloud:**
+* Open your dashboard, e.g. `https://STACKNAME.grafana.ne/`
+
+**Stop the services:**
+```bash
+make doco-down GCL=1
+```
+
+### Grafana Cloud Alloy Integration
+
+**Create:**
+* Grafana Cloud account
+* Grafana Cloud API key
+
+**Make `.env.secrets` file with your newrelic endpoint and license API key:**
+```bash
+GCLOUD_API_KEY="glc_..."
+GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
+GCLOUD_USERNAME=12345678
+```
+
+**Install the env vars:**
+```bash
+make install-env
+```
+
+**Build and run the Example, with the Newrelic NR flag:**
+```bash
+make doco-build-up ALY=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Grafana Cloud:**
+* Open your dashboard, e.g. `https://STACKNAME.grafana.ne/`
+
+**Stop the services:**
+```bash
+make doco-down ALY=1
+```
 
 ### Grafana/Loki, Jaeger, Prometheus Integration
 
@@ -140,43 +215,6 @@ docker compose logs -f otel-collector
 **Stop the services:**
 ```bash
 make doco-down TPL=1
-```
-
-### Grafana Cloud Alloy Integration
-
-**Create:**
-* Grafana Cloud account
-* Grafana Cloud API key
-
-**Make `.env.secrets` file with your newrelic endpoint and license API key:**
-```bash
-GCLOUD_API_KEY="glc_..."
-GCLOUD_ALLOY_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
-GCLOUD_ALLOY_USERNAME=12345678
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with the Newrelic NR flag:**
-```bash
-make doco-build-up ALY=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Grafana Cloud:**
-* Open your dashboard, e.g. `https://STACKNAME.grafana.ne/`
-
-**Stop the services:**
-```bash
-make doco-down ALY=1
 ```
 
 ### Uptrace Integration

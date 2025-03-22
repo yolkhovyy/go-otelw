@@ -39,3 +39,6 @@ services:
       - NEWRELIC_ENDPOINT
       - NEWRELIC_API_KEY
       - UPTRACE_DSN
+      - GCLOUD_API_KEY
+      - GCLOUD_ENDPOINT
+      - GCLOUD_USERNAME
