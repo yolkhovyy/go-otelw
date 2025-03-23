@@ -5,17 +5,17 @@ agent Example as EX
 agent "OTEL\nCollector" as OC
 cloud "Grafana Cloud" {
     agent Loki
-    agent Jaeger
+    agent Tempo
     agent Prometheus
     agent Grafana
 }
 
 EX --> OC
 OC --> Loki: "Logs"
-OC --> Jaeger: "Traces"
+OC --> Tempo: "Traces"
 OC --> Prometheus: "Metrics"
 Loki --> Grafana
-Jaeger --> Grafana
+Tempo --> Grafana
 Prometheus --> Grafana
 
 @enduml

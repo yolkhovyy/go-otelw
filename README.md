@@ -295,8 +295,8 @@ make doco-down NR=1
 **Grafana**
 * [Jaeger provisioning](https://grafana.com/docs/grafana/latest/datasources/jaeger/#provision-the-data-source)
 * [Tempo provisioning](https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#example-file)
-  * Useful dashboards:
-    * Logs/App, ID: 13639
+* Useful Grafana dashboards:
+  * [Logs/App, ID: 13639](https://grafana.com/grafana/dashboards/13639-logs-app/)
 
 **Uptrace**
 * [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)
