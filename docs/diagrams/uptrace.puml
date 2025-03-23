@@ -1,4 +1,5 @@
 @startuml uptrace
+title Telemetry Flow to Uptrace
 left to right direction
 
 agent Example as EX

@@ -1,4 +1,5 @@
 @startuml new-relic
+title Telemetry Flow to New Relic
 left to right direction
 
 agent Example as EX

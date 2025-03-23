@@ -1,4 +1,5 @@
 @startuml grafana-loki-tempo
+title Telemetry Flow to Grafana Loki Tempo Prometheus
 left to right direction
 
 agent Example as EX
