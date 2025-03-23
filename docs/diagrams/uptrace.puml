@@ -1,0 +1,11 @@
+@startuml uptrace
+left to right direction
+
+agent Example as EX
+agent "OTEL\nCollector" as OC
+agent Uptrace
+
+EX --> OC
+OC --> Uptrace
+
+@enduml

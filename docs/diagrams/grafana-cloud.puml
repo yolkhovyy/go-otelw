@@ -1,0 +1,21 @@
+@startuml grafana-cloud
+left to right direction
+
+agent Example as EX
+agent "OTEL\nCollector" as OC
+cloud "Grafana Cloud" {
+    agent Loki
+    agent Jaeger
+    agent Prometheus
+    agent Grafana
+}
+
+EX --> OC
+OC --> Loki: "Logs"
+OC --> Jaeger: "Traces"
+OC --> Prometheus: "Metrics"
+Loki --> Grafana
+Jaeger --> Grafana
+Prometheus --> Grafana
+
+@enduml

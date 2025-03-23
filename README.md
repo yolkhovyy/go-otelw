@@ -69,6 +69,7 @@ See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otel
 ## Build and Run the Example
 
 ### Grafana Cloud Integration
+![Grafana Cloud](./docs/diagrams/grafana-cloud.png)
 
 **Create:**
 * Grafana Cloud account
@@ -86,7 +87,7 @@ GCLOUD_USERNAME=12345678
 make install-env
 ```
 
-**Build and run the Example, with the Newrelic NR flag:**
+**Build and run the Example, with the Newrelic GCL flag:**
 ```bash
 make doco-build-up GCL=1
 ```
@@ -106,6 +107,7 @@ make doco-down GCL=1
 ```
 
 ### Grafana Cloud Alloy Integration
+![Grafana Cloud Alooy](./docs/diagrams/grafana-cloud-alloy.png)
 
 **Create:**
 * Grafana Cloud account
@@ -123,7 +125,7 @@ GCLOUD_USERNAME=12345678
 make install-env
 ```
 
-**Build and run the Example, with the Newrelic NR flag:**
+**Build and run the Example, with the Newrelic ALY flag:**
 ```bash
 make doco-build-up ALY=1
 ```
@@ -143,6 +145,7 @@ make doco-down ALY=1
 ```
 
 ### Grafana/Loki, Jaeger, Prometheus Integration
+![Grafana Loki Jaeger](./docs/diagrams/grafana-loki-jaeger.png)
 
 **Build and run the Example:**
 ```bash
@@ -181,6 +184,7 @@ make doco-down
 ```
 
 ### Grafana/Loki, Tempo, Prometheus Integration
+![Grafana Loki Tempo](./docs/diagrams/grafana-loki-tempo.png)
 
 **Build and run the Example:**
 ```bash
@@ -218,6 +222,7 @@ make doco-down GLT=1
 ```
 
 ### Uptrace Integration
+![Uptrace](./docs/diagrams/uptrace.png)
 
 **Make `.env.secrets` file with your uptrace endpoint:**
 ```bash
@@ -249,6 +254,7 @@ make doco-down UPT=1
 ```
 
 ### Newrelic Integration
+![New Relic](./docs/diagrams/new-relic.png)
 
 **Create:**
 * Newrelic account

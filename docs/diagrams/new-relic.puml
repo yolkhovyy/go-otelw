@@ -1,0 +1,17 @@
+@startuml new-relic
+left to right direction
+
+agent Example as EX
+agent "OTEL\nCollector" as OC
+cloud "New Relic" {
+    agent Logs
+    agent Traces
+    agent Metrics
+}
+
+EX --> OC
+OC --> Logs: "Logs"
+OC --> Traces: "Traces"
+OC --> Metrics: "Metrics"
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml grafana-cloud-alloy
+left to right direction
+
+agent Example as EX
+agent "OTEL\nCollector" as OC
+agent Alloy as ALY
+cloud "Grafana Cloud" {
+    agent Loki
+    agent Tempo
+    agent Prometheus
+    agent Grafana
+}
+
+EX --> OC
+OC --> ALY
+ALY --> Loki: "Logs"
+ALY --> Tempo: "Traces"
+ALY --> Prometheus: "Metrics"
+Loki --> Grafana
+Tempo --> Grafana
+Prometheus --> Grafana
+
+@enduml

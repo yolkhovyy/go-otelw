@@ -1,0 +1,19 @@
+@startuml grafana-loki-tempo
+left to right direction
+
+agent Example as EX
+agent "OTEL\nCollector" as OC
+agent Loki
+agent Tempo
+agent Prometheus
+agent Grafana
+
+EX --> OC
+OC --> Loki: "Logs"
+OC --> Tempo: "Traces"
+OC --> Prometheus: "Metrics"
+Loki --> Grafana
+Tempo --> Grafana
+Prometheus --> Grafana
+
+@enduml
