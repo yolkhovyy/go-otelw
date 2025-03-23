@@ -16,6 +16,7 @@ Pronounced as /ˈɡuːtldʌb/
   * [Grafana Loki, Tempo, Prometheus Integration](#grafana-loki-tempo-prometheus-integration)
   * [Uptrace Integration](#uptrace-integration)
   * [New Relic Integration](#new-relic-integration)
+  * [Elasticsearch Kibana Integration](#elasticsearch-kibana-integration)
 
 ## Package Content
 * The [wrapper](./pkg/) itself
@@ -288,6 +289,30 @@ make doco-build-up NR=1
 **Stop the services:**
 ```bash
 make doco-down NR=1
+```
+
+### Elasticsearch Kibana Integration
+![New Relic](./docs/diagrams/elastic-kibana.png)
+
+**Build and run the Example, with EK flag:**
+```bash
+make doco-build-up EK=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Kibana:**
+* Open your dashboard, e.g. `http://localhost:5601/`
+* Click `Discover`
+* Make `otel-*` index pattern
+
+**Stop the services:**
+```bash
+make doco-down EK=1
 ```
 
 ## Miscellaneous

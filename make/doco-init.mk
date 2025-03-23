@@ -11,6 +11,10 @@ else ifdef UPT	#----- uptrace
 	DOCO := $(DOCO) -f docker-compose.uptrace.yml
 	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace
 	export OTEL_COLLECTOR_CONFIG = config-uptrace.yml
+else ifdef EK	#----- elastic, kibana
+	DOCO := $(DOCO) -f docker-compose.elastic-kibana.yml
+	DEPENDENCIES := $(DEPENDENCIES) elasticsearch kibana
+	export OTEL_COLLECTOR_CONFIG = config-elastic-kibana.yml
 else ifdef GCL	#----- grafana cloud
 	export OTEL_COLLECTOR_CONFIG = config-grafana-cloud.yml
 else ifdef ALY	#----- grafana cloud alloy
