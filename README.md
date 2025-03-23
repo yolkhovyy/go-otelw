@@ -12,10 +12,10 @@ Pronounced as /ˈɡuːtldʌb/
 * [Build and Run the Example](#build-and-run-the-example)
   * [Grafana Cloud Integration](#grafana-cloud-integration)
   * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
-  * [Grafana Loki, Jaeger, Prometheus Integration](#grafanaloki-jaeger-prometheus-integration)
-  * [Grafana Loki, Tempo, Prometheus Integration](#grafanaloki-tempo-prometheus-integration)
+  * [Grafana Loki, Jaeger, Prometheus Integration](#grafana-loki-jaeger-prometheus-integration)
+  * [Grafana Loki, Tempo, Prometheus Integration](#grafana-loki-tempo-prometheus-integration)
   * [Uptrace Integration](#uptrace-integration)
-  * [Newrelic Integration](#newrelic-integration)
+  * [New Relic Integration](#new-relic-integration)
 
 ## Package Content
 * The [wrapper](./pkg/) itself
@@ -76,7 +76,7 @@ See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otel
 * Grafana Cloud API key
 
 **Make `.env.secrets` file with your Grafana Cloud API key, endpoint and username:**
-```bash
+```env
 GCLOUD_API_KEY="glc_..."
 GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
 GCLOUD_USERNAME=12345678
@@ -114,7 +114,7 @@ make doco-down GCL=1
 * Grafana Cloud API key
 
 **Make `.env.secrets` file with your Grafana Cloud API key, endpoint and username:**
-```bash
+```env
 GCLOUD_API_KEY="glc_..."
 GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
 GCLOUD_USERNAME=12345678
@@ -225,7 +225,7 @@ make doco-down GLT=1
 ![Uptrace](./docs/diagrams/uptrace.png)
 
 **Make `.env.secrets` file with your uptrace endpoint:**
-```bash
+```env
 UPTRACE_DSN=http://project1_secret_token@localhost:14318?grpc=14317
 ```
 
@@ -257,11 +257,11 @@ make doco-down UPT=1
 ![New Relic](./docs/diagrams/new-relic.png)
 
 **Create:**
-* Newrelic account
-* Newrelic ingest license API key
+* New Relic account
+* New Relic ingest license API key
 
 **Make `.env.secrets` file with your New Relic endpoint and license API key:**
-```bash
+```env
 NEWRELIC_ENDPOINT=https://otlp.eu01.nr-data.net:4317
 NEWRELIC_API_KEY=eu01xx...
 ```
@@ -271,7 +271,7 @@ NEWRELIC_API_KEY=eu01xx...
 make install-env
 ```
 
-**Build and run the Example, with the Newrelic NR flag:**
+**Build and run the Example, with NR flag:**
 ```bash
 make doco-build-up NR=1
 ```
@@ -282,7 +282,7 @@ make doco-build-up NR=1
 ./test/scripts/echo.sh hey 10
 ```
 
-**Observe logs, traces and metrics in Newrelic:**
+**Observe logs, traces and metrics in New Relic:**
 * Open your dashboard, e.g. `https://one.eu.newrelic.com/`
 
 **Stop the services:**
