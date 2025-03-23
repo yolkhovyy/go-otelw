@@ -75,7 +75,7 @@ See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otel
 * Grafana Cloud account
 * Grafana Cloud API key
 
-**Make `.env.secrets` file with your newrelic endpoint and license API key:**
+**Make `.env.secrets` file with your Grafana Cloud API key, endpoint and username:**
 ```bash
 GCLOUD_API_KEY="glc_..."
 GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
@@ -87,7 +87,7 @@ GCLOUD_USERNAME=12345678
 make install-env
 ```
 
-**Build and run the Example, with the Newrelic GCL flag:**
+**Build and run the Example, with GCL flag:**
 ```bash
 make doco-build-up GCL=1
 ```
@@ -113,7 +113,7 @@ make doco-down GCL=1
 * Grafana Cloud account
 * Grafana Cloud API key
 
-**Make `.env.secrets` file with your newrelic endpoint and license API key:**
+**Make `.env.secrets` file with your Grafana Cloud API key, endpoint and username:**
 ```bash
 GCLOUD_API_KEY="glc_..."
 GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
@@ -125,7 +125,7 @@ GCLOUD_USERNAME=12345678
 make install-env
 ```
 
-**Build and run the Example, with the Newrelic ALY flag:**
+**Build and run the Example, with ALY flag:**
 ```bash
 make doco-build-up ALY=1
 ```
@@ -144,7 +144,7 @@ make doco-build-up ALY=1
 make doco-down ALY=1
 ```
 
-### Grafana/Loki, Jaeger, Prometheus Integration
+### Grafana Loki, Jaeger, Prometheus Integration
 ![Grafana Loki Jaeger](./docs/diagrams/grafana-loki-jaeger.png)
 
 **Build and run the Example:**
@@ -183,7 +183,7 @@ docker compose logs -f otel-collector
 make doco-down
 ```
 
-### Grafana/Loki, Tempo, Prometheus Integration
+### Grafana Loki, Tempo, Prometheus Integration
 ![Grafana Loki Tempo](./docs/diagrams/grafana-loki-tempo.png)
 
 **Build and run the Example:**
@@ -253,14 +253,14 @@ make doco-build-up UPT=1
 make doco-down UPT=1
 ```
 
-### Newrelic Integration
+### New Relic Integration
 ![New Relic](./docs/diagrams/new-relic.png)
 
 **Create:**
 * Newrelic account
 * Newrelic ingest license API key
 
-**Make `.env.secrets` file with your newrelic endpoint and license API key:**
+**Make `.env.secrets` file with your New Relic endpoint and license API key:**
 ```bash
 NEWRELIC_ENDPOINT=https://otlp.eu01.nr-data.net:4317
 NEWRELIC_API_KEY=eu01xx...
