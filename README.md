@@ -1,8 +1,17 @@
-# Go OpenTelemetry Wrapper
+# OpenTelemetry Wrapper for Golang  
 
-This is a Go OpenTelemetry playground project. It provides a wrapper for OpenTelemetry with the goal of simplifying its integration and usage.
+🚀 **OpenTelemetry made easy for Golang**  
+✨ **The one-stop place for Golang & OpenTelemetry**  
+
+This is a Golang OpenTelemetry Wrapper project. Its goal is to simplify OpenTelemetry integration and usage in Golang.
 
 Pronounced as /ˈɡuːtldʌb/
+
+Examples included:
+  * Grafana Loki, Jaeger/Tempo, Prometheus
+  * Elasticsearch, Kibana
+  * New Relic
+  * Uptrace
 
 ## Content
 * [Package Content](#package-content)
