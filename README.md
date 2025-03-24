@@ -306,9 +306,9 @@ make doco-build-up EK=1
 ```
 
 **Observe logs, traces and metrics in Kibana:**
-* Open your dashboard, e.g. `http://localhost:5601/`
-* Click `Discover`
-* Make `otel-*` index pattern
+* Open Kibana dashboard `http://localhost:5601/`
+* Click `Observability`, `Discover`
+* Make `otel-*` index pattern, click `Save`
 
 **Stop the services:**
 ```bash
