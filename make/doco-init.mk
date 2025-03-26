@@ -7,6 +7,8 @@ export DEPENDENCIES = otel-collector
 
 ifdef NR		#----- newrelic
 	export OTEL_COLLECTOR_CONFIG = config-newrelic.yml
+else ifdef DD	#----- datadog
+	export OTEL_COLLECTOR_CONFIG = config-datadog.yml
 else ifdef UPT	#----- uptrace
 	DOCO := $(DOCO) -f docker-compose.uptrace.yml
 	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace

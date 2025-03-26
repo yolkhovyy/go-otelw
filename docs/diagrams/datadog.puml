@@ -1,0 +1,12 @@
+@startuml datadog
+title Telemetry Flow to Datadog
+left to right direction
+
+agent Example as EX
+agent "OTEL\nCollector" as OC
+cloud Datadog
+
+EX --> OC
+OC --> Datadog
+
+@enduml

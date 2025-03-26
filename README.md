@@ -12,6 +12,7 @@ Examples included:
   * Elasticsearch, Kibana
   * New Relic
   * Uptrace
+  * Datadog
 
 ## Content
 * [Package Content](#package-content)
@@ -25,6 +26,7 @@ Examples included:
   * [Grafana Loki, Tempo, Prometheus Integration](#grafana-loki-tempo-prometheus-integration)
   * [Uptrace Integration](#uptrace-integration)
   * [New Relic Integration](#new-relic-integration)
+  * [Datadog Integration](#datadog-integration)
   * [Elasticsearch Kibana Integration](#elasticsearch-kibana-integration)
 
 ## Package Content
@@ -300,6 +302,43 @@ make doco-build-up NR=1
 make doco-down NR=1
 ```
 
+### Datadog Integration
+![Datadog](./docs/diagrams/datadog.png)
+
+**Create:**
+* Datadog account
+* Datadog API key
+
+**Make `.env.secrets` file with your Datadog site and API key:**
+```env
+DD_SITE=datadoghq.eu
+DD_API_KEY=12345...
+```
+
+**Install the env vars:**
+```bash
+make install-env
+```
+
+**Build and run the Example, with DD flag:**
+```bash
+make doco-build-up DD=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Datadog:**
+* Open your dashboard, e.g. `https://app.datadoghq.eu/`
+
+**Stop the services:**
+```bash
+make doco-down DD=1
+```
+
 ### Elasticsearch Kibana Integration
 ![New Relic](./docs/diagrams/elastic-kibana.png)
 
@@ -334,3 +373,7 @@ make doco-down EK=1
 
 **Uptrace**
 * [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)
+
+**Datadog**
+* [OTEL Collector configuration](https://app.datadoghq.eu/signup/agent?platform=OpenTelemetry)
+* [OTEL Collector config example](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/datadogexporter/examples/ootb-ec2.yaml)

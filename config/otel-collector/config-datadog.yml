@@ -1,0 +1,49 @@
+---
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+  datadog:
+    api:
+      site: ${env:DD_SITE}
+      key: ${env:DD_API_KEY}
+    traces:
+      trace_buffer: 500
+
+connectors:
+  datadog/connector:
+
+processors:
+  batch:
+
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [datadog, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [datadog, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [datadog, debug]
+  telemetry:
+    logs:
+      level: debug
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
