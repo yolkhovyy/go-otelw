@@ -4,9 +4,15 @@ left to right direction
 
 agent Example as EX
 agent "OTEL\nCollector" as OC
-cloud Datadog
+cloud Datadog {
+    agent Logs
+    agent Traces
+    agent Metrics
+}
 
 EX --> OC
-OC --> Datadog
+OC --> Logs: "Logs"
+OC --> Traces: "Traces"
+OC --> Metrics: "Metrics"
 
 @enduml
