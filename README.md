@@ -69,7 +69,7 @@ See [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/ex
 
 ### Logger and Tracer Example
 
-See [cmd/example/internal/daemon/daemon.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/internal/domain/domain.go#L75-L110)
+See [cmd/example/internal/domain/domain.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/internal/domain/domain.go#L75-L110)
 
 ```golang
 	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
