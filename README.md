@@ -365,6 +365,11 @@ make doco-down EK=1
 
 ## Miscellaneous
 
+**OpenTelemetry SDK Golang**
+Examples:
+* [Product Catalog](https://opentelemetry.io/docs/demo/services/product-catalog/)
+* [Checkout](https://opentelemetry.io/docs/demo/services/checkout/)
+
 **Grafana**
 * [Jaeger provisioning](https://grafana.com/docs/grafana/latest/datasources/jaeger/#provision-the-data-source)
 * [Tempo provisioning](https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#example-file)

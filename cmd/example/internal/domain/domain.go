@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -13,6 +12,7 @@ import (
 	"github.com/yolkhovyy/go-otelw/pkg/slogw"
 	"github.com/yolkhovyy/go-otelw/pkg/tracew"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 var ErrTimeout = errors.New("timeout")
@@ -82,7 +82,9 @@ func worker(
 ) {
 	var err error
 
-	ctx, span := tracew.Start(ctx, "echo", "worker"+strconv.Itoa(sequence))
+	ctx, span := tracew.Start(ctx, "echo", "worker",
+		trace.WithAttributes(attribute.Int("sequence", sequence)),
+	)
 	defer func() { span.End(err) }()
 
 	logger := slogw.DefaultLogger()
@@ -95,27 +97,25 @@ func worker(
 	}
 
 	msg := "do echo"
-	span.AddEvent(msg)
-	span.SetAttributes(
+
+	logAttrs := []any{
+		slog.Int("sequence", sequence),
+		slog.String("input", input),
+	}
+
+	eventAttrs := []attribute.KeyValue{
 		attribute.Int("sequence", sequence),
 		attribute.String("input", input),
-	)
+	}
 
 	if sequence > workThreshold {
 		err = fmt.Errorf("%s: %w", msg, ErrTimeout)
-		span.SetAttributes(
-			attribute.String("error", err.Error()),
-		)
-		logger.ErrorContext(ctx, msg,
-			slog.Int("sequence", sequence),
-			slog.String("input", input),
-		)
+		logger.ErrorContext(ctx, msg, append(logAttrs, slog.String("error", err.Error()))...)
+		span.AddEvent(msg, trace.WithAttributes(append(eventAttrs, attribute.String("error", err.Error()))...))
 		errChan <- err
 	} else {
-		logger.InfoContext(ctx, msg,
-			slog.Int("sequence", sequence),
-			slog.String("input", input),
-		)
+		logger.InfoContext(ctx, msg, logAttrs...)
+		span.AddEvent(msg, trace.WithAttributes(eventAttrs...))
 		outChan <- input
 	}
 }
