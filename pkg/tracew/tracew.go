@@ -38,6 +38,22 @@ func Configure(
 		return nil, fmt.Errorf("tracew configure resource merge: %w", err)
 	}
 
+	extras, err := resource.New(
+		ctx,
+		resource.WithOS(),
+		resource.WithProcess(),
+		resource.WithContainer(),
+		resource.WithHost(),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("tracew configure extra resources merge: %w", err)
+	}
+
+	res, err = resource.Merge(res, extras)
+	if err != nil {
+		return nil, fmt.Errorf("tracew configure resource merge: %w", err)
+	}
+
 	provider := sdktrace.NewTracerProvider(
 		sdktrace.WithResource(res),
 		sdktrace.WithSampler(sdktrace.AlwaysSample()),

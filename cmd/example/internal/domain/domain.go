@@ -12,6 +12,7 @@ import (
 
 	"github.com/yolkhovyy/go-otelw/pkg/slogw"
 	"github.com/yolkhovyy/go-otelw/pkg/tracew"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 var ErrTimeout = errors.New("timeout")
@@ -93,17 +94,25 @@ func worker(
 		time.Sleep(time.Duration(sequence+1) * time.Millisecond)
 	}
 
+	msg := "do echo"
+	span.AddEvent(msg)
+	span.SetAttributes(
+		attribute.Int("sequence", sequence),
+		attribute.String("input", input),
+	)
+
 	if sequence > workThreshold {
-		err = fmt.Errorf("worker: %w", ErrTimeout)
-		span.AddEvent(fmt.Errorf("sequence: %d input: %s error:%w", sequence, input, err).Error())
-		logger.ErrorContext(ctx, "echo worker "+strconv.Itoa(sequence),
+		err = fmt.Errorf("%s: %w", msg, ErrTimeout)
+		span.SetAttributes(
+			attribute.String("error", err.Error()),
+		)
+		logger.ErrorContext(ctx, msg,
 			slog.Int("sequence", sequence),
 			slog.String("input", input),
 		)
 		errChan <- err
 	} else {
-		span.AddEvent(fmt.Sprintf("sequence: %d input: %s", sequence, input))
-		logger.InfoContext(ctx, "echo worker "+strconv.Itoa(sequence),
+		logger.InfoContext(ctx, msg,
 			slog.Int("sequence", sequence),
 			slog.String("input", input),
 		)
