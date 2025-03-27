@@ -34,7 +34,7 @@ services:
     command: ["--config=/etc/otel-collector-config.yml"]
     restart: unless-stopped
     volumes:
-      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-config-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
+      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
     environment:
       - DD_SITE
       - DD_API_KEY
