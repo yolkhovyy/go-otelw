@@ -7,6 +7,8 @@ export DEPENDENCIES = otel-collector
 
 ifdef NR		#----- newrelic
 	export OTEL_COLLECTOR_CONFIG = newrelic.yml
+else ifdef HC	#----- honeycomb
+	export OTEL_COLLECTOR_CONFIG = honeycomb.yml
 else ifdef DD	#----- datadog
 	export OTEL_COLLECTOR_CONFIG = datadog.yml
 else ifdef UPT	#----- uptrace

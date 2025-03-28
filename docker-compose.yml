@@ -36,6 +36,8 @@ services:
     volumes:
       - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
     environment:
+      - HC_ENDPOINT
+      - HC_TEAM
       - DD_SITE
       - DD_API_KEY
       - NEWRELIC_ENDPOINT
