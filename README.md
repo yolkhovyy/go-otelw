@@ -8,28 +8,31 @@ This is a Golang OpenTelemetry Wrapper project. Its goal is to simplify OpenTele
 Pronounced as /ˈɡuːtldʌb/
 
 Examples included:
-  * Grafana Loki, Jaeger/Tempo, Prometheus
+  * Datadog
   * Elasticsearch, Kibana
+  * Grafana Loki, Jaeger/Tempo, Prometheus
+  * Honeycomb
   * New Relic
   * Uptrace
-  * Datadog
-  * Honeycomb
+
+## Overview
+![Overview](./docs/diagrams/overview.png)
+
 
 ## Content
-* [Package Content](#package-content)
 * [How to Integrate OpenTelemetry with go-otelw](#how-to-integrate-opentelemetry-with-go-otelw)
   * [Configuration and Shutdown](#configuration-and-shutdown)
   * [Logger and Tracer Example](#logger-and-tracer-example)
 * [Build and Run the Example](#build-and-run-the-example)
+  * [Datadog Integration](#datadog-integration)
+  * [Elasticsearch Kibana Integration](#elasticsearch-kibana-integration)
   * [Grafana Cloud Integration](#grafana-cloud-integration)
   * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
   * [Grafana Loki, Jaeger, Prometheus Integration](#grafana-loki-jaeger-prometheus-integration)
   * [Grafana Loki, Tempo, Prometheus Integration](#grafana-loki-tempo-prometheus-integration)
-  * [Uptrace Integration](#uptrace-integration)
-  * [New Relic Integration](#new-relic-integration)
-  * [Datadog Integration](#datadog-integration)
   * [Honeycomb Integration](#honeycomb-integration)
-  * [Elasticsearch Kibana Integration](#elasticsearch-kibana-integration)
+  * [New Relic Integration](#new-relic-integration)
+  * [Uptrace Integration](#uptrace-integration)
 
 ## Package Content
 * The [wrapper](./pkg/) itself
@@ -81,6 +84,66 @@ See [cmd/example/internal/domain/domain.go](https://github.com/yolkhovyy/go-otel
 ```
 
 ## Build and Run the Example
+
+### Datadog Integration
+![Datadog](./docs/diagrams/datadog.png)
+
+**Create:**
+* Datadog account
+* Datadog API key
+
+**Make `.env.secrets` file with your Datadog site and API key:**
+```env
+DD_SITE=datadoghq.eu
+DD_API_KEY=12345...
+```
+
+**Install the env vars:**
+```bash
+make install-env
+```
+
+**Build and run the Example, with DD flag:**
+```bash
+make doco-build-up DD=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Datadog:**
+* Open your dashboard, e.g. `https://app.datadoghq.eu/`
+
+**Stop the services:**
+```bash
+make doco-down DD=1
+```
+### Elasticsearch Kibana Integration
+![New Relic](./docs/diagrams/elastic-kibana.png)
+
+**Build and run the Example, with EK flag:**
+```bash
+make doco-build-up EK=1
+```
+
+**Make a few HTTP requests to the Example HTTP Echo Service:**
+```bash
+./test/scripts/echo.sh
+./test/scripts/echo.sh hey 10
+```
+
+**Observe logs, traces and metrics in Kibana:**
+* Open Kibana dashboard `http://localhost:5601/`
+* Click `Observability`, `Discover`
+* Make `otel-*` index pattern, click `Save`
+
+**Stop the services:**
+```bash
+make doco-down EK=1
+```
 
 ### Grafana Cloud Integration
 ![Grafana Cloud](./docs/diagrams/grafana-cloud.png)
@@ -235,12 +298,17 @@ docker compose logs -f otel-collector
 make doco-down GLT=1
 ```
 
-### Uptrace Integration
-![Uptrace](./docs/diagrams/uptrace.png)
+### Honeycomb Integration
+![Honeycomb](./docs/diagrams/honeycomb.png)
 
-**Make `.env.secrets` file with your uptrace endpoint:**
+**Create:**
+* Honeycomb account
+* Honeycomb header
+
+**Make `.env.secrets` file with your Honeycomb site and API key:**
 ```env
-UPTRACE_DSN=http://project1_secret_token@localhost:14318?grpc=14317
+HC_ENDPOINT=https://api.honeycomb.io
+HC_TEAM=XJY...
 ```
 
 **Install the env vars:**
@@ -248,9 +316,9 @@ UPTRACE_DSN=http://project1_secret_token@localhost:14318?grpc=14317
 make install-env
 ```
 
-**Build and run the Example, with the Uptrace UPT flag:**
+**Build and run the Example, with HC flag:**
 ```bash
-make doco-build-up UPT=1
+make doco-build-up HC=1
 ```
 
 **Make a few HTTP requests to the Example HTTP Echo Service:**
@@ -259,12 +327,12 @@ make doco-build-up UPT=1
 ./test/scripts/echo.sh hey 10
 ```
 
-**Observe logs, traces and metrics in Uptrace:**
-* Open your dashboard, e.g. `http://localhost:14317/`
+**Observe logs, traces in Honeycomb:**
+* Open your dashboard, e.g. `https://ui.honeycomb.io/`
 
 **Stop the services:**
 ```bash
-make doco-down UPT=1
+make doco-down DD=1
 ```
 
 ### New Relic Integration
@@ -304,17 +372,12 @@ make doco-build-up NR=1
 make doco-down NR=1
 ```
 
-### Datadog Integration
-![Datadog](./docs/diagrams/datadog.png)
+### Uptrace Integration
+![Uptrace](./docs/diagrams/uptrace.png)
 
-**Create:**
-* Datadog account
-* Datadog API key
-
-**Make `.env.secrets` file with your Datadog site and API key:**
+**Make `.env.secrets` file with your uptrace endpoint:**
 ```env
-DD_SITE=datadoghq.eu
-DD_API_KEY=12345...
+UPTRACE_DSN=http://project1_secret_token@localhost:14318?grpc=14317
 ```
 
 **Install the env vars:**
@@ -322,9 +385,9 @@ DD_API_KEY=12345...
 make install-env
 ```
 
-**Build and run the Example, with DD flag:**
+**Build and run the Example, with the Uptrace UPT flag:**
 ```bash
-make doco-build-up DD=1
+make doco-build-up UPT=1
 ```
 
 **Make a few HTTP requests to the Example HTTP Echo Service:**
@@ -333,73 +396,12 @@ make doco-build-up DD=1
 ./test/scripts/echo.sh hey 10
 ```
 
-**Observe logs, traces and metrics in Datadog:**
-* Open your dashboard, e.g. `https://app.datadoghq.eu/`
+**Observe logs, traces and metrics in Uptrace:**
+* Open your dashboard, e.g. `http://localhost:14317/`
 
 **Stop the services:**
 ```bash
-make doco-down DD=1
-```
-
-### Honeycomb Integration
-![Honeycomb](./docs/diagrams/honeycomb.png)
-
-**Create:**
-* Honeycomb account
-* Honeycomb header
-
-**Make `.env.secrets` file with your Datadog site and API key:**
-```env
-HC_ENDPOINT=https://api.honeycomb.io
-HC_TEAM=XJY...
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with HC flag:**
-```bash
-make doco-build-up HC=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces in Honeycomb:**
-* Open your dashboard, e.g. `https://ui.honeycomb.io/`
-
-**Stop the services:**
-```bash
-make doco-down DD=1
-```
-
-### Elasticsearch Kibana Integration
-![New Relic](./docs/diagrams/elastic-kibana.png)
-
-**Build and run the Example, with EK flag:**
-```bash
-make doco-build-up EK=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Kibana:**
-* Open Kibana dashboard `http://localhost:5601/`
-* Click `Observability`, `Discover`
-* Make `otel-*` index pattern, click `Save`
-
-**Stop the services:**
-```bash
-make doco-down EK=1
+make doco-down UPT=1
 ```
 
 ## Miscellaneous

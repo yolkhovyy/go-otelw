@@ -1,0 +1,24 @@
+@startuml overview
+title Telemetry Flows
+' left to right direction
+
+cloud "Datadog" as DD
+cloud "Elasticsearch\nKibana" as EK
+cloud "Grafana Loki\nJaeger/Tempo\nPrometheus" as G
+cloud "Honeycomb" as HC
+cloud "New Relic" as NR
+cloud "Uptrace" as UPT
+
+agent "OTEL\nCollector" as OC
+agent Example as EX
+
+OC -up-> UPT
+OC -up-> NR
+OC -up-> HC
+OC -up-> G
+OC -up-> EK
+OC -up-> DD
+
+EX -up-> OC
+
+@enduml
