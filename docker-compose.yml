@@ -1,7 +1,7 @@
 ---
 services:
   example:
-    image: yolkhovyy/example:${EXAMPLE_VERSION:?must be set in .env}
+    image: yolkhovyy/example:${APP_VERSION:-v0.0.0}
     stop_signal: SIGINT
     depends_on:
       otel-collector:
@@ -12,6 +12,8 @@ services:
       context: .
       dockerfile: cmd/example/Dockerfile
       target: ${BUILD_TARGET:-release}
+      args:
+        - APP_VERSION
     environment:
       - EXAMPLE_HTTP_PORT
       - EXAMPLE_HTTP_SHUTDOWNTIMEOUT

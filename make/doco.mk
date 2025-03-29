@@ -8,11 +8,13 @@ doco-up-dependencies: ## Start project dependency containers
 .PHONY: doco-build
 doco-build: lint ## Build Docker images for the project
 	@echo "🐳 Building Docker images"
+	@echo "APP_VERSION: ${APP_VERSION}"
 	@${DOCO} build ${SERVICES}
 
 .PHONY: doco-build-up
 doco-build-up: lint doco-up-dependencies ## Build Docker images and start the services
 	@echo "🐳 Building and starting services"
+	@echo "APP_VERSION: ${APP_VERSION}"
 	@${DOCO} up --build --detach --force-recreate --remove-orphans ${SERVICES}
 
 .PHONY: doco-up

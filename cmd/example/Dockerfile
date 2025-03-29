@@ -1,10 +1,13 @@
 FROM golang:1.23.6-alpine3.20 AS builder
+ARG APP_VERSION
+ARG LDFLAGS="-X github.com/yolkhovyy/go-utilities/buildinfo.Version=${APP_VERSION}"
+
 WORKDIR /app
 COPY ./cmd/example ./cmd/example
 COPY ./pkg ./pkg
 COPY go.mod go.sum ./
 RUN go mod download && \
-    go build -o main ./cmd/example
+    go build -ldflags="${LDFLAGS}" -o main ./cmd/example
 
 FROM alpine:3.20 AS release
 WORKDIR /app
