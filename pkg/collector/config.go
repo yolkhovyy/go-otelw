@@ -1,38 +1,36 @@
 package collector
 
-import (
-	"crypto/tls"
-	"crypto/x509"
-	"fmt"
-	"os"
-
-	"google.golang.org/grpc/credentials"
-)
-
+// Config represents the configuration settings for a telemetry collector.
+// It includes details about the protocol, connection settings, security options,
+// and TLS configuration.
 type Config struct {
-	Protocol   Protocol `yaml:"protocol" mapstructure:"protocol"`
-	Connection string   `yaml:"connection" mapstructure:"connection"`
-	Insecure   bool     `yaml:"insecure" mapstructure:"insecure"`
-	TLS        TLS      `yaml:"tls" mapstructure:"tls"`
+	// Protocol to use for telemetry collection (e.g., GRPC, HTTP)
+	Protocol Protocol `yaml:"protocol" mapstructure:"protocol"`
+
+	// Address of the telemetry collector service
+	Connection string `yaml:"connection" mapstructure:"connection"`
+
+	// Whether to use an insecure connection (without TLS)
+	Insecure bool `yaml:"insecure" mapstructure:"insecure"`
+
+	// TLS configuration settings
+	TLS TLS `yaml:"tls" mapstructure:"tls"`
 }
 
+// TLS holds the TLS security configuration options for secure telemetry connections.
 type TLS struct {
+	// Path to the client certificate file
 	ClientCrt string `yaml:"clientCrt" mapstructure:"clientCrt"`
+
+	// Path to the client private key file
 	ClientKey string `yaml:"clientKey" mapstructure:"clientKey"`
-	CAFile    string `yaml:"caFile" mapstructure:"caFile"`
+
+	// Path to the Certificate Authority (CA) file
+	CAFile string `yaml:"caFile" mapstructure:"caFile"`
 }
 
-type Protocol string
-
-const (
-	GRPC Protocol = "grpc"
-	HTTP Protocol = "http"
-)
-
-func (p Protocol) String() string {
-	return string(p)
-}
-
+// Defaults returns a map of default configuration values for the collector package.
+// It sets a default protocol and connection address.
 func Defaults() map[string]any {
 	return map[string]any{
 		"Protocol":   DefaultProtocol,
@@ -41,45 +39,9 @@ func Defaults() map[string]any {
 }
 
 const (
-	DefaultProtocol   = GRPC
+	// Default protocol for telemetry collection (gRPC).
+	DefaultProtocol = GRPC
+
+	// Default collector service address.
 	DefaultConnection = "localhost:4317"
 )
-
-//nolint:ireturn
-func TLSCredentials(config Config) (credentials.TransportCredentials, error) {
-	tlsConfig, err := TLSConfig(config)
-	if err != nil {
-		return nil, fmt.Errorf("tls config: %w", err)
-	}
-
-	tlsCreds := credentials.NewTLS(tlsConfig)
-
-	return tlsCreds, nil
-}
-
-func TLSConfig(config Config) (*tls.Config, error) {
-	cert, err := tls.LoadX509KeyPair(config.TLS.ClientCrt, config.TLS.ClientKey)
-	if err != nil {
-		return nil, fmt.Errorf("load client cert: %w", err)
-	}
-
-	caCert, err := os.ReadFile(config.TLS.CAFile)
-	if err != nil {
-		return nil, fmt.Errorf("load ca cert: %w", err)
-	}
-
-	caCertPool := x509.NewCertPool()
-	if !caCertPool.AppendCertsFromPEM(caCert) {
-		return nil, fmt.Errorf("append ca cert: %w", err)
-	}
-
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: false,
-		MinVersion:         tls.VersionTLS12,
-		Certificates:       []tls.Certificate{cert},
-		RootCAs:            caCertPool,
-		ServerName:         config.Connection,
-	}
-
-	return tlsConfig, nil
-}

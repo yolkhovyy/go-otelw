@@ -6,22 +6,22 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yolkhovyy/go-otelw/pkg/collector"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
-	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 )
 
+// Tracer is a wrapper around the OpenTelemetry TracerProvider and SpanExporter.
+// It manages the lifecycle of tracing components and provides methods for configuration and shutdown.
 type Tracer struct {
 	provider *sdktrace.TracerProvider
 	exporter sdktrace.SpanExporter
 }
 
+// Configure sets up the Tracer with the given configuration, attributes, and optional writers.
+// It initializes the TracerProvider and SpanExporter, and configures the global OpenTelemetry settings.
 func Configure(
 	ctx context.Context,
 	config Config,
@@ -73,6 +73,8 @@ func Configure(
 	}, nil
 }
 
+// Shutdown gracefully shuts down the Tracer, ensuring all spans are flushed and resources are released.
+// It returns any errors encountered during the shutdown process.
 func (t *Tracer) Shutdown(ctx context.Context) error {
 	var errs error
 
@@ -87,97 +89,4 @@ func (t *Tracer) Shutdown(ctx context.Context) error {
 	}
 
 	return errs
-}
-
-//nolint:ireturn,cyclop
-func exporter(
-	ctx context.Context,
-	config Config,
-	writers ...io.Writer,
-) (sdktrace.SpanExporter, error) {
-	var err error
-
-	var exporter sdktrace.SpanExporter
-
-	switch {
-	case !config.Enable:
-		exporter, err = stdouttrace.New(stdouttrace.WithWriter(io.Discard))
-	case len(writers) > 0:
-		exporter, err = stdoutExporter(writers...)
-	case config.Collector.Protocol == collector.GRPC:
-		exporter, err = grpcExporter(ctx, config)
-	case config.Collector.Protocol == collector.HTTP:
-		exporter, err = httpExporter(ctx, config)
-	default:
-		err = fmt.Errorf("tracew exporter: %w %s", ErrInvalidProtocol, config.Collector.Protocol)
-	}
-
-	return exporter, err
-}
-
-//nolint:ireturn
-func stdoutExporter(writers ...io.Writer) (sdktrace.SpanExporter, error) {
-	options := make([]stdouttrace.Option, 0, len(writers))
-	for _, w := range writers {
-		options = append(options, stdouttrace.WithWriter(w))
-	}
-
-	exporter, err := stdouttrace.New(options...)
-	if err != nil {
-		return nil, fmt.Errorf("tracew stdout exporter: %w", err)
-	}
-
-	return exporter, nil
-}
-
-//nolint:ireturn
-func grpcExporter(ctx context.Context, config Config) (sdktrace.SpanExporter, error) {
-	options := []otlptracegrpc.Option{}
-	if config.Collector.Connection != "" {
-		options = append(options, otlptracegrpc.WithEndpoint(config.Collector.Connection))
-	}
-
-	if config.Collector.Insecure {
-		options = append(options, otlptracegrpc.WithInsecure())
-	} else {
-		tslCreds, err := collector.TLSCredentials(config.Collector)
-		if err != nil {
-			return nil, fmt.Errorf("tracew otlp grpc tls credentials: %w", err)
-		}
-
-		options = append(options, otlptracegrpc.WithTLSCredentials(tslCreds))
-	}
-
-	exporter, err := otlptracegrpc.New(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("tracew new exporter: %w", err)
-	}
-
-	return exporter, nil
-}
-
-//nolint:ireturn
-func httpExporter(ctx context.Context, config Config) (sdktrace.SpanExporter, error) {
-	options := []otlptracehttp.Option{}
-	if config.Collector.Connection != "" {
-		options = append(options, otlptracehttp.WithEndpoint(config.Collector.Connection))
-	}
-
-	if config.Collector.Insecure {
-		options = append(options, otlptracehttp.WithInsecure())
-	} else {
-		tlsConfig, err := collector.TLSConfig(config.Collector)
-		if err != nil {
-			return nil, fmt.Errorf("tracew otlp http tls config: %w", err)
-		}
-
-		options = append(options, otlptracehttp.WithTLSClientConfig(tlsConfig))
-	}
-
-	exporter, err := otlptracehttp.New(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("tracew new exporter: %w", err)
-	}
-
-	return exporter, nil
 }

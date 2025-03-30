@@ -94,7 +94,7 @@ func TestSlog(t *testing.T) {
 			require.NoError(t, err)
 
 			output := builder.String()
-			if test.args.config.Format == FormatConsole {
+			if test.args.config.Format == Console {
 				output = removeColorFormatting(output)
 			}
 
@@ -107,7 +107,7 @@ func TestSlog(t *testing.T) {
 			require.NoError(t, err)
 
 			output = builder.String()
-			if test.args.config.Format == FormatConsole {
+			if test.args.config.Format == Console {
 				output = removeColorFormatting(output)
 			}
 

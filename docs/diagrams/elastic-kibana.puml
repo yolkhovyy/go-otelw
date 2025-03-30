@@ -4,10 +4,12 @@ left to right direction
 
 agent Example as EX
 agent "OTEL\nCollector" as OC
+agent "go-otelw" as OW
 agent Elasticsearch as ES
 agent Kibana
 
-EX --> OC
+EX --> OW
+OW --> OC
 OC --> ES
 ES --> Kibana
 

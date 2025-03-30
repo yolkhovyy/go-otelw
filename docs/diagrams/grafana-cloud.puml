@@ -4,6 +4,7 @@ left to right direction
 
 agent Example as EX
 agent "OTEL\nCollector" as OC
+agent "go-otelw" as OW
 cloud "Grafana Cloud" {
     agent Loki
     agent Tempo
@@ -11,7 +12,8 @@ cloud "Grafana Cloud" {
     agent Grafana
 }
 
-EX --> OC
+EX --> OW
+OW --> OC
 OC --> Loki: "Logs"
 OC --> Tempo: "Traces"
 OC --> Prometheus: "Metrics"

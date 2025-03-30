@@ -6,13 +6,24 @@ import (
 	"github.com/yolkhovyy/go-otelw/pkg/collector"
 )
 
+// Config holds the configuration settings for the package metricw package.
 type Config struct {
-	Enable     bool             `yaml:"enable" mapstructure:"enable"`
-	Prometheus bool             `yaml:"prometheus" mapstructure:"prometheus"`
-	Interval   time.Duration    `yaml:"interval" mapstructure:"interval"`
-	Collector  collector.Config `yaml:"collector" mapstructure:"collector"`
+	// Enable indicates whether metrics are enabled.
+	Enable bool `yaml:"enable" mapstructure:"enable"`
+
+	// Prometheus indicates whether Prometheus metric mapping is enabled.
+	Prometheus bool `yaml:"prometheus" mapstructure:"prometheus"`
+
+	// Interval holds metric collection interval.
+	Interval time.Duration `yaml:"interval" mapstructure:"interval"`
+
+	// Collector holds the configuration for the OTEL collector.
+	Collector collector.Config `yaml:"collector" mapstructure:"collector"`
 }
 
+// Defaults returns a map of default configuration values for the metricw package.
+// It includes default settings for enabling metrics, prometheus metrics mapping,
+// metrics collection interval and defaults for the collector package.
 func Defaults() map[string]any {
 	defaults := make(map[string]any)
 
@@ -28,7 +39,12 @@ func Defaults() map[string]any {
 }
 
 const (
-	DefaultEnable     = false
+	// DefaultEnable is the default setting for enabling metrics.
+	DefaultEnable = false
+
+	// DefaultEnable is the default setting for enablingPrometheus metric mapping.
 	DefaultPrometheus = false
-	DefaultInterval   = 10 * time.Second
+
+	// DefaultInterval holds the default metrics collection interval.
+	DefaultInterval = 10 * time.Second
 )

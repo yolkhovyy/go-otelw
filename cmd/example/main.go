@@ -103,7 +103,7 @@ func run() osx.ExitCode {
 
 	// Router.
 	router := ginrouter.New(domain,
-		gin.Recovery(), ginrouter.Logger(), otelgin.Middleware(serviceName))
+		gin.Recovery(), otelgin.Middleware(serviceName), ginrouter.Logger())
 
 	// HTTP server.
 	server := httpserver.New(config.HTTP, router.Handler())

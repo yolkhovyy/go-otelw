@@ -1,36 +1,26 @@
 package slogw
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/yolkhovyy/go-utilities/stringx"
 )
 
-type FieldName string
-
-const (
-	FieldNameSpanID  FieldName = "spanId"
-	FieldNameTraceID FieldName = "traceId"
-)
-
+// Logging format.
 type Format string
 
 const (
-	FormatConsole Format = "console"
-	FormatJSON    Format = "json"
+	Console Format = "console"
+	JSON    Format = "json"
 )
 
-var (
-	ErrInvalidFormat = errors.New("invalid format")
-	ErrTypeAssertion = errors.New("type assertion")
-	ErrInvalidType   = errors.New("invalid type")
-)
-
+// String returns the string representation of the Format.
 func (f *Format) String() string {
 	return string(*f)
 }
 
+// UnmarshalYAML unmarshals a YAML value into a Format, validating the format.
+// It returns an error if the format is invalid.
 func (f *Format) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var strFormat string
 	if err := unmarshal(&strFormat); err != nil {
@@ -39,7 +29,7 @@ func (f *Format) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
 	format := Format(stringx.TrimSpaceToLower(strFormat))
 	switch format {
-	case FormatConsole, FormatJSON:
+	case Console, JSON:
 		*f = format
 	default:
 		return fmt.Errorf("unmarshal: %w %s", ErrInvalidFormat, strFormat)

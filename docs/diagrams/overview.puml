@@ -9,6 +9,7 @@ cloud "Honeycomb" as HC
 cloud "New Relic" as NR
 cloud "Uptrace" as UPT
 
+agent "go-otelw" as OW
 agent "OTEL\nCollector" as OC
 agent Example as EX
 
@@ -19,6 +20,7 @@ OC -up-> G
 OC -up-> EK
 OC -up-> DD
 
-EX -up-> OC
+EX -up-> OW
+OW -UP-> OC
 
 @enduml

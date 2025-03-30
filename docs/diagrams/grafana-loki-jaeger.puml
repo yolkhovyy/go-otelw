@@ -3,13 +3,15 @@ title Telemetry Flow to Grafana Loki Jaeger Prometheus
 left to right direction
 
 agent Example as EX
+agent "go-otelw" as OW
 agent "OTEL\nCollector" as OC
 agent Loki
 agent Jaeger
 agent Prometheus
 agent Grafana
 
-EX --> OC
+EX --> OW
+OW --> OC
 OC --> Loki: "Logs"
 OC --> Jaeger: "Traces"
 OC --> Prometheus: "Metrics"

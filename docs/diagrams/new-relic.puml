@@ -3,6 +3,7 @@ title Telemetry Flow to New Relic
 left to right direction
 
 agent Example as EX
+agent "go-otelw" as OW
 agent "OTEL\nCollector" as OC
 cloud "New Relic" {
     agent Logs
@@ -10,7 +11,8 @@ cloud "New Relic" {
     agent Metrics
 }
 
-EX --> OC
+EX --> OW
+OW --> OC
 OC --> Logs: "Logs"
 OC --> Traces: "Traces"
 OC --> Metrics: "Metrics"

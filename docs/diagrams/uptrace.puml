@@ -3,10 +3,12 @@ title Telemetry Flow to Uptrace
 left to right direction
 
 agent Example as EX
+agent "go-otelw" as OW
 agent "OTEL\nCollector" as OC
 agent Uptrace
 
-EX --> OC
+EX --> OW
+OW --> OC
 OC --> Uptrace
 
 @enduml

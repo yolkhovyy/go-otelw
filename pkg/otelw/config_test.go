@@ -41,7 +41,7 @@ func TestBaseLoad(t *testing.T) {
 				config: Config{
 					Logger: slogw.Config{
 						Caller:     true,
-						Format:     slogw.FormatJSON,
+						Format:     slogw.JSON,
 						Level:      "trace",
 						TimeFormat: time.RFC3339Nano,
 						Collector: collector.Config{

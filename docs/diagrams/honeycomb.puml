@@ -3,10 +3,12 @@ title Telemetry Flow to Honeycomb
 left to right direction
 
 agent Example as EX
+agent "go-otelw" as OW
 agent "OTEL\nCollector" as OC
 cloud Honeycomb
 
-EX --> OC
+EX --> OW
+OW --> OC
 OC --> Honeycomb
 
 @enduml
