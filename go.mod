@@ -78,7 +78,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/spf13/viper v1.19.0 // indirect
 	github.com/stretchr/testify v1.10.0
-	github.com/yolkhovyy/go-utilities v0.2.7
+	github.com/yolkhovyy/go-utilities v0.3.0
 	go.opentelemetry.io/contrib/bridges/otelslog v0.9.0
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc v0.10.0
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp v0.10.0

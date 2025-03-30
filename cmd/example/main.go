@@ -15,6 +15,7 @@ import (
 	"github.com/yolkhovyy/go-otelw/cmd/example/internal/otelw"
 	ginrouter "github.com/yolkhovyy/go-otelw/cmd/example/internal/router/gin"
 	httpserver "github.com/yolkhovyy/go-otelw/cmd/example/internal/server/http"
+	"github.com/yolkhovyy/go-otelw/cmd/example/version"
 	"github.com/yolkhovyy/go-utilities/buildinfo"
 	"github.com/yolkhovyy/go-utilities/osx"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
@@ -33,6 +34,8 @@ func main() {
 
 //nolint:funlen
 func run() osx.ExitCode {
+	fmt.Fprintln(os.Stdout, version.Tag)
+
 	// Build info.
 	buildInfo := buildinfo.ReadData()
 
@@ -54,7 +57,7 @@ func run() osx.ExitCode {
 	// Telemetry.
 	serviceAttributes := []attribute.KeyValue{
 		semconv.ServiceNameKey.String(serviceName),
-		semconv.ServiceVersionKey.String(buildInfo.Version),
+		semconv.ServiceVersionKey.String(version.Tag),
 	}
 
 	logger, tracer, metric, err := otelw.Configure(ctx, config.Config, serviceAttributes)
@@ -75,9 +78,9 @@ func run() osx.ExitCode {
 	}()
 
 	logger.InfoContext(ctx, "build info",
-		slog.String("version", buildInfo.Version),
+		slog.String("version", version.Tag),
 		slog.String("time", buildInfo.Time),
-		slog.String("commit", buildInfo.Commit),
+		slog.String("revision", buildInfo.Revision),
 	)
 
 	// Domain.

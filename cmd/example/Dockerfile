@@ -1,6 +1,6 @@
 FROM golang:1.23.6-alpine3.20 AS builder
 ARG APP_VERSION
-ARG LDFLAGS="-X github.com/yolkhovyy/go-utilities/buildinfo.Version=${APP_VERSION}"
+ARG LDFLAGS="-X github.com/yolkhovyy/go-otelw/cmd/example/version.Tag=${APP_VERSION}"
 
 WORKDIR /app
 COPY ./cmd/example ./cmd/example
