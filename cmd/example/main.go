@@ -34,8 +34,6 @@ func main() {
 
 //nolint:funlen
 func run() osx.ExitCode {
-	fmt.Fprintln(os.Stdout, version.Tag)
-
 	// Build info.
 	buildInfo := buildinfo.ReadData()
 

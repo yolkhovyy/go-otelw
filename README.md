@@ -5,7 +5,7 @@
 
 This is a Golang OpenTelemetry Wrapper project. Its goal is to simplify OpenTelemetry integration and usage in Golang.
 
-Pronounced as /ˈɡuːtldʌb/
+Pronounced /ˈɡuːtldʌb/
 
 Examples included:
   * Datadog
