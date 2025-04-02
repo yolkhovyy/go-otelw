@@ -11,6 +11,8 @@ else ifdef HC	#----- honeycomb
 	export OTEL_COLLECTOR_CONFIG = honeycomb.yml
 else ifdef DD	#----- datadog
 	export OTEL_COLLECTOR_CONFIG = datadog.yml
+else ifdef DT	#----- dynatrace
+	export OTEL_COLLECTOR_CONFIG = dynatrace.yml
 else ifdef UPT	#----- uptrace
 	DOCO := $(DOCO) -f docker-compose.uptrace.yml
 	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace

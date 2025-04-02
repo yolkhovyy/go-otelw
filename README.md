@@ -3,12 +3,13 @@
 🚀 **OpenTelemetry made easy for Golang**  
 ✨ **The one-stop place for Golang & OpenTelemetry**  
 
-This is a Golang OpenTelemetry Wrapper project. Its goal is to simplify OpenTelemetry integration and usage in Golang.
+This is an OpenTelemetry Wrapper for Golang. Its goal is to simplify OpenTelemetry integration and usage in Golang.
 
 Pronounced /ˈɡuːtldʌb/
 
 Examples included:
   * Datadog
+  * Dynatrace
   * Elasticsearch, Kibana
   * Grafana Loki, Jaeger/Tempo, Prometheus
   * Honeycomb
@@ -18,21 +19,21 @@ Examples included:
 ## Overview
 ![Overview](./docs/diagrams/overview.png)
 
-
 ## Content
-* [How to Integrate OpenTelemetry with go-otelw](#how-to-integrate-opentelemetry-with-go-otelw)
+* How to Integrate OpenTelemetry with go-otelw
   * [Configuration and Shutdown](#configuration-and-shutdown)
   * [Logger and Tracer Example](#logger-and-tracer-example)
-* [Build and Run the Example](#build-and-run-the-example)
-  * [Datadog Integration](#datadog-integration)
-  * [Elasticsearch Kibana Integration](#elasticsearch-kibana-integration)
-  * [Grafana Cloud Integration](#grafana-cloud-integration)
-  * [Grafana Cloud Alloy Integration](#grafana-cloud-alloy-integration)
-  * [Grafana Loki, Jaeger, Prometheus Integration](#grafana-loki-jaeger-prometheus-integration)
-  * [Grafana Loki, Tempo, Prometheus Integration](#grafana-loki-tempo-prometheus-integration)
-  * [Honeycomb Integration](#honeycomb-integration)
-  * [New Relic Integration](#new-relic-integration)
-  * [Uptrace Integration](#uptrace-integration)
+* Build and Run the Examples
+  * [Datadog](docs/datadog.md)
+  * [Dynatrace](docs/dynatrace.md)
+  * [Elasticsearch Kibana](docs/elasticsearch-kibana.md)
+  * [Grafana Cloud](docs/grafana-cloud.md)
+  * [Grafana Cloud Alloy](./docs/grafana-cloud-alloy.md)
+  * [Grafana Loki, Jaeger, Prometheus](./docs/grafana-loki-jaeger-prometheus.md)
+  * [Grafana Loki, Tempo, Prometheus](./docs/grafana-loki-tempo-prometheus.md)
+  * [Honeycomb](./docs/honeycomb.md)
+  * [New Relic](./docs/new-relic.md)
+  * [Uptrace](./docs/uptrace.md)
 
 ## Package Content
 * The [wrapper](./pkg/) itself
@@ -83,327 +84,6 @@ See [cmd/example/internal/domain/domain.go](https://github.com/yolkhovyy/go-otel
 	logger := slogw.DefaultLogger()
 ```
 
-## Build and Run the Example
-
-### Datadog Integration
-![Datadog](./docs/diagrams/datadog.png)
-
-**Create:**
-* Datadog account
-* Datadog API key
-
-**Make `.env.secrets` file with your Datadog site and API key:**
-```env
-DD_SITE=datadoghq.eu
-DD_API_KEY=12345...
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with DD flag:**
-```bash
-make doco-build-up DD=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Datadog:**
-* Open your dashboard, e.g. `https://app.datadoghq.eu/`
-
-**Stop the services:**
-```bash
-make doco-down DD=1
-```
-### Elasticsearch Kibana Integration
-![New Relic](./docs/diagrams/elastic-kibana.png)
-
-**Build and run the Example, with EK flag:**
-```bash
-make doco-build-up EK=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Kibana:**
-* Open Kibana dashboard `http://localhost:5601/`
-* Click `Observability`, `Discover`
-* Make `otel-*` index pattern, click `Save`
-
-**Stop the services:**
-```bash
-make doco-down EK=1
-```
-
-### Grafana Cloud Integration
-![Grafana Cloud](./docs/diagrams/grafana-cloud.png)
-
-**Create:**
-* Grafana Cloud account
-* Grafana Cloud API key
-
-**Make `.env.secrets` file with your Grafana Cloud API key, endpoint and username:**
-```env
-GCLOUD_API_KEY="glc_..."
-GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
-GCLOUD_USERNAME=12345678
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with GCL flag:**
-```bash
-make doco-build-up GCL=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Grafana Cloud:**
-* Open your dashboard, e.g. `https://STACKNAME.grafana.ne/`
-
-**Stop the services:**
-```bash
-make doco-down GCL=1
-```
-
-### Grafana Cloud Alloy Integration
-![Grafana Cloud Alooy](./docs/diagrams/grafana-cloud-alloy.png)
-
-**Create:**
-* Grafana Cloud account
-* Grafana Cloud API key
-
-**Make `.env.secrets` file with your Grafana Cloud API key, endpoint and username:**
-```env
-GCLOUD_API_KEY="glc_..."
-GCLOUD_ENDPOINT="https://otlp-gateway-ENV-REGION.grafana.net/otlp"
-GCLOUD_USERNAME=12345678
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with ALY flag:**
-```bash
-make doco-build-up ALY=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Grafana Cloud:**
-* Open your dashboard, e.g. `https://STACKNAME.grafana.ne/`
-
-**Stop the services:**
-```bash
-make doco-down ALY=1
-```
-
-### Grafana Loki, Jaeger, Prometheus Integration
-![Grafana Loki Jaeger](./docs/diagrams/grafana-loki-jaeger.png)
-
-**Build and run the Example:**
-```bash
-make doco-build-up
-```
-
-This will start the `Example` Echo Service, and the telemetry services - `OTEL collector`, `Grafana/Loki`, `Jaeger`, and `Prometheus`.
-
-**Make a few HTTP requests to the Example Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in OTEL Collector's logs:**
-```bash
-docker compose logs -f otel-collector
-```
-
-**Explore logs, traces and metrics:**
-* Logs
-  * Garfana: http://localhost:3000
-  	* Explore - Select data source `Loki` - Select label `service_name` - Select value `example` - Click `Run query`
-* Traces
-  * Jaeger: http://localhost:16686
-  * Garfana: http://localhost:3000
-  	* Explore - Select data source `Jaeger` - Click Query type `Search` - Select service name `example` - Click `Run query` 
-* Metrics
-  * Prometheus: http://localhost:9090
-  * Garfana: http://localhost:3000
-  	* Explore - Select Prometheus data source - Select a metric - Click `Run query`
-
-**Stop the services:**
-```bash
-make doco-down
-```
-
-### Grafana Loki, Tempo, Prometheus Integration
-![Grafana Loki Tempo](./docs/diagrams/grafana-loki-tempo.png)
-
-**Build and run the Example:**
-```bash
-make doco-build-up GLT=1
-```
-
-This will start the `Example` Echo Service, and the telemetry services - `OTEL collector`, `Grafana/Loki`, `Tempo`, and `Prometheus`.
-
-**Make a few HTTP requests to the Example Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in OTEL Collector's logs:**
-```bash
-docker compose logs -f otel-collector
-```
-
-**Explore logs, traces and metrics:**
-* Logs
-  * Garfana: http://localhost:3000
-  	* Explore - Select data source `Loki` - Select label `service_name` - Select value `example` - Click `Run query`
-* Traces
-  * Garfana: http://localhost:3000
-  	* Explore - Select data source `Tempo` - Click Query type `Search` - Select service name `example` - Click `Run query` 
-* Metrics
-  * Prometheus: http://localhost:9090
-  * Garfana: http://localhost:3000
-  	* Explore - Select Prometheus data source - Select a metric - Click `Run query`
-
-**Stop the services:**
-```bash
-make doco-down GLT=1
-```
-
-### Honeycomb Integration
-![Honeycomb](./docs/diagrams/honeycomb.png)
-
-**Create:**
-* Honeycomb account
-* Honeycomb header
-
-**Make `.env.secrets` file with your Honeycomb site and API key:**
-```env
-HC_ENDPOINT=https://api.honeycomb.io
-HC_TEAM=XJY...
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with HC flag:**
-```bash
-make doco-build-up HC=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces in Honeycomb:**
-* Open your dashboard, e.g. `https://ui.honeycomb.io/`
-
-**Stop the services:**
-```bash
-make doco-down DD=1
-```
-
-### New Relic Integration
-![New Relic](./docs/diagrams/new-relic.png)
-
-**Create:**
-* New Relic account
-* New Relic ingest license API key
-
-**Make `.env.secrets` file with your New Relic endpoint and license API key:**
-```env
-NEWRELIC_ENDPOINT=https://otlp.eu01.nr-data.net:4317
-NEWRELIC_API_KEY=eu01xx...
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with NR flag:**
-```bash
-make doco-build-up NR=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in New Relic:**
-* Open your dashboard, e.g. `https://one.eu.newrelic.com/`
-
-**Stop the services:**
-```bash
-make doco-down NR=1
-```
-
-### Uptrace Integration
-![Uptrace](./docs/diagrams/uptrace.png)
-
-**Make `.env.secrets` file with your uptrace endpoint:**
-```env
-UPTRACE_DSN=http://project1_secret_token@localhost:14318?grpc=14317
-```
-
-**Install the env vars:**
-```bash
-make install-env
-```
-
-**Build and run the Example, with the Uptrace UPT flag:**
-```bash
-make doco-build-up UPT=1
-```
-
-**Make a few HTTP requests to the Example HTTP Echo Service:**
-```bash
-./test/scripts/echo.sh
-./test/scripts/echo.sh hey 10
-```
-
-**Observe logs, traces and metrics in Uptrace:**
-* Open your dashboard, e.g. `http://localhost:14317/`
-
-**Stop the services:**
-```bash
-make doco-down UPT=1
-```
-
 ## Miscellaneous
 
 **OpenTelemetry SDK Golang**
@@ -423,3 +103,6 @@ Examples:
 **Datadog**
 * [OTEL Collector configuration](https://app.datadoghq.eu/signup/agent?platform=OpenTelemetry)
 * [OTEL Collector config example](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/datadogexporter/examples/ootb-ec2.yaml)
+
+**Dynatrace**
+* [Access token](https://docs.dynatrace.com/docs/discover-dynatrace/references/dynatrace-api/basics/dynatrace-api-authentication#generate-token--access-token)

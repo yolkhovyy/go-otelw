@@ -1,0 +1,14 @@
+@startuml dynatrace
+title Telemetry Flow to Dynatrace
+left to right direction
+
+agent Example as EX
+agent "go-otelw" as OW
+agent "OTEL\nCollector" as OC
+cloud Dynatrace
+
+EX --> OW
+OW --> OC
+OC --> Dynatrace
+
+@enduml

@@ -3,7 +3,8 @@ title Telemetry Flows
 ' left to right direction
 
 cloud "Datadog" as DD
-cloud "Elasticsearch\nKibana" as EK
+cloud "Dynatrace" as DT
+cloud "Kibana\nElasticsearch" as EK
 cloud "Grafana Loki\nJaeger/Tempo\nPrometheus" as G
 cloud "Honeycomb" as HC
 cloud "New Relic" as NR
@@ -15,9 +16,10 @@ agent Example as EX
 
 OC -up-> UPT
 OC -up-> NR
+OC -up-> EK
 OC -up-> HC
 OC -up-> G
-OC -up-> EK
+OC -up-> DT
 OC -up-> DD
 
 EX -up-> OW

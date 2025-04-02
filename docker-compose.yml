@@ -42,6 +42,8 @@ services:
       - HC_TEAM
       - DD_SITE
       - DD_API_KEY
+      - DT_TENANT
+      - DT_API_TOKEN
       - NEWRELIC_ENDPOINT
       - NEWRELIC_API_KEY
       - UPTRACE_DSN
