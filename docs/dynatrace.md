@@ -3,8 +3,8 @@
 
 **Create:**
 * Dynatrace account
-* Dynatrace access key
-  * Click Apps, find Manage, click Access Tolens
+* Dynatrace access token
+  * Click Apps, find Manage, click Access Tokens
 
 **Make `.env.secrets` file with your Dynatrace tenant and access key (API token):**
 ```env
