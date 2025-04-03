@@ -14,6 +14,7 @@ Examples included:
   * Grafana Loki, Jaeger/Tempo, Prometheus
   * Honeycomb
   * New Relic
+  * OpenObserve
   * Uptrace
 
 ## Overview
@@ -33,6 +34,7 @@ Examples included:
   * [Grafana Loki, Tempo, Prometheus](./docs/grafana-loki-tempo-prometheus.md)
   * [Honeycomb](./docs/honeycomb.md)
   * [New Relic](./docs/new-relic.md)
+  * [OpenObserve](./docs/openobserve.md)
   * [Uptrace](./docs/uptrace.md)
 
 ## Package Content
@@ -90,19 +92,3 @@ See [cmd/example/internal/domain/domain.go](https://github.com/yolkhovyy/go-otel
 Examples:
 * [Product Catalog](https://opentelemetry.io/docs/demo/services/product-catalog/)
 * [Checkout](https://opentelemetry.io/docs/demo/services/checkout/)
-
-**Grafana**
-* [Jaeger provisioning](https://grafana.com/docs/grafana/latest/datasources/jaeger/#provision-the-data-source)
-* [Tempo provisioning](https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#example-file)
-* Useful Grafana dashboards:
-  * [Logs/App, ID: 13639](https://grafana.com/grafana/dashboards/13639-logs-app/)
-
-**Uptrace**
-* [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)
-
-**Datadog**
-* [OTEL Collector configuration](https://app.datadoghq.eu/signup/agent?platform=OpenTelemetry)
-* [OTEL Collector config example](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/datadogexporter/examples/ootb-ec2.yaml)
-
-**Dynatrace**
-* [Access token](https://docs.dynatrace.com/docs/discover-dynatrace/references/dynatrace-api/basics/dynatrace-api-authentication#generate-token--access-token)

@@ -1,0 +1,14 @@
+@startuml openobserve
+title Telemetry Flow to OpenObserve
+left to right direction
+
+agent Example as EX
+agent "go-otelw" as OW
+agent "OTEL\nCollector" as OC
+cloud OpenObserve
+
+EX --> OW
+OW --> OC
+OC --> OpenObserve
+
+@enduml

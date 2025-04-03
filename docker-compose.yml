@@ -46,6 +46,8 @@ services:
       - DT_API_TOKEN
       - NEWRELIC_ENDPOINT
       - NEWRELIC_API_KEY
+      - OO_ORG_ID
+      - OO_API_KEY
       - UPTRACE_DSN
       - GCLOUD_API_KEY
       - GCLOUD_ENDPOINT

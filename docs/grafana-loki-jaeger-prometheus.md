@@ -36,3 +36,11 @@ docker compose logs -f otel-collector
 ```bash
 make doco-down
 ```
+
+## Miscellaneous
+
+**Grafana**
+* [Jaeger provisioning](https://grafana.com/docs/grafana/latest/datasources/jaeger/#provision-the-data-source)
+* [Tempo provisioning](https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#example-file)
+* Useful Grafana dashboards:
+  * [Logs/App, ID: 13639](https://grafana.com/grafana/dashboards/13639-logs-app/)

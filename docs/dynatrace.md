@@ -36,3 +36,9 @@ make doco-build-up DT=1
 ```bash
 make doco-down DT=1
 ```
+
+## Miscellaneous
+
+**Dynatrace**
+* [Access token](https://docs.dynatrace.com/docs/discover-dynatrace/references/dynatrace-api/basics/dynatrace-api-authentication#generate-token--access-token)
+
