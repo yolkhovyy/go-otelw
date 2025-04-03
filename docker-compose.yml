@@ -48,6 +48,8 @@ services:
       - NEWRELIC_API_KEY
       - OO_ORG_ID
       - OO_API_KEY
+      - SPLUNK_ACCESS_TOKEN
+      - SPLUNK_REALM
       - UPTRACE_DSN
       - GCLOUD_API_KEY
       - GCLOUD_ENDPOINT
