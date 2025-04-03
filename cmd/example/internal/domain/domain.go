@@ -41,36 +41,33 @@ func (u Controller) Echo(ctx context.Context, input string, count int) (string, 
 
 	var errs error
 
-	outputs := make([]string, 0, count)
+	outs := make([]string, 0, count)
 
 	for {
-		var outOpen, errOpen bool
+		var err error
+
+		var out string
+
+		var outOk, errOk bool
 
 		select {
-		case output, ok := <-outChan:
-			outOpen = ok
-			if outOpen {
-				outputs = append(outputs, output)
+		case out, outOk = <-outChan:
+			if outOk {
+				outs = append(outs, out)
 			}
 
-		case err, ok := <-errChan:
-			errOpen = ok
-
-			switch {
-			case !errOpen:
-			case errs == nil:
-				errs = err
-			default:
-				errs = fmt.Errorf("%w: %w", errs, err)
+		case err, errOk = <-errChan:
+			if errOk {
+				errs = errors.Join(err, errs)
 			}
 		}
 
-		if !outOpen && !errOpen {
+		if !outOk && !errOk {
 			break
 		}
 	}
 
-	return strings.Join(outputs, ", ") + "...\n", errs
+	return strings.Join(outs, ", ") + "...\n", errs
 }
 
 func worker(

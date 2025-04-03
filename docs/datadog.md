@@ -34,3 +34,10 @@ make doco-build-up DD=1
 ```bash
 make doco-down DD=1
 ```
+
+## Miscellaneous
+
+**Datadog**
+* [OTEL Collector configuration](https://app.datadoghq.eu/signup/agent?platform=OpenTelemetry)
+* [OTEL Collector config example](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/datadogexporter/examples/ootb-ec2.yaml)
+

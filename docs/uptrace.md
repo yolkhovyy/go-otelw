@@ -29,3 +29,9 @@ make doco-build-up UPT=1
 ```bash
 make doco-down UPT=1
 ```
+
+## Miscellaneous
+
+**Uptrace**
+* [Config example](https://github.com/uptrace/uptrace/blob/master/example/docker/otel-collector.yaml)
+

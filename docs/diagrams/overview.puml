@@ -8,6 +8,7 @@ cloud "Kibana\nElasticsearch" as EK
 cloud "Grafana Loki\nJaeger/Tempo\nPrometheus" as G
 cloud "Honeycomb" as HC
 cloud "New Relic" as NR
+cloud "OpenObserve" as OO
 cloud "Uptrace" as UPT
 
 agent "go-otelw" as OW
@@ -15,6 +16,7 @@ agent "OTEL\nCollector" as OC
 agent Example as EX
 
 OC -up-> UPT
+OC -up-> OO
 OC -up-> NR
 OC -up-> EK
 OC -up-> HC
