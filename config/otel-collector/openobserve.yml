@@ -18,11 +18,19 @@ exporters:
       stream-name: default
     tls:
       insecure: true
+<<<<<<< HEAD
 #   # Via HTTP
 #   otlphttp/openobserve:
 #     endpoint: "https://api.openobserve.ai/api/${env:OO_ORG_ID}"
 #     headers:
 #     Authorization: "Basic ${env:OO_API_KEY}"
+=======
+    # Or via HTTP
+    # otlphttp/openobserve:
+    #   endpoint: "https://api.openobserve.ai/api/${env:OO_ORG_ID}"
+    #   headers:
+    #     Authorization: "Basic ${env:OO_API_KEY}"
+>>>>>>> e643a00 (Add splunk)
 
 processors:
   batch:

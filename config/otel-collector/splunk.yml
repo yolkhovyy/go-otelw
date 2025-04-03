@@ -1,0 +1,50 @@
+---
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+  otlp:
+    endpoint: "ingest.${SPLUNK_REALM}.signalfx.com:443"
+    headers:
+      X-SF-Token: "${SPLUNK_ACCESS_TOKEN}"
+  # otlphttp:
+  #   endpoint: "https://ingest.${SPLUNK_REALM}.signalfx.com/v2/datapoint/otlp"
+  #   headers:
+  #     X-SF-Token: "${SPLUNK_ACCESS_TOKEN}"
+  #     Content-Type: "application/x-protobuf"
+
+processors:
+  batch:
+
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp, debug]
+  telemetry:
+    logs:
+      level: debug
+
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
