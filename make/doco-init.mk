@@ -15,6 +15,8 @@ else ifdef DT	#----- dynatrace
 	export OTEL_COLLECTOR_CONFIG = dynatrace.yml
 else ifdef OO	#----- openobserve
 	export OTEL_COLLECTOR_CONFIG = openobserve.yml
+else ifdef SPL	#----- splunk observability
+	export OTEL_COLLECTOR_CONFIG = splunk.yml
 else ifdef UPT	#----- uptrace
 	DOCO := $(DOCO) -f docker-compose.uptrace.yml
 	DEPENDENCIES := $(DEPENDENCIES) postgres clickhouse uptrace
