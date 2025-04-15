@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"os"
 
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/otel/attribute"
@@ -37,6 +38,24 @@ func Configure( //nolint:cyclop,funlen
 	attrs []attribute.KeyValue,
 	writers ...io.Writer,
 ) (*Logger, error) {
+	if config.Format == Console {
+		var level slog.Level
+		if err := level.UnmarshalText([]byte(config.Level)); err != nil {
+			level = slog.LevelDebug
+		}
+
+		logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+			Level:     level,
+			AddSource: config.Caller,
+		}))
+
+		slog.SetDefault(logger)
+
+		return &Logger{
+			Logger: slog.Default(),
+		}, nil
+	}
+
 	exporter, err := exporter(ctx, config, writers...)
 	if err != nil {
 		return nil, fmt.Errorf("slogw configure: %w", err)

@@ -17,7 +17,6 @@ import (
 
 var ErrTimeout = errors.New("timeout")
 
-//nolint:cyclop
 func (u Controller) Echo(ctx context.Context, input string, count int) (string, error) {
 	outChan := make(chan string, count)
 	errChan := make(chan error, count)
