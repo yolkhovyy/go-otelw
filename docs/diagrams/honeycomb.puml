@@ -2,13 +2,12 @@
 title Telemetry Flow to Honeycomb
 left to right direction
 
-agent Example as EX
-agent "go-otelw" as OW
-agent "OTEL\nCollector" as OC
+agent "Example\ngo-otelw" as EX
+agent "OTEL\nCollector\n----\nconfig.yml" as OC
+
 cloud Honeycomb
 
-EX --> OW
-OW --> OC
+EX --> OC
 OC --> Honeycomb
 
 @enduml

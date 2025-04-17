@@ -1,6 +1,10 @@
 @startuml overview
 title Telemetry Flows
-' left to right direction
+left to right direction
+skinparam handwritten true
+
+cloud "Example\ngo-otelw" as EX
+cloud "OTEL\nCollector\n--\nconfig.yml" as OC
 
 cloud "Datadog" as DD
 cloud "Dynatrace" as DT
@@ -11,20 +15,15 @@ cloud "New Relic" as NR
 cloud "OpenObserve" as OO
 cloud "Uptrace" as UPT
 
-agent "go-otelw" as OW
-agent "OTEL\nCollector" as OC
-agent Example as EX
+EX -->> OC
 
-OC -up-> UPT
-OC -up-> OO
-OC -up-> NR
-OC -up-> EK
-OC -up-> HC
-OC -up-> G
-OC -up-> DT
-OC -up-> DD
-
-EX -up-> OW
-OW -UP-> OC
+OC --->> UPT
+OC --->> OO
+OC --->> NR
+OC --->> EK
+OC --->> HC
+OC --->> G
+OC --->> DT
+OC --->> DD
 
 @enduml

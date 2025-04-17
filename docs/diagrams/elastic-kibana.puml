@@ -2,14 +2,13 @@
 title Telemetry Flow to Elasticsearch and Kibana
 left to right direction
 
-agent Example as EX
-agent "OTEL\nCollector" as OC
-agent "go-otelw" as OW
+agent "Example\ngo-otelw" as EX
+agent "OTEL\nCollector\n----\nconfig.yml" as OC
+
 agent Elasticsearch as ES
 agent Kibana
 
-EX --> OW
-OW --> OC
+EX --> OC
 OC --> ES
 ES --> Kibana
 

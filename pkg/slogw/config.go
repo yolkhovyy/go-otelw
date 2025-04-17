@@ -16,10 +16,10 @@ type Config struct {
 	// Caller specifies whether to include caller information in logs.
 	Caller bool `yaml:"caller" mapstructure:"Caller"`
 
-	// Format defines the output format of the logs (e.g., json, console).
+	// Format defines the output format of the logs - json (default), console.
 	Format Format `yaml:"format" mapstructure:"Format"`
 
-	// Level sets the minimum log level (e.g., info, debug).
+	// Level sets the minimum log level - error, warn, info (default), debug.
 	Level string `yaml:"level" mapstructure:"Level"`
 
 	// TimeFormat specifies the format for timestamps in logs.

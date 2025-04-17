@@ -4,7 +4,7 @@ package collector
 // It includes details about the protocol, connection settings, security options,
 // and TLS configuration.
 type Config struct {
-	// Protocol to use for telemetry collection (e.g., GRPC, HTTP)
+	// Protocol to use for telemetry collection - GRPC (default), HTTP.
 	Protocol Protocol `yaml:"protocol" mapstructure:"protocol"`
 
 	// Address of the telemetry collector service

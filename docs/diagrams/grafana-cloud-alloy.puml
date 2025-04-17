@@ -2,9 +2,9 @@
 title Telemetry Flow to Grafana Cloud via Alloy
 left to right direction
 
-agent Example as EX
-agent "OTEL\nCollector" as OC
-agent "go-otelw" as OW
+agent "Example\ngo-otelw" as EX
+agent "OTEL\nCollector\n----\nconfig.yml" as OC
+
 agent Alloy as ALY
 cloud "Grafana Cloud" {
     agent Loki
@@ -13,8 +13,7 @@ cloud "Grafana Cloud" {
     agent Grafana
 }
 
-EX --> OW
-OW --> OC
+EX --> OC
 OC --> ALY
 ALY --> Loki: "Logs"
 ALY --> Tempo: "Traces"

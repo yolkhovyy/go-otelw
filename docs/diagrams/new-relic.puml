@@ -2,9 +2,9 @@
 title Telemetry Flow to New Relic
 left to right direction
 
-agent Example as EX
-agent "go-otelw" as OW
-agent "OTEL\nCollector" as OC
+agent "Example\ngo-otelw" as EX
+agent "OTEL\nCollector\n----\nconfig.yml" as OC
+
 cloud "New Relic" {
     agent Logs
     agent Traces
