@@ -1,9 +1,10 @@
 @startuml grafana-loki-jaeger
 title Telemetry Flow to Grafana Loki Jaeger Prometheus
 left to right direction
+skinparam handwritten true
 
-agent "Example\ngo-otelw" as EX
-agent "OTEL\nCollector\n----\nconfig.yml" as OC
+agent "Example\ngo-otelw\n--\nconfig.yml" as EX
+cloud "OTEL\nCollector\n--\nconfig.yml" as OC
 
 agent Loki
 agent Jaeger

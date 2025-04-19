@@ -1,9 +1,10 @@
 @startuml grafana-cloud-alloy
 title Telemetry Flow to Grafana Cloud via Alloy
 left to right direction
+skinparam handwritten true
 
-agent "Example\ngo-otelw" as EX
-agent "OTEL\nCollector\n----\nconfig.yml" as OC
+agent "Example\ngo-otelw\n--\nconfig.yml" as EX
+cloud "OTEL\nCollector\n--\nconfig.yml" as OC
 
 agent Alloy as ALY
 cloud "Grafana Cloud" {

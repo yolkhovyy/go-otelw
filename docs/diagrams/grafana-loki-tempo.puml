@@ -1,9 +1,11 @@
 @startuml grafana-loki-tempo
 title Telemetry Flow to Grafana Loki Tempo Prometheus
 left to right direction
+skinparam handwritten true
 
-agent "Example\ngo-otelw" as EX
-agent "OTEL\nCollector\n----\nconfig.yml" as OC
+agent "Example\ngo-otelw\n--\nconfig.yml" as EX
+cloud "OTEL\nCollector\n--\nconfig.yml" as OC
+
 
 agent Loki
 agent Tempo

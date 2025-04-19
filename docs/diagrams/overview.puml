@@ -3,7 +3,7 @@ title Telemetry Flows
 left to right direction
 skinparam handwritten true
 
-cloud "Example\ngo-otelw" as EX
+agent "Example\ngo-otelw\n--\nconfig.yml" as EX
 cloud "OTEL\nCollector\n--\nconfig.yml" as OC
 
 cloud "Datadog" as DD
