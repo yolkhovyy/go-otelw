@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yolkhovyy/go-otelw/pkg/metricw"
-	"github.com/yolkhovyy/go-otelw/pkg/otelw"
-	"github.com/yolkhovyy/go-otelw/pkg/slogw"
-	"github.com/yolkhovyy/go-otelw/pkg/tracew"
+	"github.com/yolkhovyy/go-otelw/otelw"
+	"github.com/yolkhovyy/go-otelw/otelw/metricw"
+	"github.com/yolkhovyy/go-otelw/otelw/slogw"
+	"github.com/yolkhovyy/go-otelw/otelw/tracew"
 	"go.opentelemetry.io/otel/attribute"
 )
 

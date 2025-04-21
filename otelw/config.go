@@ -1,9 +1,9 @@
 package otelw
 
 import (
-	"github.com/yolkhovyy/go-otelw/pkg/metricw"
-	"github.com/yolkhovyy/go-otelw/pkg/slogw"
-	"github.com/yolkhovyy/go-otelw/pkg/tracew"
+	"github.com/yolkhovyy/go-otelw/otelw/metricw"
+	"github.com/yolkhovyy/go-otelw/otelw/slogw"
+	"github.com/yolkhovyy/go-otelw/otelw/tracew"
 )
 
 // Config defines the configuration structure for the OpenTelemetry wrapper.

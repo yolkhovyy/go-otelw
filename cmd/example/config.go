@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	httpserver "github.com/yolkhovyy/go-otelw/cmd/example/internal/server/http"
-	"github.com/yolkhovyy/go-otelw/pkg/otelw"
+	"github.com/yolkhovyy/go-otelw/otelw"
 	"github.com/yolkhovyy/go-utilities/viperx"
 )
 

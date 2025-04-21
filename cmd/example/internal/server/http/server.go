@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/yolkhovyy/go-otelw/pkg/slogw"
+	"github.com/yolkhovyy/go-otelw/otelw/slogw"
 )
 
 type Server struct {

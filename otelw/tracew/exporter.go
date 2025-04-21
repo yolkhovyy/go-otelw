@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yolkhovyy/go-otelw/pkg/collector"
+	"github.com/yolkhovyy/go-otelw/otelw/collector"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"

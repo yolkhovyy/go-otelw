@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/yolkhovyy/go-otelw/pkg/slogw"
+	"github.com/yolkhovyy/go-otelw/otelw/slogw"
 )
 
 // Logger middleware logs HTTP requests.

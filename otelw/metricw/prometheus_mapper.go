@@ -7,7 +7,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	prometheus_client "github.com/prometheus/client_model/go"
-	"github.com/yolkhovyy/go-otelw/pkg/slogw"
+	"github.com/yolkhovyy/go-otelw/otelw/slogw"
 	"go.opentelemetry.io/otel/metric"
 )
 

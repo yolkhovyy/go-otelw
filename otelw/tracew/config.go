@@ -1,6 +1,6 @@
 package tracew
 
-import "github.com/yolkhovyy/go-otelw/pkg/collector"
+import "github.com/yolkhovyy/go-otelw/otelw/collector"
 
 // Config holds the configuration settings for the tracew package.
 type Config struct {

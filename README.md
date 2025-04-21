@@ -1,9 +1,15 @@
 # OpenTelemetry Wrapper and Examples for Golang  
 
-🚀 **OpenTelemetry made easy for Golang**  
-✨ **The one-stop place for Golang & OpenTelemetry**  
+![License](https://img.shields.io/github/license/yolkhovyy/go-otelw)
+![GitHub Tag](https://img.shields.io/github/v/tag/yolkhovyy/go-otelw)
+[![Go Reference](https://pkg.go.dev/badge/github.com/yolkhovyy/go-otelw.svg)](https://pkg.go.dev/github.com/yolkhovyy/go-otelw)
+[![Go Report Card](https://goreportcard.com/badge/github.com/yolkhovyy/go-otelw)](https://goreportcard.com/report/github.com/yolkhovyy/go-otelw)
 
-This is an OpenTelemetry Wrapper and Examples for Golang. Its goal is to simplify OpenTelemetry integration and usage in Golang.
+🚀 **OpenTelemetry made easy for Golang**  
+✨ **The one-stop place for Golang & OpenTelemetry** 
+
+Lightweight OpenTelemetry wrapper with plug-and-play examples for many observability platforms.
+Simplifies OpenTelemetry setup and usage in Go.
 
 Pronounced /ˈɡuːtldʌb/
 
@@ -20,13 +26,15 @@ Examples included:
   * [OpenObserve](./docs/openobserve.md)
   * [Uptrace](./docs/uptrace.md)
 
+⚠️ This project is pre-1.0 and may change.
+
 ## Overview
 By modifying the OTEL Collector's config.yml, the telemetry flow can be directed to any OTEL-compatible backend—or even to multiple backends simultaneously. The diagram below illustrates this process.
 
 ![Overview](./docs/diagrams/overview.png)
 
 ## Content
-* How to Integrate OpenTelemetry with go-otelw
+* [How to Integrate OpenTelemetry with go-otelw](#how-to-integrate-opentelemetry-with-go-otelw)
   * [Config Types](#config-types)
   * [Configure and Shutdown Utility Functions](#configure-and-shutdown-utility-functions)
   * [Tracing and Logging Examples](#tracing-and-logging-examples)
@@ -44,7 +52,7 @@ By modifying the OTEL Collector's config.yml, the telemetry flow can be directed
   * [Uptrace](./docs/uptrace.md)
 
 ## Package Content
-* The [wrapper](./pkg/) itself
+* The [wrapper](./otelw/) itself
 * Usage [example](./cmd/example/) - HTTP Echo Service
 * Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
 * [Config](./config/) files for 3rd-party dependencies
@@ -57,8 +65,13 @@ By modifying the OTEL Collector's config.yml, the telemetry flow can be directed
 	* [Uptrace](./config/uptrace/)
 
 ## How to Integrate OpenTelemetry with go-otelw
+### Install
+```bash
+go get github.com/yolkhovyy/go-otelw
+```
+
 ### Config Types
-`go-otelw` provides convenience config types for logger, tracer, metric in [pkg/otelw/config.go](https://github.com/yolkhovyy/go-otelw/blob/main/pkg/otelw/config.go#L11-L15)
+`go-otelw` provides convenience config types for logger, tracer, metric in [otelw/config.go](https://github.com/yolkhovyy/go-otelw/blob/main/otelw/config.go#L11-L15)
 ```go
 type Config struct {
 	Logger slogw.Config   `yaml:"logger" mapstructure:"Logger"` // Logging configuration
@@ -66,7 +79,7 @@ type Config struct {
 	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"` // Metrics configuration
 }
 ```
-and OTEL Collector in [pkg/collector/config.go](https://github.com/yolkhovyy/go-otelw/blob/main/pkg/collector/config.go#L6-L18)
+and OTEL Collector in [otelw/collector/config.go](https://github.com/yolkhovyy/go-otelw/blob/main/otelw/collector/config.go#L6-L18)
 ```go
 type Config struct {
 	// Protocol to use for telemetry collection - GRPC (default), HTTP.
@@ -85,11 +98,17 @@ type Config struct {
 `go-otelw` configuration can be loaded from yaml or json files on application startup. An example of yaml configuration is in [cmd/example/config.yml](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/config.yml)
 
 ### Configure and Shutdown Utility Functions
-`go-otelw` simplifies using of OpenTelemetry by providing `Configure` and `Shutdown` utility functions for logger, tracer and metric.
+`go-otelw` simplifies the use of OpenTelemetry by providing `Configure` and `Shutdown` utility functions for logger, tracer and metric.
 
-See usage example in [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/main.go#L60-L75)
+#### All-in Configuration and Shutdown
+See [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/main.go#L60-L75)
 
 ```golang
+	serviceAttributes := []attribute.KeyValue{
+		semconv.ServiceNameKey.String(serviceName),
+		semconv.ServiceVersionKey.String(version.Tag),
+	}
+	
 	logger, tracer, metric, err := otelw.Configure(ctx, config.Config, serviceAttributes)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "otelw configure: %v", err)
@@ -106,6 +125,27 @@ See usage example in [cmd/example/main.go](https://github.com/yolkhovyy/go-otelw
 			fmt.Fprintf(os.Stderr, "otelw shutdown: %v", err)
 		}
 	}()
+```
+
+#### Individual Logger, Tracer and Metric Configuration
+See [cmd/example/internal/otelw/otelw.go](https://github.com/yolkhovyy/go-otelw/blob/main/cmd/example/internal/otelw/otelw.go#L21-L34)
+
+```golang
+	logger, err := slogw.Configure(ctx, config.Logger, attrs, writers...)
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("slogw configure: %w", err)
+	}
+
+	tracer, err := tracew.Configure(ctx, config.Tracer, attrs, writers...)
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("tracew configure: %w", err)
+	}
+
+	metric, err := metricw.Configure(ctx, config.Metric, attrs, writers...)
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("metricw configure: %w", err)
+	}
+
 ```
 
 ### Tracing and Logging Examples

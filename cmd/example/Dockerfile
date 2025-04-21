@@ -4,7 +4,7 @@ ARG LDFLAGS="-X github.com/yolkhovyy/go-otelw/cmd/example/version.Tag=${APP_VERS
 
 WORKDIR /app
 COPY ./cmd/example ./cmd/example
-COPY ./pkg ./pkg
+COPY ./otelw ./otelw
 COPY go.mod go.sum ./
 RUN go mod download && \
     go build -ldflags="${LDFLAGS}" -o main ./cmd/example

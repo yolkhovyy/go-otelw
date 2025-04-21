@@ -6,10 +6,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yolkhovyy/go-otelw/pkg/collector"
-	"github.com/yolkhovyy/go-otelw/pkg/metricw"
-	"github.com/yolkhovyy/go-otelw/pkg/slogw"
-	"github.com/yolkhovyy/go-otelw/pkg/tracew"
+	"github.com/yolkhovyy/go-otelw/otelw/collector"
+	"github.com/yolkhovyy/go-otelw/otelw/metricw"
+	"github.com/yolkhovyy/go-otelw/otelw/slogw"
+	"github.com/yolkhovyy/go-otelw/otelw/tracew"
 	"github.com/yolkhovyy/go-utilities/viperx"
 )
 

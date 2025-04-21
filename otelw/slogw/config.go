@@ -3,7 +3,7 @@ package slogw
 import (
 	"time"
 
-	"github.com/yolkhovyy/go-otelw/pkg/collector"
+	"github.com/yolkhovyy/go-otelw/otelw/collector"
 )
 
 // Config holds the configuration settings for the slogw package.
