@@ -1,5 +1,5 @@
 @startuml overview
-title Telemetry Flows
+title OpenTelemetry with go-otelw and OTEL Collector
 left to right direction
 skinparam handwritten true
 
@@ -25,5 +25,38 @@ OC --->> HC
 OC --->> G
 OC --->> DT
 OC --->> DD
+
+note bottom of EX
+Telemetry
+Emitter:
+* logs
+* traces
+* metrics
+end note
+
+note bottom of OC
+Telemetry
+Collector:
+* receivers
+* processors
+* exporters
+end note
+
+note as TMB
+Telemetry
+Backends
+aka
+Observability
+Backends
+end note
+
+UPT .[hidden]. TMB
+OO .[hidden]. TMB
+NR .[hidden]. TMB
+HC .[hidden]. TMB
+G .[hidden]. TMB
+EK .[hidden]. TMB
+DT .[hidden]. TMB
+DD .[hidden]. TMB
 
 @enduml

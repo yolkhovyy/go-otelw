@@ -1,4 +1,4 @@
-# OpenTelemetry Wrapper and Examples for Golang  
+# OpenTelemetry Toolkit for Golang  
 
 ![License](https://img.shields.io/github/license/yolkhovyy/go-otelw)
 ![GitHub Tag](https://img.shields.io/github/v/tag/yolkhovyy/go-otelw)
@@ -8,12 +8,12 @@
 🚀 **OpenTelemetry made easy for Golang**  
 ✨ **The one-stop place for Golang & OpenTelemetry** 
 
-Lightweight OpenTelemetry wrapper with plug-and-play examples for many observability platforms.
-Simplifies OpenTelemetry setup and usage in Go.
+Lightweight OpenTelemetry toolkit for Go, with plug-and-play examples for many observability platforms.
+Simplifies setup by wrapping OpenTelemetry with `Configure` and `Shutdown` utility functions — hence the name `go-otelw`, Go OpenTelemetry Wrapper.
 
 Pronounced /ˈɡuːtldʌb/
 
-Examples included:
+Observability backend examples included:
   * [Datadog](docs/datadog.md)
   * [Dynatrace](docs/dynatrace.md)
   * [Elasticsearch Kibana](docs/elasticsearch-kibana.md)
@@ -52,8 +52,8 @@ By modifying the OTEL Collector's config.yml, the telemetry flow can be directed
   * [Uptrace](./docs/uptrace.md)
 
 ## Package Content
-* The [wrapper](./otelw/) itself
-* Usage [example](./cmd/example/) - HTTP Echo Service
+* The OpenTelemetry [Wrapper](./otelw/) itself
+* Usage [Example](./cmd/example/) - HTTP Echo Service
 * Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
 * [Config](./config/) files for 3rd-party dependencies
 	* [Grafana](./config/grafana/)
@@ -67,7 +67,7 @@ By modifying the OTEL Collector's config.yml, the telemetry flow can be directed
 ## How to Integrate OpenTelemetry with go-otelw
 ### Install
 ```bash
-go get github.com/yolkhovyy/go-otelw
+go get github.com/yolkhovyy/go-otelw@latest
 ```
 
 ### Config Types
