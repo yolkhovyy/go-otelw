@@ -6,12 +6,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/yolkhovyy/go-otelw)](https://goreportcard.com/report/github.com/yolkhovyy/go-otelw)
 
 🚀 **OpenTelemetry made easy for Golang**  
-✨ **The one-stop place for Golang & OpenTelemetry** 
+✨ **The one-stop place for Golang & OpenTelemetry**  
+🌀 **Helps to wrap your head around OpenTelemetry**  
 
 Lightweight OpenTelemetry toolkit for Go, with plug-and-play examples for many observability platforms.
-Simplifies setup by wrapping OpenTelemetry with `Configure` and `Shutdown` utility functions — hence the name `go-otelw`, Go OpenTelemetry Wrapper.
-
-Pronounced /ˈɡuːtldʌb/
+Simplifies setup by wrapping OpenTelemetry with `Configure` and `Shutdown` utility functions — hence the name `go-otelw` which is pronounced /ˈɡuːtldʌb/, short for Go OpenTelemetry Wrapper.
 
 Observability backend examples included:
   * [Datadog](docs/datadog.md)
@@ -26,10 +25,10 @@ Observability backend examples included:
   * [OpenObserve](./docs/openobserve.md)
   * [Uptrace](./docs/uptrace.md)
 
-⚠️ This project is pre-1.0 and may change.
+⚠️ This project is pre-v1.0.0 and may change.
 
 ## Overview
-By modifying the OTEL Collector's config.yml, the telemetry flow can be directed to any OTEL-compatible backend—or even to multiple backends simultaneously. The diagram below illustrates this process.
+The diagram below illustrates how telemetry from the Example service, instrumented with `go-otelw`, can be routed to any OTEL-compatible backend—or to multiple backends at once. Simply instrument your service with `go-otelw` and use the provided OTEL Collector configuration examples to route telemetry to the observability backend of your choice.
 
 ![Overview](./docs/diagrams/overview.png)
 
