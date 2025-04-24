@@ -3,7 +3,7 @@ title OpenTelemetry with go-otelw and OTEL Collector
 left to right direction
 skinparam handwritten true
 
-agent "Example\ngo-otelw\n--\nconfig.yml" as EX
+collections "Example\ngo-otelw\n--\nconfig.yml" as EX
 cloud "OTEL\nCollector\n--\nconfig.yml" as OC
 
 cloud "Datadog" as DD
@@ -27,8 +27,9 @@ OC --->> DT
 OC --->> DD
 
 note bottom of EX
-Telemetry
-Emitter:
+Services
+emitting
+telemetry:
 * logs
 * traces
 * metrics

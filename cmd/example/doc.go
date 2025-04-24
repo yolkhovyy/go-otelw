@@ -1,2 +1,2 @@
-// Package `main` provides OpenTelemetry Wrapper usage example.
+// Provides OpenTelemetry Wrapper usage example.
 package main

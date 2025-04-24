@@ -1,7 +1,7 @@
-// Package slogw provides a convenience wrapper around the
-// `log/slog` (see https://pkg.go.dev/log/slog) package.
+// provides a convenience wrapper around the
+// log/slog (see https://pkg.go.dev/log/slog) package.
 //
-// This wrapper simplifies logging configuration and shutdown, and provides
+// Simplifies logging configuration and shutdown, and provides
 // interoperability with OpenTelemetry.
 //
 // Usage:

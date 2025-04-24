@@ -1,2 +1,2 @@
-// Package `otelw` provides OpenTelemetry Wrapper connection configuration types and utilities.
+// provides GO-OTELW configuration types and utilities.
 package otelw

@@ -1,7 +1,7 @@
-// Package tracew provides a convenience wrapper around the
-// OpenTelemetry SDK `trace` (see go.opentelemetry.io/otel/sdk/trace) package.
+// provides a convenience wrapper around the
+// OpenTelemetry SDK trace (see go.opentelemetry.io/otel/sdk/trace) package.
 //
-// This wrapper simplifies tracing configuration and shutdown.
+// simplifies tracing configuration and shutdown.
 //
 // Usage:
 //

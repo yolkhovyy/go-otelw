@@ -1,5 +1,5 @@
-// Package tracew provides a convenience wrapper around the
-// OpenTelemetry SDK `metric` (see go.opentelemetry.io/otel/sdk/metric) package.
+// Provides a convenience wrapper around the
+// OpenTelemetry SDK metric (see go.opentelemetry.io/otel/sdk/metric) package.
 //
 // This wrapper simplifies metric configuration and shutdown.
 //

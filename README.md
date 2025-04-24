@@ -73,9 +73,14 @@ go get github.com/yolkhovyy/go-otelw@latest
 `go-otelw` provides convenience config types for logger, tracer, metric in [otelw/config.go](https://github.com/yolkhovyy/go-otelw/blob/main/otelw/config.go#L11-L15)
 ```go
 type Config struct {
-	Logger slogw.Config   `yaml:"logger" mapstructure:"Logger"` // Logging configuration
-	Tracer tracew.Config  `yaml:"tracer" mapstructure:"Tracer"` // Tracing configuration
-	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"` // Metrics configuration
+	// Logging configuration
+	Logger slogw.Config   `yaml:"logger" mapstructure:"Logger"`
+	
+	// Tracing configuration
+	Tracer tracew.Config  `yaml:"tracer" mapstructure:"Tracer"`
+	
+	// Metrics configuration
+	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"`
 }
 ```
 and OTEL Collector in [otelw/collector/config.go](https://github.com/yolkhovyy/go-otelw/blob/main/otelw/collector/config.go#L6-L18)

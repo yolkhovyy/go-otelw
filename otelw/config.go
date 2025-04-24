@@ -9,9 +9,14 @@ import (
 // Config defines the configuration structure for the OpenTelemetry wrapper.
 // It includes configurations for logging, tracing, and metrics.
 type Config struct {
-	Logger slogw.Config   `yaml:"logger" mapstructure:"Logger"` // Logging configuration
-	Tracer tracew.Config  `yaml:"tracer" mapstructure:"Tracer"` // Tracing configuration
-	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"` // Metrics configuration
+	// Logging configuration
+	Logger slogw.Config `yaml:"logger" mapstructure:"Logger"`
+
+	// Tracing configuration
+	Tracer tracew.Config `yaml:"tracer" mapstructure:"Tracer"`
+
+	// Metrics configuration
+	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"`
 }
 
 // Defaults returns a map containing default configuration values

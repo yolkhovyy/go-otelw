@@ -1,2 +1,2 @@
-// Package `cmd` provides OpenTelemetry Wrapper usage example(s).
+// Provides OpenTelemetry Wrapper usage example(s).
 package cmd
