@@ -6,6 +6,10 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+  docker_stats:
+    endpoint: "unix:///var/run/docker.sock"
+    timeout: 5s
+    collection_interval: 10s
 
 exporters:
   debug:
@@ -34,7 +38,7 @@ service:
       processors: [batch]
       exporters: [loki, debug]
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, docker_stats]
       processors: [batch]
       exporters: [prometheus, debug]
 
