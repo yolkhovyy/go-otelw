@@ -1,4 +1,4 @@
-// provides a convenience wrapper around the
+// Provides a convenience wrapper around the
 // OpenTelemetry SDK trace (see go.opentelemetry.io/otel/sdk/trace) package.
 //
 // simplifies tracing configuration and shutdown.

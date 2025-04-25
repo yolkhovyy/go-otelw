@@ -1,4 +1,4 @@
-// provides a convenience wrapper around the
+// Provides a convenience wrapper around the
 // log/slog (see https://pkg.go.dev/log/slog) package.
 //
 // Simplifies logging configuration and shutdown, and provides

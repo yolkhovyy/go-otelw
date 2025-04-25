@@ -1,2 +1,2 @@
-// Provides OpenTelemetry Wrapper usage example(s).
+// Provides go-otelw instrumentation example(s).
 package cmd

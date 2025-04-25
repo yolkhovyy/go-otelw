@@ -1,2 +1,2 @@
-// Provides OpenTelemetry Wrapper usage example.
+// Provides go-otelw instrumentation example.
 package main
