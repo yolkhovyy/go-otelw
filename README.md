@@ -1,16 +1,14 @@
-# OpenTelemetry Toolkit for Golang  
+# Golang OpenTelemetry Toolkit  
 
 ![License](https://img.shields.io/github/license/yolkhovyy/go-otelw)
 ![GitHub Tag](https://img.shields.io/github/v/tag/yolkhovyy/go-otelw)
 [![Go Reference](https://pkg.go.dev/badge/github.com/yolkhovyy/go-otelw.svg)](https://pkg.go.dev/github.com/yolkhovyy/go-otelw)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yolkhovyy/go-otelw)](https://goreportcard.com/report/github.com/yolkhovyy/go-otelw)
 
-🚀 **OpenTelemetry made easy for Golang**  
-✨ **The one-stop place for Golang & OpenTelemetry**  
-🌀 **Helps to wrap your head around OpenTelemetry**  
+Golang OpenTelemetry Toolkit includes: 
 
-Lightweight OpenTelemetry toolkit for Go, with plug-and-play examples for many observability platforms.
-Simplifies setup by wrapping OpenTelemetry with `Configure()` and `Shutdown()` utility functions — hence the name `go-otelw` which is pronounced /ˈɡuːtldʌb/, short for Go OpenTelemetry Wrapper.
+🚀 **Golang utilities for simple OpenTelemetry instrumentation, configuration and shutdown**  
+✨ **OTEL Collector configuration examples for popular observability platforms**  
 
 Observability backend examples included:
   * [Datadog](docs/datadog.md)
@@ -25,43 +23,36 @@ Observability backend examples included:
   * [OpenObserve](./docs/openobserve.md)
   * [Uptrace](./docs/uptrace.md)
 
+
 ⚠️ This project is pre-v1.0.0 and may change.
 
-## Content
-* [Overview](#overview)
-* [How to Integrate OpenTelemetry with go-otelw](#how-to-integrate-opentelemetry-with-go-otelw)
-  * [Config Types](#config-types)
-  * [Configure and Shutdown Utility Functions](#configure-and-shutdown-utility-functions)
-  * [Tracing and Logging Examples](#tracing-and-logging-examples)
-* Build and Run the Examples
-  * [Datadog](docs/datadog.md)
-  * [Dynatrace](docs/dynatrace.md)
-  * [Elasticsearch Kibana](docs/elasticsearch-kibana.md)
-  * [Grafana Cloud](docs/grafana-cloud.md)
-  * [Grafana Cloud Alloy](./docs/grafana-cloud-alloy.md)
-  * [Grafana Loki, Jaeger, Prometheus](./docs/grafana-loki-jaeger-prometheus.md)
-  * [Grafana Loki, Tempo, Prometheus](./docs/grafana-loki-tempo-prometheus.md)
-  * [Honeycomb](./docs/honeycomb.md)
-  * [New Relic](./docs/new-relic.md)
-  * [OpenObserve](./docs/openobserve.md)
-  * [Uptrace](./docs/uptrace.md)
+`go-otelw` is pronounced /ˈɡuːtldʌb/- short for Go OpenTelemetry Wrapper.
 
-## Overview
-The diagram below illustrates how telemetry from the Example service, instrumented and configured with `go-otelw`, can be routed to any OTEL-compatible backend—or even to multiple backends at once. Simply instrument and configure your service with `go-otelw` and use the provided OTEL Collector configuration examples to route telemetry to the observability backend of your choice.
+## Content
+* [Toolkit Overview](#toolkit-overview)
+* [How to Use go-otelw](#how-to-use-go-otelw)
+  * [Config Types](#config-types)
+  * [Configure and Shutdown Utilities](#configure-and-shutdown-utilities)
+  * [Tracing and Logging Examples](#tracing-and-logging-examples)
+
+## Toolkit Overview
+The diagram below illustrates how telemetry from the Example service, instrumented and configured with `go-otelw`, can be routed via the OTEL Collector to any OTEL-compatible backend—or even to multiple backends at once. 
+
+Simply instrument and configure your services with `go-otelw`, and use provided OTEL Collector configuration examples to route telemetry to the observability backend of your choice.
 
 ![Overview](./docs/diagrams/overview.png)
 
-💡The main idea of this toolkit is to abstract away the complexity of OpenTelemetry setup using simple `Configure()` and `Shutdown()` functions calls. For example, configuring and shutting down a tracer looks like this:
+💡 The main purpose of this toolkit is to provide `Configure()` and `Shutdown()` utilities which abstract away the complexity of OpenTelemetry setup and shutdown. For example, configuring and shutting down a tracer looks like this:
 ```golang
 	tracer, err := tracew.Configure(ctx, config.Tracer, other params)
 	...
 	defer func() {
 		err := tracer.Shutdown(ctx)
 		...
-	}
+	}()
 ```
 
-where [config.Tracer](./otelw/config.go#L11-L20) is loaded from [.env](./.env.local) variables:
+where [config.Tracer](./otelw/config.go#L11-L20) is loaded from [environment](./.env.local) variables:
 ```env
 ...
 EXAMPLE_TRACER_ENABLE=true
@@ -70,7 +61,7 @@ EXAMPLE_TRACER_COLLECTOR_CONNECTION=otel-collector:4317
 ...
 ```
 
-or, from a configuration file in JSON or [YAML](./cmd/example/config.yml) format:
+or, from a configuration file, e.g. in [YAML](./cmd/example/config.yml) format:
 ```yml
 ...
 Tracer:
@@ -81,22 +72,15 @@ Tracer:
 ...
 ```
 
-💡 The second main goal of this toolkit is to provite OTEL Collector [configuration examples](./config/) for many popular observability backends—both commercial and open source.
+💡 This toolkit also provides OTEL Collector configuration [examples](./config/) for popular observability backends—both commercial and open source.
 
 ## Package Content
-* The OpenTelemetry [Wrapper](./otelw/) itself
+* Golang OpenTelemetry [Wrapper](./otelw/)
+* OTEL Collector configuration [Examples](./config/otel-collector/)
 * Usage [Example](./cmd/example/) - HTTP Echo Service
 * Docker [Compose](./docker-compose.yml) to run the Echo Service and its dependencies
-* [Config](./config/) files for 3rd-party dependencies
-	* [Grafana](./config/grafana/)
-	* [Jaeger](./config/jaeger/)
-	* [Loki](./config/loki/)
-	* [Prometheus](./config/prometheus/)
-	* [Promtail](./config/promtail/)
-	* [Tempo](./config/tempo/)
-	* [Uptrace](./config/uptrace/)
 
-## How to Integrate OpenTelemetry with go-otelw
+## How to Use go-otelw
 ### Install
 ```bash
 go get github.com/yolkhovyy/go-otelw@latest
@@ -132,9 +116,9 @@ type Config struct {
 	TLS TLS `yaml:"tls" mapstructure:"tls"`
 }
 ```
-`go-otelw` configuration can be loaded from YAML or JSON files on application startup. An example of yaml configuration is in [cmd/example/config.yml](./cmd/example/config.yml)
+`go-otelw` configuration can be loaded from YAML or JSON files on application startup. An example of YAML configuration is in [cmd/example/config.yml](./cmd/example/config.yml)
 
-### Configure and Shutdown Utility Functions
+### Configure and Shutdown Utilities
 `go-otelw` simplifies the use of OpenTelemetry by providing `Configure()` and `Shutdown()` utility functions for logger, tracer and metric.
 
 #### All-in Configuration and Shutdown Example
