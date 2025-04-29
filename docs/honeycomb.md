@@ -32,5 +32,5 @@ make doco-build-up HC=1
 
 **Stop the services:**
 ```bash
-make doco-down DD=1
+make doco-down HC=1
 ```
