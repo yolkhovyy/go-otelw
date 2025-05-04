@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yolkhovyy/go-otelw/otelw/collector"
+	"github.com/yolkhovyy/go-otelw/otelw/otlp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
@@ -28,12 +28,12 @@ func exporter( //nolint:ireturn
 		exporter, err = stdouttrace.New(stdouttrace.WithWriter(io.Discard))
 	case len(writers) > 0:
 		exporter, err = stdoutExporter(writers...)
-	case config.Collector.Protocol == collector.GRPC:
+	case config.OTLP.Protocol == otlp.GRPC:
 		exporter, err = grpcExporter(ctx, config)
-	case config.Collector.Protocol == collector.HTTP:
+	case config.OTLP.Protocol == otlp.HTTP:
 		exporter, err = httpExporter(ctx, config)
 	default:
-		err = fmt.Errorf("tracew exporter: %w %s", ErrInvalidProtocol, config.Collector.Protocol)
+		err = fmt.Errorf("tracew exporter: %w %s", ErrInvalidProtocol, config.OTLP.Protocol)
 	}
 
 	return exporter, err
@@ -62,14 +62,14 @@ func grpcExporter( //nolint:ireturn
 	config Config,
 ) (sdktrace.SpanExporter, error) {
 	options := []otlptracegrpc.Option{}
-	if config.Collector.Connection != "" {
-		options = append(options, otlptracegrpc.WithEndpoint(config.Collector.Connection))
+	if config.OTLP.Endpoint != "" {
+		options = append(options, otlptracegrpc.WithEndpoint(config.OTLP.Endpoint))
 	}
 
-	if config.Collector.Insecure {
+	if config.OTLP.Insecure {
 		options = append(options, otlptracegrpc.WithInsecure())
 	} else {
-		tslCreds, err := collector.TLSCredentials(config.Collector)
+		tslCreds, err := otlp.TLSCredentials(config.OTLP)
 		if err != nil {
 			return nil, fmt.Errorf("tracew otlp grpc tls credentials: %w", err)
 		}
@@ -91,14 +91,14 @@ func httpExporter( //nolint:ireturn
 	config Config,
 ) (sdktrace.SpanExporter, error) {
 	options := []otlptracehttp.Option{}
-	if config.Collector.Connection != "" {
-		options = append(options, otlptracehttp.WithEndpoint(config.Collector.Connection))
+	if config.OTLP.Endpoint != "" {
+		options = append(options, otlptracehttp.WithEndpoint(config.OTLP.Endpoint))
 	}
 
-	if config.Collector.Insecure {
+	if config.OTLP.Insecure {
 		options = append(options, otlptracehttp.WithInsecure())
 	} else {
-		tlsConfig, err := collector.TLSConfig(config.Collector)
+		tlsConfig, err := otlp.TLSConfig(config.OTLP)
 		if err != nil {
 			return nil, fmt.Errorf("tracew otlp http tls config: %w", err)
 		}

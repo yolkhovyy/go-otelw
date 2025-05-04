@@ -19,16 +19,16 @@ services:
       - EXAMPLE_HTTP_SHUTDOWNTIMEOUT
       - EXAMPLE_HTTP_READHEADERTIMEOUT
       - EXAMPLE_LOGGER_ENABLE
-      - EXAMPLE_LOGGER_COLLECTOR_PROTOCOL
-      - EXAMPLE_LOGGER_COLLECTOR_CONNECTION
+      - EXAMPLE_LOGGER_OTLP_PROTOCOL
+      - EXAMPLE_LOGGER_OTLP_ENDPOINT
       - EXAMPLE_TRACER_ENABLE
-      - EXAMPLE_TRACER_COLLECTOR_PROTOCOL
-      - EXAMPLE_TRACER_COLLECTOR_CONNECTION
+      - EXAMPLE_TRACER_OTLP_PROTOCOL
+      - EXAMPLE_TRACER_OTLP_ENDPOINT
       - EXAMPLE_METRIC_ENABLE
       - EXAMPLE_METRIC_PROMETHEUS
       - EXAMPLE_METRIC_INTERVAL
-      - EXAMPLE_METRIC_COLLECTOR_PROTOCOL
-      - EXAMPLE_METRIC_COLLECTOR_CONNECTION
+      - EXAMPLE_METRIC_OTLP_PROTOCOL
+      - EXAMPLE_METRIC_OTLP_ENDPOINT
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -36,7 +36,7 @@ services:
     command: ["--config=/etc/otel-collector-config.yml"]
     restart: unless-stopped
     volumes:
-      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
+      - ./config/otel-collector/${OTEL_OTLP_CONFIG:-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
     environment:
       - HC_ENDPOINT
       - HC_TEAM

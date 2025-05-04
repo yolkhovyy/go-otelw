@@ -1,4 +1,4 @@
-package collector
+package otlp
 
 import (
 	"crypto/tls"
@@ -27,12 +27,12 @@ func TLSCredentials( //nolint:ireturn
 // TLSConfig generates a tls.Config from the provided Config structure.
 // It loads the client certificate, key, and CA certificate to configure mutual TLS authentication.
 func TLSConfig(config Config) (*tls.Config, error) {
-	cert, err := tls.LoadX509KeyPair(config.TLS.ClientCrt, config.TLS.ClientKey)
+	cert, err := tls.LoadX509KeyPair(config.ClientCertificate, config.ClientKey)
 	if err != nil {
 		return nil, fmt.Errorf("load client cert: %w", err)
 	}
 
-	caCert, err := os.ReadFile(config.TLS.CAFile)
+	caCert, err := os.ReadFile(config.Certificate)
 	if err != nil {
 		return nil, fmt.Errorf("load ca cert: %w", err)
 	}
@@ -47,7 +47,7 @@ func TLSConfig(config Config) (*tls.Config, error) {
 		MinVersion:         tls.VersionTLS12,
 		Certificates:       []tls.Certificate{cert},
 		RootCAs:            caCertPool,
-		ServerName:         config.Connection,
+		ServerName:         config.Endpoint,
 	}
 
 	return tlsConfig, nil

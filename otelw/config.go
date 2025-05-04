@@ -10,13 +10,13 @@ import (
 // It includes configurations for logging, tracing, and metrics.
 type Config struct {
 	// Logging configuration
-	Logger slogw.Config `yaml:"logger" mapstructure:"Logger"`
+	Logger slogw.Config `json:"logger" yaml:"logger" mapstructure:"Logger"`
 
 	// Tracing configuration
-	Tracer tracew.Config `yaml:"tracer" mapstructure:"Tracer"`
+	Tracer tracew.Config `json:"tracer" yaml:"tracer" mapstructure:"Tracer"`
 
 	// Metrics configuration
-	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"`
+	Metric metricw.Config `json:"metric" yaml:"metric" mapstructure:"Metric"`
 }
 
 // Defaults returns a map containing default configuration values

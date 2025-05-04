@@ -3,36 +3,36 @@ package slogw
 import (
 	"time"
 
-	"github.com/yolkhovyy/go-otelw/otelw/collector"
+	"github.com/yolkhovyy/go-otelw/otelw/otlp"
 )
 
 // Config holds the configuration settings for the slogw package.
 // It includes options for enabling logging, specifying the log format,
-// setting the log level, and configuring the collector.
+// setting the log level, and configuring the otlp protocol.
 type Config struct {
 	// Enable indicates whether logging is enabled.
-	Enable bool `yaml:"enable" mapstructure:"enable"`
+	Enable bool `json:"enable" yaml:"enable" mapstructure:"enable"`
 
 	// Caller specifies whether to include caller information in logs.
-	Caller bool `yaml:"caller" mapstructure:"Caller"`
+	Caller bool `json:"caller" yaml:"caller" mapstructure:"Caller"`
 
 	// Format defines the output format of the logs - json (default), console.
-	Format Format `yaml:"format" mapstructure:"Format"`
+	Format Format `json:"format" yaml:"format" mapstructure:"Format"`
 
 	// Level sets the minimum log level - error, warn, info (default), debug.
-	Level string `yaml:"level" mapstructure:"Level"`
+	Level string `json:"level" yaml:"level" mapstructure:"Level"`
 
 	// TimeFormat specifies the format for timestamps in logs.
-	TimeFormat string `yaml:"timeFormat" mapstructure:"TimeFormat"`
+	TimeFormat string `json:"timeFormat" yaml:"timeFormat" mapstructure:"TimeFormat"`
 
-	// Collector holds the configuration for the OTEL collector.
-	Collector collector.Config `yaml:"collector" mapstructure:"Collector"`
+	// OTLP holds the configuration for the OTEL protocol.
+	OTLP otlp.Config `json:"otlp" yaml:"otlp" mapstructure:"OTLP"`
 }
 
 // Defaults returns a map of default configuration values for the slogw package.
 // It includes default settings for enabling logging, caller information,
 // log format, log level, and time format. It also incorporates defaults
-// for the collector package.
+// for the otlp package.
 func Defaults() map[string]any {
 	defaults := make(map[string]any)
 
@@ -42,8 +42,8 @@ func Defaults() map[string]any {
 	defaults["Level"] = DefaultLevel
 	defaults["TimeFormat"] = DefaultTimeFormat
 
-	for k, v := range collector.Defaults() {
-		defaults["Collector."+k] = v
+	for k, v := range otlp.Defaults() {
+		defaults["OTLP."+k] = v
 	}
 
 	return defaults

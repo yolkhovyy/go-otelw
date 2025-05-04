@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yolkhovyy/go-otelw/otelw/collector"
+	"github.com/yolkhovyy/go-otelw/otelw/otlp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp"
 	"go.opentelemetry.io/otel/exporters/stdout/stdoutlog"
@@ -28,12 +28,12 @@ func exporter( //nolint:ireturn
 		exporter, err = stdoutlog.New(stdoutlog.WithWriter(io.Discard))
 	case len(writers) > 0:
 		exporter, err = stdoutExporter(writers...)
-	case config.Collector.Protocol == collector.GRPC:
+	case config.OTLP.Protocol == otlp.GRPC:
 		exporter, err = grpcExporter(ctx, config)
-	case config.Collector.Protocol == collector.HTTP:
+	case config.OTLP.Protocol == otlp.HTTP:
 		exporter, err = httpExporter(ctx, config)
 	default:
-		err = fmt.Errorf("slogw exporter: %w %s", ErrInvalidProtocol, config.Collector.Protocol)
+		err = fmt.Errorf("slogw exporter: %w %s", ErrInvalidProtocol, config.OTLP.Protocol)
 	}
 
 	if err != nil {
@@ -68,14 +68,14 @@ func grpcExporter( //nolint:ireturn
 	config Config,
 ) (log.Exporter, error) {
 	options := []otlploggrpc.Option{}
-	if config.Collector.Connection != "" {
-		options = append(options, otlploggrpc.WithEndpoint(config.Collector.Connection))
+	if config.OTLP.Endpoint != "" {
+		options = append(options, otlploggrpc.WithEndpoint(config.OTLP.Endpoint))
 	}
 
-	if config.Collector.Insecure {
+	if config.OTLP.Insecure {
 		options = append(options, otlploggrpc.WithInsecure())
 	} else {
-		tslCreds, err := collector.TLSCredentials(config.Collector)
+		tslCreds, err := otlp.TLSCredentials(config.OTLP)
 		if err != nil {
 			return nil, fmt.Errorf("slogw otlp tls credentials: %w", err)
 		}
@@ -98,14 +98,14 @@ func httpExporter( //nolint:ireturn
 	config Config,
 ) (log.Exporter, error) {
 	options := []otlploghttp.Option{}
-	if config.Collector.Connection != "" {
-		options = append(options, otlploghttp.WithEndpoint(config.Collector.Connection))
+	if config.OTLP.Endpoint != "" {
+		options = append(options, otlploghttp.WithEndpoint(config.OTLP.Endpoint))
 	}
 
-	if config.Collector.Insecure {
+	if config.OTLP.Insecure {
 		options = append(options, otlploghttp.WithInsecure())
 	} else {
-		tlsConfig, err := collector.TLSConfig(config.Collector)
+		tlsConfig, err := otlp.TLSConfig(config.OTLP)
 		if err != nil {
 			return nil, fmt.Errorf("slogw otlp tls config: %w", err)
 		}

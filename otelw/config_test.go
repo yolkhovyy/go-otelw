@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yolkhovyy/go-otelw/otelw/collector"
 	"github.com/yolkhovyy/go-otelw/otelw/metricw"
+	"github.com/yolkhovyy/go-otelw/otelw/otlp"
 	"github.com/yolkhovyy/go-otelw/otelw/slogw"
 	"github.com/yolkhovyy/go-otelw/otelw/tracew"
 	"github.com/yolkhovyy/go-utilities/viperx"
@@ -44,25 +44,25 @@ func TestBaseLoad(t *testing.T) {
 						Format:     slogw.JSON,
 						Level:      "trace",
 						TimeFormat: time.RFC3339Nano,
-						Collector: collector.Config{
-							Protocol:   collector.GRPC,
-							Connection: "foo:4242",
+						OTLP: otlp.Config{
+							Protocol: otlp.GRPC,
+							Endpoint: "foo:4242",
 						},
 					},
 					Tracer: tracew.Config{
 						Enable: true,
-						Collector: collector.Config{
-							Protocol:   collector.GRPC,
-							Connection: "foo:4242",
+						OTLP: otlp.Config{
+							Protocol: otlp.GRPC,
+							Endpoint: "foo:4242",
 						},
 					},
 					Metric: metricw.Config{
 						Enable:     true,
 						Prometheus: true,
 						Interval:   42 * time.Second,
-						Collector: collector.Config{
-							Protocol:   collector.GRPC,
-							Connection: "foo:4242",
+						OTLP: otlp.Config{
+							Protocol: otlp.GRPC,
+							Endpoint: "foo:4242",
 						},
 					},
 				},
@@ -81,25 +81,25 @@ func TestBaseLoad(t *testing.T) {
 						Format:     slogw.DefaultFormat,
 						Level:      slogw.DefaultLevel,
 						TimeFormat: slogw.DefaultTimeFormat,
-						Collector: collector.Config{
-							Protocol:   collector.DefaultProtocol,
-							Connection: collector.DefaultConnection,
+						OTLP: otlp.Config{
+							Protocol: otlp.DefaultProtocol,
+							Endpoint: otlp.DefaultEndpoint,
 						},
 					},
 					Tracer: tracew.Config{
 						Enable: tracew.DefaultEnable,
-						Collector: collector.Config{
-							Protocol:   collector.DefaultProtocol,
-							Connection: collector.DefaultConnection,
+						OTLP: otlp.Config{
+							Protocol: otlp.DefaultProtocol,
+							Endpoint: otlp.DefaultEndpoint,
 						},
 					},
 					Metric: metricw.Config{
 						Enable:     metricw.DefaultEnable,
 						Prometheus: metricw.DefaultPrometheus,
 						Interval:   metricw.DefaultInterval,
-						Collector: collector.Config{
-							Protocol:   collector.DefaultProtocol,
-							Connection: collector.DefaultConnection,
+						OTLP: otlp.Config{
+							Protocol: otlp.DefaultProtocol,
+							Endpoint: otlp.DefaultEndpoint,
 						},
 					},
 				},
