@@ -36,7 +36,7 @@ services:
     command: ["--config=/etc/otel-collector-config.yml"]
     restart: unless-stopped
     volumes:
-      - ./config/otel-collector/${OTEL_OTLP_CONFIG:-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
+      - ./config/otel-collector/${OTEL_COLLECTOR_CONFIG:-grafana-loki-jaeger.yml}:/etc/otel-collector-config.yml
     environment:
       - HC_ENDPOINT
       - HC_TEAM

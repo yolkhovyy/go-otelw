@@ -122,9 +122,9 @@ type Config struct {
 	Certificate string `json:"certificate" yaml:"certificate" mapstructure:"certificate"`
 }
 ```
-`go-otelw` configuration can be loaded from YAML or JSON files on application startup. See sn example in [cmd/example/config.yml](cmd/example/config.yml)
+`go-otelw` configuration can be loaded from YAML or JSON files on application startup. See an example in [cmd/example/config.yml](cmd/example/config.yml)
 
-For fine-grained configuration, you can also use [OpenTelemetry environment cariables](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/).
+For fine-grained configuration, you can also use [OpenTelemetry environment variables](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/).
 
 ### Configure and Shutdown Utilities
 `go-otelw` simplifies the use of OpenTelemetry by providing `Configure()` and `Shutdown()` utility functions for logger, tracer and metric.
