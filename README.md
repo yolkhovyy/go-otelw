@@ -56,7 +56,6 @@ where [config.Tracer](otelw/config.go#L11-L20) is loaded from [environment](./.e
 ```env
 ...
 EXAMPLE_TRACER_ENABLE=true
-EXAMPLE_TRACER_OTLP_PROTOCOL=grpc
 EXAMPLE_TRACER_OTLP_ENDPOINT=otel-collector:4317
 ...
 ```
@@ -67,7 +66,6 @@ or, from a configuration file, e.g. in [YAML](cmd/example/config.yml) format:
 Tracer:
   Enable: true
   OTLP:
-    Protocol: grpc
     Endpoint: localhost:4318
 ...
 ```
@@ -91,13 +89,13 @@ For simplicity, `go-otelw` provides minimal configuration types for logger, trac
 ```go
 type Config struct {
 	// Logging configuration
-	Logger slogw.Config   `yaml:"logger" mapstructure:"Logger"`
-	
+	Logger slogw.Config `json:"logger" yaml:"logger" mapstructure:"Logger"`
+
 	// Tracing configuration
-	Tracer tracew.Config  `yaml:"tracer" mapstructure:"Tracer"`
-	
+	Tracer tracew.Config `json:"tracer" yaml:"tracer" mapstructure:"Tracer"`
+
 	// Metrics configuration
-	Metric metricw.Config `yaml:"metric" mapstructure:"Metric"`
+	Metric metricw.Config `json:"metric" yaml:"metric" mapstructure:"Metric"`
 }
 ```
 It also includes configuration for the OTLP protocol used to connect to the OTEL Collector, defined in [otelw/otlp/config.go](otelw/otlp/config.go#L6-L24):
