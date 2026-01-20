@@ -94,12 +94,14 @@ func Configure( //nolint:cyclop,funlen
 }
 
 // Shutdown gracefully shuts down the Logger, ensuring all logs are flushed.
-func (l *Logger) Shutdown(ctx context.Context) error {
+//
+//nolint:contextcheck
+func (l *Logger) Shutdown(_ context.Context) error {
 	var errs error
 
 	const timeout = 2 * time.Second
 
-	ctx, cancel := context.WithTimeout(ctx, timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	if l.provider != nil {
