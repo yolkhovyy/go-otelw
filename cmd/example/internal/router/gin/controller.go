@@ -18,6 +18,7 @@ func New(domain *domain.Controller, middleware ...gin.HandlerFunc) *Controller {
 	}
 
 	gin.SetMode("release")
+
 	engine := gin.New()
 	engine.RedirectTrailingSlash = false
 	engine.Use(middleware...)

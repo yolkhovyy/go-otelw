@@ -10,7 +10,8 @@ import (
 
 type Config struct {
 	otelw.Config `yaml:",inline" mapstructure:",squash"`
-	HTTP         httpserver.Config `yaml:"http" mapstructure:"HTTP"`
+
+	HTTP httpserver.Config `yaml:"http" mapstructure:"HTTP"`
 }
 
 func (c *Config) Load(configFile string, prefix string) error {

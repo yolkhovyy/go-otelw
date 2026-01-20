@@ -28,6 +28,7 @@ func (u Controller) Echo(ctx context.Context, input string, count int) (string, 
 
 		go func() {
 			defer waitGroup.Done()
+
 			worker(ctx, i, input, outChan, errChan)
 		}()
 	}
@@ -81,6 +82,7 @@ func worker(
 	ctx, span := tracew.Start(ctx, "echo", "worker",
 		trace.WithAttributes(attribute.Int("sequence", sequence)),
 	)
+
 	defer func() { span.End(err) }()
 
 	logger := slogw.DefaultLogger()
@@ -108,10 +110,12 @@ func worker(
 		err = fmt.Errorf("%s: %w", msg, ErrTimeout)
 		logger.ErrorContext(ctx, msg, append(logAttrs, slog.String("error", err.Error()))...)
 		span.AddEvent(msg, trace.WithAttributes(append(eventAttrs, attribute.String("error", err.Error()))...))
+
 		errChan <- err
 	} else {
 		logger.InfoContext(ctx, msg, logAttrs...)
 		span.AddEvent(msg, trace.WithAttributes(eventAttrs...))
+
 		outChan <- input
 	}
 }

@@ -2,5 +2,5 @@ package tracew
 
 import "errors"
 
-// ErrInvalidFormat is returned when config.Format is not qual to slogw.Console or slogw.JSON.
+// ErrInvalidProtocol is returned when config.Protocol is not equal to otlp.GRPC or otlp.HTTP.
 var ErrInvalidProtocol = errors.New("invalid protocol")

@@ -1,26 +1,37 @@
 ---
-linters:
-  enable-all: true
-  disable:
-    # Go formatter does not align tags as golangci-lint expects
-    - tagalign
-    # Not using yet
-    - depguard
-    # There are TODOs
-    - godox
-    # Not using yet
-    - nolintlint
-    # FIXME
-    - exhaustruct
-    # Not using yet
-    - testpackage
-    # Deprecated
-    - tenv
+version: "2"
 
-linters-settings:
-  varnamelen:
-    ignore-type-assert-ok: true
-    ignore-decls:
-      - t testing.T
-      - i int
-      - j int
+linters:
+  default: all
+  disable:
+    - tagalign      # Go formatter does not align tags as golangci-lint expects
+    - depguard      # Not using yet
+    - godox         # There are TODOs
+    - nolintlint    # Not using yet
+    - exhaustruct   # FIXME
+    - testpackage   # Not using yet
+    - revive
+    - noinlineerr
+    - wsl
+
+  settings:
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+    tagliatelle:
+      case:
+        use-field-name: true
+        rules:
+          json: snake
+    varnamelen:
+      ignore-type-assert-ok: true
+      ignore-decls:
+        - t testing.T
+        - i int
+        - j int
+
+  exclusions:
+    paths:
+      - "mock_.*\\.go"
+      - ".*\\.pb\\.go"

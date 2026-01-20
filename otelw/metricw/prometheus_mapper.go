@@ -11,7 +11,7 @@ import (
 	"go.opentelemetry.io/otel/metric"
 )
 
-// Maps metrics provided by Prometheus collectors to otel metrics.
+// RegisterPrometheusCollectors maps metrics provided by Prometheus collectors to otel metrics.
 // The metrics are sent via otlp http/grpc to Otel Collector.
 func (m *Metric) RegisterPrometheusCollectors(ctx context.Context, colls ...prometheus.Collector) error {
 	m.prometheusRegistry = prometheus.NewRegistry()

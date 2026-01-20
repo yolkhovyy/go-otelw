@@ -23,7 +23,7 @@ type Config struct {
 	Level string `json:"level" yaml:"level" mapstructure:"Level"`
 
 	// TimeFormat specifies the format for timestamps in logs.
-	TimeFormat string `json:"timeFormat" yaml:"timeFormat" mapstructure:"TimeFormat"`
+	TimeFormat string `json:"time_format" yaml:"timeFormat" mapstructure:"TimeFormat"`
 
 	// OTLP holds the configuration for the OTEL protocol.
 	OTLP otlp.Config `json:"otlp" yaml:"otlp" mapstructure:"OTLP"`

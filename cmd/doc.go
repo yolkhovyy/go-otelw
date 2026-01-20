@@ -1,2 +1,2 @@
-// Provides go-otelw instrumentation example(s).
+// Package cmd provides go-otelw instrumentation example(s).
 package cmd

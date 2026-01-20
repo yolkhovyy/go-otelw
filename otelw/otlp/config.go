@@ -14,10 +14,10 @@ type Config struct {
 	Insecure bool `json:"insecure" yaml:"insecure" mapstructure:"insecure"`
 
 	// Path to the client certificate file.
-	ClientCertificate string `json:"clientCertificate" yaml:"clientCertificate" mapstructure:"clientCertificate"`
+	ClientCertificate string `json:"client_certificate" yaml:"clientCertificate" mapstructure:"clientCertificate"`
 
 	// Path to the client private key file.
-	ClientKey string `json:"clientKey" yaml:"clientKey" mapstructure:"clientKey"`
+	ClientKey string `json:"client_key" yaml:"clientKey" mapstructure:"clientKey"`
 
 	// Path to the Certificate Authority (CA) file.
 	Certificate string `json:"certificate" yaml:"certificate" mapstructure:"certificate"`
@@ -33,9 +33,9 @@ func Defaults() map[string]any {
 }
 
 const (
-	// Default protocol for telemetry collection (gRPC).
+	// DefaultProtocol for telemetry collection (gRPC).
 	DefaultProtocol = GRPC
 
-	// Default otlp endpoint.
+	// DefaultEndpoint for the OTLP endpoint.
 	DefaultEndpoint = "localhost:4317"
 )

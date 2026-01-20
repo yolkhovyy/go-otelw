@@ -14,6 +14,7 @@ import (
 
 type Server struct {
 	*http.Server
+
 	config Config
 }
 
@@ -36,9 +37,9 @@ func (s *Server) Run(ctx context.Context) error {
 
 	go func() {
 		logger.InfoContext(ctx, "http server starting",
-			slog.String("addr", s.Server.Addr))
+			slog.String("addr", s.Addr))
 
-		if err := s.Server.ListenAndServe(); err != nil {
+		if err := s.ListenAndServe(); err != nil {
 			errChan <- err
 		}
 
@@ -58,7 +59,7 @@ func (s *Server) Run(ctx context.Context) error {
 	ctx, timeout := context.WithTimeout(ctx, s.config.ShutdownTimeout)
 	defer timeout()
 
-	if err := s.Server.Shutdown(ctx); err != nil {
+	if err := s.Shutdown(ctx); err != nil {
 		return fmt.Errorf("http server shutdown: %w", err)
 	}
 

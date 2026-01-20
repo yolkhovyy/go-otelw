@@ -6,7 +6,7 @@ import (
 	"github.com/yolkhovyy/go-utilities/stringx"
 )
 
-// Logging format.
+// Format of logging.
 type Format string
 
 const (
@@ -21,7 +21,7 @@ func (f *Format) String() string {
 
 // UnmarshalYAML unmarshals a YAML value into a Format, validating the format.
 // It returns an error if the format is invalid.
-func (f *Format) UnmarshalYAML(unmarshal func(interface{}) error) error {
+func (f *Format) UnmarshalYAML(unmarshal func(any) error) error {
 	var strFormat string
 	if err := unmarshal(&strFormat); err != nil {
 		return err

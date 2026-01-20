@@ -42,7 +42,7 @@ const (
 	// DefaultEnable is the default setting for enabling metrics.
 	DefaultEnable = false
 
-	// DefaultEnable is the default setting for enablingPrometheus metric mapping.
+	// DefaultPrometheus is the default setting for enablingPrometheus metric mapping.
 	DefaultPrometheus = false
 
 	// DefaultInterval holds the default metrics collection interval.

@@ -1,4 +1,4 @@
-// Provides a convenience wrapper around the
+// Package metricw provides a convenience wrapper around the
 // OpenTelemetry SDK metric (see go.opentelemetry.io/otel/sdk/metric) package.
 //
 // This wrapper simplifies metric configuration and shutdown.

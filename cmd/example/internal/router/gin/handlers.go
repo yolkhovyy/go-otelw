@@ -11,6 +11,7 @@ import (
 
 func (c *Controller) echo(gctx *gin.Context) {
 	const defaultCount int = 5
+
 	count := defaultCount
 
 	scount := gctx.Query("count")

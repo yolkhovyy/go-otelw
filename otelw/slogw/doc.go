@@ -1,4 +1,4 @@
-// Provides a convenience wrapper around the
+// Package slogw provides a convenience wrapper around the
 // log/slog (see https://pkg.go.dev/log/slog) package.
 //
 // Simplifies logging configuration and shutdown, and provides

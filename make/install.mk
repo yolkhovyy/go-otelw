@@ -4,7 +4,7 @@
 install-tools: ## install tools
 	@echo "🛠️  Installing tools"
 	@go install github.com/boumenot/gocover-cobertura@latest
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	@go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 	@go install github.com/jstemmer/go-junit-report@latest
 	@go install github.com/powerman/gotmpl@latest
 	@go install github.com/thomaspoignant/yamllint-checkstyle@latest

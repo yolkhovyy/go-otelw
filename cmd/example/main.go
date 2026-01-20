@@ -39,6 +39,7 @@ func run() osx.ExitCode {
 
 	// Configuration.
 	configFile := flag.String("config", "config.yml", "Path to the configuration file (default: config.yml)")
+
 	flag.Parse()
 
 	config := Config{}

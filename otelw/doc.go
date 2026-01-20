@@ -1,2 +1,2 @@
-// Provides go-otelw configuration types and utilities.
+// Package otelw provides go-otelw configuration types and utilities.
 package otelw

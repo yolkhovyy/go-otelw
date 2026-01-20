@@ -26,6 +26,7 @@ import (
 // - provider: The log.LoggerProvider that manages the lifecycle and configuration of the logger.
 type Logger struct {
 	*slog.Logger
+
 	exporter log.Exporter
 	provider *log.LoggerProvider
 }
@@ -96,13 +97,15 @@ func (l *Logger) Shutdown(ctx context.Context) error {
 	var errs error
 
 	if l.provider != nil {
-		err := l.provider.Shutdown(ctx)
-		errs = errors.Join(errs, fmt.Errorf("slogw provider shutdown: %w", err))
+		if err := l.provider.Shutdown(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("slogw provider shutdown: %w", err))
+		}
 	}
 
 	if l.exporter != nil {
-		err := l.exporter.Shutdown(ctx)
-		errs = errors.Join(errs, fmt.Errorf("slogw exporter shutdown: %w", err))
+		if err := l.exporter.Shutdown(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("slogw exporter shutdown: %w", err))
+		}
 	}
 
 	return errs

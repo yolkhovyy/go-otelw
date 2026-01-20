@@ -10,3 +10,8 @@ Consider for production:
         sdktrace.WithBatcher(exporter),
     )
 ```
+
+## Backends
+
+* Finalize splunk
+* [dash0](https://www.dash0.com/)

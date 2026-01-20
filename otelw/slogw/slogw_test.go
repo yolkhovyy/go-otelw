@@ -76,6 +76,7 @@ func TestSlog(t *testing.T) {
 			t.Parallel()
 
 			var builder strings.Builder
+
 			test.args.writers = append(test.args.writers, &builder)
 
 			spanContext := trace.NewSpanContext(trace.SpanContextConfig{
