@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"time"
 
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/otel/attribute"
@@ -96,7 +97,16 @@ func Configure( //nolint:cyclop,funlen
 func (l *Logger) Shutdown(ctx context.Context) error {
 	var errs error
 
+	const timeout = 2 * time.Second
+
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
 	if l.provider != nil {
+		if err := l.provider.ForceFlush(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("slogw force flush: %w", err))
+		}
+
 		if err := l.provider.Shutdown(ctx); err != nil {
 			errs = errors.Join(errs, fmt.Errorf("slogw provider shutdown: %w", err))
 		}
