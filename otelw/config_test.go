@@ -13,6 +13,8 @@ import (
 	"github.com/yolkhovyy/go-utilities/viperx"
 )
 
+const testEndpoint = "foo:4242"
+
 //nolint:funlen
 func TestBaseLoad(t *testing.T) {
 	t.Parallel()
@@ -46,14 +48,14 @@ func TestBaseLoad(t *testing.T) {
 						TimeFormat: time.RFC3339Nano,
 						OTLP: otlp.Config{
 							Protocol: otlp.GRPC,
-							Endpoint: "foo:4242",
+							Endpoint: testEndpoint,
 						},
 					},
 					Tracer: tracew.Config{
 						Enable: true,
 						OTLP: otlp.Config{
 							Protocol: otlp.GRPC,
-							Endpoint: "foo:4242",
+							Endpoint: testEndpoint,
 						},
 					},
 					Metric: metricw.Config{
@@ -62,7 +64,7 @@ func TestBaseLoad(t *testing.T) {
 						Interval:   42 * time.Second,
 						OTLP: otlp.Config{
 							Protocol: otlp.GRPC,
-							Endpoint: "foo:4242",
+							Endpoint: testEndpoint,
 						},
 					},
 				},

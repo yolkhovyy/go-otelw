@@ -96,18 +96,21 @@ func (m *Metric) Shutdown(ctx context.Context) error {
 	var errs error
 
 	for i := range m.registrations {
-		err := m.registrations[i].Unregister()
-		errs = errors.Join(errs, fmt.Errorf("metricw registration shutdown: %w", err))
+		if err := m.registrations[i].Unregister(); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("metricw registration shutdown: %w", err))
+		}
 	}
 
 	if m.provider != nil {
-		err := m.provider.Shutdown(ctx)
-		errs = errors.Join(errs, fmt.Errorf("metricw provider shutdown: %w", err))
+		if err := m.provider.Shutdown(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("metricw provider shutdown: %w", err))
+		}
 	}
 
 	if m.exporter != nil {
-		err := m.exporter.Shutdown(ctx)
-		errs = errors.Join(errs, fmt.Errorf("metricw exporter shutdown: %w", err))
+		if err := m.exporter.Shutdown(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("metricw exporter shutdown: %w", err))
+		}
 	}
 
 	return errs

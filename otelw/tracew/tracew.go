@@ -79,13 +79,15 @@ func (t *Tracer) Shutdown(ctx context.Context) error {
 	var errs error
 
 	if t.provider != nil {
-		err := t.provider.Shutdown(ctx)
-		errs = errors.Join(errs, fmt.Errorf("tracew provider shutdown: %w", err))
+		if err := t.provider.Shutdown(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("tracew provider shutdown: %w", err))
+		}
 	}
 
 	if t.exporter != nil {
-		err := t.exporter.Shutdown(ctx)
-		errs = errors.Join(errs, fmt.Errorf("tracew exporter shutdown: %w", err))
+		if err := t.exporter.Shutdown(ctx); err != nil {
+			errs = errors.Join(errs, fmt.Errorf("tracew exporter shutdown: %w", err))
+		}
 	}
 
 	return errs
